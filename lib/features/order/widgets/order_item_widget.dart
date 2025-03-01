@@ -1,4 +1,5 @@
 import '../../../core/core.dart';
+import '../../../core/dialogs/change_total_dialog.dart';
 
 class OrderItemWidget extends StatelessWidget {
   const OrderItemWidget({super.key});
@@ -55,16 +56,24 @@ class OrderItemWidget extends StatelessWidget {
                 buttonSize: kSizeM,
               ),
               SizedBox(width: kSizeMS),
-              Column(
-                children: [
-                  Text(
-                    "200",
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+              InkWell(
+                onTap: () async {
+                  await showChangeTotalDialog<int>(
+                    context: context,
+                    initial: 200,
+                  );
+                },
+                child: Column(
+                  children: [
+                    Text(
+                      "200",
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text("Pax", style: context.textTheme.bodySmall),
-                ],
+                    Text("Pax", style: context.textTheme.bodySmall),
+                  ],
+                ),
               ),
               SizedBox(width: kSizeMS),
               ButtonCircleWidget.gradient(

@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 import '../../../core/core.dart';
 
 class PaymentDetailsViewsPage extends StatelessWidget {

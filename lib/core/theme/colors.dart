@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const primaryColor = Color.fromARGB(255, 255, 231, 112);
+const primaryColor = mutedLemonColor;
 const secondaryColor = Color(0xffFCC3D2);
 const softPinkColor = Color(0x07f93263);
 const secondarySoftColor = Color(0xffFFDFDF);

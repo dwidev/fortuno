@@ -17,7 +17,7 @@ class MainPage extends StatelessWidget {
               height: double.infinity,
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
+                  crossAxisCount: 4,
                   crossAxisSpacing: 15,
                   mainAxisSpacing: 15,
                 ),
@@ -50,7 +50,7 @@ class MainPage extends StatelessWidget {
                           child: Column(
                             children: [
                               Text(
-                                "Ayam bakar",
+                                "Paket Berkah",
                                 style: context.textTheme.bodyLarge?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
