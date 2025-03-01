@@ -2,8 +2,35 @@ import '../../../core/core.dart';
 import 'order_details_view_page.dart';
 import 'payment_details_view_page.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    tabController.dispose();
+  }
+
+  void onTapOder() {
+    if (tabController.index == 0) {
+      setState(() {
+        tabController.index += 1;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,26 +99,31 @@ class MainPage extends StatelessWidget {
               color: Colors.white,
               child: Stack(
                 children: [
-                  DefaultTabController(
-                    length: 2,
-                    child: TabBarView(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: kDefaultPadding * 2,
-                            horizontal: kDefaultPadding,
-                          ),
-                          child: OrderDetailsViewPage(),
+                  TabBarView(
+                    controller: tabController,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: kDefaultPadding * 2,
+                          horizontal: kDefaultPadding,
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: kDefaultPadding * 2,
-                            horizontal: kDefaultPadding,
-                          ),
-                          child: PaymentDetailsViewsPage(),
+                        child: OrderDetailsViewPage(),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: kDefaultPadding * 2,
+                          horizontal: kDefaultPadding,
                         ),
-                      ],
-                    ),
+                        child: PaymentDetailsViewsPage(
+                          onBack: () {
+                            setState(() {
+                              tabController.index = 0;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                   if (!context.isKeyboardOpen)
                     Positioned(
@@ -105,13 +137,20 @@ class MainPage extends StatelessWidget {
                         ),
                         color: whiteColor,
                         child: GradientButton(
-                          onPressed: () {},
+                          onPressed: onTapOder,
                           height: kSizeXXL,
-                          child: Text(
-                            "Proses Order",
-                            style: context.textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: darkColor,
+                          child: AnimatedSwitcher(
+                            duration: Duration(milliseconds: 500),
+                            switchInCurve: Curves.easeIn,
+                            switchOutCurve: Curves.easeOut,
+                            child: Text(
+                              tabController.index == 0
+                                  ? "Proses Order"
+                                  : "Buat Order",
+                              style: context.textTheme.bodyLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: darkColor,
+                              ),
                             ),
                           ),
                         ),

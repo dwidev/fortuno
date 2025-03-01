@@ -65,13 +65,22 @@ class OrderItemWidget extends StatelessWidget {
                 },
                 child: Column(
                   children: [
-                    Text(
-                      "200",
-                      style: context.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: darkColor.withAlpha(100),
+                          width: 0.8,
+                        ),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Text(
+                        "200",
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                    Text("Pax", style: context.textTheme.bodySmall),
                   ],
                 ),
               ),

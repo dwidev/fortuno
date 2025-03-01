@@ -1,7 +1,9 @@
 import '../../../core/core.dart';
 
 class PaymentDetailsViewsPage extends StatelessWidget {
-  const PaymentDetailsViewsPage({super.key});
+  const PaymentDetailsViewsPage({super.key, required this.onBack});
+
+  final VoidCallback onBack;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class PaymentDetailsViewsPage extends StatelessWidget {
               ButtonCircleWidget(
                 icon: CupertinoIcons.back,
                 buttonSize: kSizeXL,
-                onPressed: () {},
+                onPressed: onBack,
                 iconColor: darkColor,
               ),
               Text(
