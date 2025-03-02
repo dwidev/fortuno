@@ -29,7 +29,10 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       setState(() {
         tabController.index += 1;
       });
+      return;
     }
+
+    showSuccessDialog(context: context, desc: "");
   }
 
   @override
@@ -40,55 +43,75 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           Expanded(
             flex: 3,
             child: Container(
-              padding: EdgeInsets.only(top: kDefaultPadding),
+              padding: EdgeInsets.symmetric(
+                vertical: kSizeM,
+                horizontal: kSizeML,
+              ),
               height: double.infinity,
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15,
-                ),
-                itemCount: 5,
-                padding: EdgeInsets.all(kDefaultPadding),
-                itemBuilder: (context, index) {
-                  return Card(
-                    color: primaryColor,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                kDefaultRadius,
-                              ),
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                  "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
-                                ),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(
+                      kDefaultPadding,
+                    ).copyWith(top: kDefaultPadding * 2),
+                    child: Text(
+                      "RM Barokah Catering",
+                      style: context.textTheme.titleLarge,
+                    ),
+                  ),
+                  Expanded(
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        crossAxisSpacing: 15,
+                        mainAxisSpacing: 15,
+                      ),
+                      itemCount: 5,
+                      padding: EdgeInsets.all(kDefaultPadding),
+                      itemBuilder: (context, index) {
+                        return Card(
+                          color: primaryColor,
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Paket Berkah",
-                                style: context.textTheme.bodyLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
+                              Expanded(
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                      kDefaultRadius,
+                                    ),
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "Paket Berkah",
+                                      style: context.textTheme.bodyLarge
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
             ),
           ),

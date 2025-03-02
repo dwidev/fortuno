@@ -1,5 +1,4 @@
 import '../../../core/core.dart';
-import '../../../core/dialogs/change_total_dialog.dart';
 
 class OrderItemWidget extends StatelessWidget {
   const OrderItemWidget({super.key});
