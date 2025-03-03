@@ -1,4 +1,6 @@
-import 'features/order/pages/main_page.dart';
+import 'package:fortuno/core/router/main_route.dart';
+
+import 'features/main_page.dart';
 
 import 'core/core.dart';
 
@@ -12,10 +14,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: lightTheme,
-      home: MainPage(),
+      routerConfig: router,
+      builder: (context, child) {
+        return child ?? Offstage();
+      },
     );
   }
 }
