@@ -1,4 +1,5 @@
 import 'package:fortuno/core/core.dart';
+import 'package:fortuno/features/process_order/pages/process_order_page.dart';
 
 import 'order_details_view_page.dart';
 import 'payment_details_view_page.dart';
@@ -36,7 +37,15 @@ class _CreateOrderPageState extends State<CreateOrderPage>
       return;
     }
 
-    showSuccessDialog(context: context, desc: "");
+    showSuccessDialog(
+      context: context,
+      desc: "Pesanan berhasil dibuat",
+      onOke: () {
+        context.pop();
+        context.go(ProcessOrderPage.path);
+        tabController.index = 0;
+      },
+    );
   }
 
   @override

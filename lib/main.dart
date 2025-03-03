@@ -1,7 +1,3 @@
-import 'package:fortuno/core/router/main_route.dart';
-
-import 'features/main_page.dart';
-
 import 'core/core.dart';
 
 void main() {

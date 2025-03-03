@@ -5,6 +5,7 @@ import '../core.dart';
 Future<void> showSuccessDialog({
   required BuildContext context,
   required String desc,
+  required VoidCallback onOke,
 }) async {
   return showDialog(
     barrierDismissible: false,
@@ -34,19 +35,14 @@ Future<void> showSuccessDialog({
                 height: context.width / 7,
               ),
               SizedBox(height: kSizeM),
-              Text(
-                "Pesanan berhasil dibuat",
-                style: context.textTheme.bodyLarge,
-              ),
+              Text(desc, style: context.textTheme.bodyLarge),
               SizedBox(height: kSizeM),
               Align(
                 alignment: Alignment.center,
                 child: GradientButton(
                   noShadow: true,
                   width: 100,
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                  onPressed: onOke,
                   child: Text("OK", style: context.textTheme.bodySmall),
                 ),
               ),
