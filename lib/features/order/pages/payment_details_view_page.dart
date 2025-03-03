@@ -1,8 +1,13 @@
 import '../../../core/core.dart';
 
 class PaymentDetailsViewsPage extends StatelessWidget {
-  const PaymentDetailsViewsPage({super.key, required this.onBack});
+  const PaymentDetailsViewsPage({
+    super.key,
+    required this.onBack,
+    this.viewOnly = false,
+  });
 
+  final bool viewOnly;
   final VoidCallback onBack;
 
   @override
@@ -11,24 +16,25 @@ class PaymentDetailsViewsPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              ButtonCircleWidget(
-                icon: CupertinoIcons.back,
-                buttonSize: kSizeXL,
-                onPressed: onBack,
-                iconColor: darkColor,
-              ),
-              Text(
-                "Rincian Pembayaran",
-                style: context.textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: mustardYellow,
+          if (!viewOnly)
+            Row(
+              children: [
+                ButtonCircleWidget(
+                  icon: CupertinoIcons.back,
+                  buttonSize: kSizeXL,
+                  onPressed: onBack,
+                  iconColor: darkColor,
                 ),
-              ),
-            ],
-          ),
-          Divider(),
+                Text(
+                  "Rincian Pembayaran",
+                  style: context.textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: mustardYellow,
+                  ),
+                ),
+              ],
+            ),
+          if (!viewOnly) Divider(),
           Text(
             "Rincian pesanan",
             style: context.textTheme.bodyMedium?.copyWith(
@@ -107,45 +113,46 @@ class PaymentDetailsViewsPage extends StatelessWidget {
             ],
           ),
           SizedBox(height: kSizeS),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Ongkir",
-                    style: context.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 200,
-                    child: Text(
-                      "*Cek aplikasi grab/gojek lalu input manual nilai ongkir",
-                      style: context.textTheme.bodySmall?.copyWith(
-                        color: Colors.redAccent,
-                        fontSize: 10,
-                        fontStyle: FontStyle.italic,
+          if (!viewOnly)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Ongkir",
+                      style: context.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
+                    SizedBox(
+                      width: 200,
+                      child: Text(
+                        "*Cek aplikasi grab/gojek lalu input manual nilai ongkir",
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: Colors.redAccent,
+                          fontSize: 10,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  width: context.width * 0.1,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(kSizeMS),
+                    color: sunKissedYellowColor,
                   ),
-                ],
-              ),
-              Container(
-                width: context.width * 0.1,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(kSizeMS),
-                  color: sunKissedYellowColor,
+                  padding: EdgeInsets.symmetric(horizontal: kSizeMS),
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(hintText: "Ongkir: Rp.xxxxx"),
+                  ),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: kSizeMS),
-                child: TextFormField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(hintText: "Ongkir: Rp.xxxxx"),
-                ),
-              ),
-            ],
-          ),
+              ],
+            ),
           SizedBox(height: kSizeL),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -31,3 +31,7 @@ ThemeData get lightTheme {
     ),
   );
 }
+
+const defaultGradient = LinearGradient(
+  colors: [mutedLemonColor, sageGreenColor],
+);
