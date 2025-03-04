@@ -46,7 +46,7 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Proses pesanan \nSMK ADI SANGGORO",
+                "Proses pesanan SMK ADI SANGGORO",
                 style: context.textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

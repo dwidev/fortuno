@@ -1,1 +1,1 @@
-const logoBarokah = "";
+const googlePng = "assets/images/google.png";

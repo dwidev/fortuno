@@ -1,5 +1,7 @@
+import 'auth_route.dart';
+import '../../features/auth/pages/login_page.dart';
+
 import '../../features/main_page.dart';
-import '../../features/order/pages/create_order_page.dart';
 import '../core.dart';
 import 'create_order_route.dart';
 import 'process_order_route.dart';
@@ -18,8 +20,10 @@ final profilRouteKey = GlobalKey<NavigatorState>(debugLabel: "profile-route");
 
 final router = GoRouter(
   navigatorKey: rootNavigatorKey,
-  initialLocation: CreateOrderPage.path,
+  initialLocation: LoginPage.path,
   routes: [
+    // auth route
+    ...authRoute,
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return MainPage(navigationShell: navigationShell);
