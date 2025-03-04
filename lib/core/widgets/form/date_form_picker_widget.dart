@@ -28,7 +28,7 @@ class DateFormPickerWidget extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(kSizeMS),
-              color: sunKissedYellowColor,
+              color: darkLightColor,
             ),
             padding: EdgeInsets.symmetric(horizontal: kSizeMS),
             child: TextFormField(

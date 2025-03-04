@@ -8,7 +8,8 @@ class GradientButton extends StatelessWidget {
     this.width,
     this.height,
     this.gradient,
-    this.noShadow = false,
+    this.noShadow = true,
+    this.noShimmer = false,
   });
 
   final double? width;
@@ -17,6 +18,7 @@ class GradientButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Gradient? gradient;
   final bool noShadow;
+  final bool noShimmer;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,11 @@ class GradientButton extends StatelessWidget {
             child: child,
           ),
         )
-        .animate(onPlay: (controller) => controller.repeat())
+        .animate(
+          onPlay: (controller) {
+            if (noShimmer == false) controller.repeat();
+          },
+        )
         .shimmer(
           blendMode: BlendMode.colorDodge,
           color: darkLightColor,

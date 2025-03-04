@@ -2,8 +2,9 @@ import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:fortuno/core/core.dart';
 
 class ImagePreviewWidget extends StatelessWidget {
-  const ImagePreviewWidget({super.key, required this.title});
+  const ImagePreviewWidget({super.key, required this.title, this.size = 200});
 
+  final double size;
   final String title;
 
   @override
@@ -28,8 +29,8 @@ class ImagePreviewWidget extends StatelessWidget {
           Stack(
             children: [
               Container(
-                width: 200,
-                height: 200,
+                width: size,
+                height: size,
                 decoration: BoxDecoration(
                   color: darkLightColor,
                   borderRadius: BorderRadius.circular(kDefaultRadius),
@@ -42,30 +43,35 @@ class ImagePreviewWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                width: 200,
-                height: 200,
+                width: size,
+                height: size,
                 decoration: BoxDecoration(
-                  color: darkColor.withAlpha(150),
+                  color: darkColor.withAlpha(50),
                   borderRadius: BorderRadius.circular(kDefaultRadius),
                 ),
               ),
               SizedBox(
-                width: 200,
-                height: 200,
+                width: size,
+                height: size,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(CupertinoIcons.eye, size: kSizeL, color: whiteColor),
-                    SizedBox(height: kSizeS),
-                    Text(
-                      title,
-                      textAlign: TextAlign.center,
-                      style: context.textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: whiteColor,
-                      ),
+                    Icon(
+                      CupertinoIcons.eye_fill,
+                      size: size * 0.2,
+                      color: whiteColor,
                     ),
+                    if (title.isNotEmpty) SizedBox(height: kSizeS),
+                    if (title.isNotEmpty)
+                      Text(
+                        title,
+                        textAlign: TextAlign.center,
+                        style: context.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: whiteColor,
+                        ),
+                      ),
                   ],
                 ),
               ),

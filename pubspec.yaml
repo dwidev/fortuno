@@ -44,6 +44,7 @@ dependencies:
 
   # 3party components
   easy_image_viewer: ^1.5.1
+  flutter_swipe_button: ^2.1.3
 
   # core apps
   go_router: ^14.8.1

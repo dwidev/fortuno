@@ -1,3 +1,5 @@
+import 'package:fortuno/features/process_order/widgets/process_order_dialog.dart';
+
 import '../widgets/order_action_widget.dart';
 import '../widgets/order_package_widget.dart';
 
@@ -27,7 +29,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 5, vsync: this);
     animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 200),
@@ -98,7 +100,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                   Expanded(
                     child: TabBarView(
                       controller: tabController,
-                      children: List.generate(4, (index) {
+                      children: List.generate(5, (index) {
                         return ListView.builder(
                           padding: EdgeInsets.zero,
                           itemBuilder: (context, index) {
@@ -263,7 +265,25 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                                   Positioned(
                                     bottom: 0,
                                     right: 0,
-                                    child: OrderActionWidget(),
+                                    child: Row(
+                                      children: [
+                                        GradientButton(
+                                          noShadow: true,
+                                          width: 200,
+                                          onPressed: () {
+                                            showProcessDialog(
+                                              context: context,
+                                              onSwipe: () {
+                                                context.pop();
+                                              },
+                                            );
+                                          },
+                                          child: Text("Proses"),
+                                        ),
+                                        SizedBox(width: kSizeS),
+                                        OrderActionWidget(),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               )

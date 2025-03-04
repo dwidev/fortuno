@@ -11,17 +11,17 @@ ThemeData get lightTheme {
   return ThemeData(
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: mutedLemonColor,
+      seedColor: mustardYellow,
       brightness: Brightness.light,
     ),
     appBarTheme: AppBarTheme(
-      backgroundColor: mutedLemonColor,
+      backgroundColor: mustardYellow,
       titleTextStyle: GoogleFonts.poppinsTextTheme().titleLarge?.copyWith(
         color: whiteColor,
       ),
     ),
     textTheme: textTheme,
-    iconTheme: const IconThemeData(color: blackColor, size: 15),
+    iconTheme: IconThemeData(color: darkColor, size: 15),
     inputDecorationTheme: InputDecorationTheme(
       border: InputBorder.none,
       hintStyle: textTheme.bodySmall?.copyWith(fontSize: 13),
