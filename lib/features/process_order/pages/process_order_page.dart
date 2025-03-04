@@ -1,3 +1,6 @@
+import '../widgets/order_action_widget.dart';
+import '../widgets/order_package_widget.dart';
+
 import '../../../core/core.dart';
 import '../../order/pages/payment_details_view_page.dart';
 
@@ -19,6 +22,8 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
   Animation<double>? widthAnimation;
   double witdhDetail = 0;
 
+  double get maxWidthDetail => context.width / 1.7;
+
   @override
   void initState() {
     super.initState();
@@ -26,16 +31,24 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
     animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 200),
-    );
+    )..addListener(() {
+      final wAnimation = widthAnimation;
+      if (wAnimation == null) return;
+
+      setState(() {
+        if (wAnimation.value > 500) {
+          isDetail = true;
+        } else {
+          isDetail = false;
+        }
+      });
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final curve = CurvedAnimation(
         parent: animationController,
         curve: Curves.easeIn,
       );
-      widthAnimation = Tween(
-        begin: 0.0,
-        end: context.width / 1.7,
-      ).animate(curve);
+      widthAnimation = Tween(begin: 0.0, end: maxWidthDetail).animate(curve);
     });
   }
 
@@ -45,24 +58,20 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
     tabController.dispose();
   }
 
-  void onClickDetail(int index) {
+  void onClickDetail(int index, bool isOpen) {
     setState(() {
-      isDetail = !isDetail;
       activeIndex = index;
     });
 
-    Future.delayed(Duration(milliseconds: 1), () {
-      if (isDetail) {
-        animationController.forward();
-      } else {
-        animationController.reverse();
-      }
-    });
+    if (isOpen) {
+      animationController.forward();
+    } else {
+      animationController.reverse();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    print(animationController.value);
     return Scaffold(
       backgroundColor: darkLightColor,
       body: Padding(
@@ -75,13 +84,16 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                   TabBar(
                     indicatorWeight: 10,
                     controller: tabController,
-                    tabs: List.generate(
-                      4,
-                      (i) => Container(
-                        padding: EdgeInsets.all(kDefaultPadding),
-                        child: Text("Semua"),
-                      ),
-                    ),
+                    isScrollable: true,
+                    tabs:
+                        ["semua", "menunggu (1)", "proses", "selesai", "batal"]
+                            .map(
+                              (i) => Container(
+                                padding: EdgeInsets.all(kDefaultPadding),
+                                child: Text(i),
+                              ),
+                            )
+                            .toList(),
                   ),
                   Expanded(
                     child: TabBarView(
@@ -107,7 +119,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                                     kDefaultRadius,
                                   ),
                                   onTap: () {
-                                    onClickDetail(index);
+                                    onClickDetail(index, true);
                                   },
                                   child: Container(
                                     padding: EdgeInsets.all(kDefaultPadding),
@@ -181,109 +193,87 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
               AnimatedBuilder(
                 animation: widthAnimation!,
                 builder: (context, _) {
+                  final wAnimation = widthAnimation;
+                  if (wAnimation == null) {
+                    return Offstage();
+                  }
+
                   return SizedBox(
-                    width: widthAnimation!.value,
+                    height: context.height,
+                    width: wAnimation.value,
                     child: Container(
                       padding: EdgeInsets.all(kDefaultPadding),
                       color: whiteColor,
                       child:
-                          !isDetail
-                              ? Offstage()
-                              : Column(
+                          wAnimation.value >= maxWidthDetail
+                              ? Stack(
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  Column(
                                     children: [
-                                      Text(
-                                        "SMK Adi sanggoro",
-                                        style: context.textTheme.titleLarge
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.bold,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "SMK Adi sanggoro",
+                                            style: context.textTheme.titleLarge
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              onClickDetail(-1, false);
+                                            },
+                                            icon: Icon(
+                                              CupertinoIcons.clear,
+                                              size: kSizeL,
                                             ),
+                                          ),
+                                        ],
                                       ),
-                                      IconButton(
-                                        onPressed: () {
-                                          onClickDetail(-1);
-                                        },
-                                        icon: Icon(
-                                          CupertinoIcons.clear,
-                                          size: kSizeL,
+                                      Expanded(
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              PaymentDetailsViewsPage(
+                                                onBack: () {},
+                                                viewOnly: true,
+                                              ),
+                                              SizedBox(height: kSizeXL),
+                                              Row(
+                                                children: [
+                                                  ImagePreviewWidget(
+                                                    title: "Bukti Dp",
+                                                  ),
+                                                  SizedBox(width: kSizeM),
+                                                  ImagePreviewWidget(
+                                                    title: "Bukti Pelunasan",
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                  PaymentDetailsViewsPage(
-                                    onBack: () {},
-                                    viewOnly: true,
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: OrderActionWidget(),
                                   ),
                                 ],
-                              ),
+                              )
+                              : Offstage(),
                     ),
                   );
                 },
               ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class OrderActionWidget extends StatelessWidget {
-  const OrderActionWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ButtonCircleWidget.gradient(
-          icon: CupertinoIcons.printer,
-          onPressed: () {},
-        ),
-        SizedBox(width: kSizeS),
-        ButtonCircleWidget.gradient(
-          icon: CupertinoIcons.pencil,
-          onPressed: () {},
-        ),
-        SizedBox(width: kSizeS),
-        ButtonCircleWidget.gradient(
-          icon: CupertinoIcons.trash,
-          onPressed: () {},
-        ),
-      ],
-    );
-  }
-}
-
-class OrderPackageWidget extends StatelessWidget {
-  const OrderPackageWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: context.width / 7,
-      padding: EdgeInsets.symmetric(vertical: kSizeS, horizontal: kSizeS),
-      decoration: BoxDecoration(
-        color: lemonChiffonColor,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Paket berkah 20k",
-            style: context.textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            "Nasi, Ayam bakar, Tahu, Tempe, Box Kardus coklat + alat makan",
-            style: context.textTheme.bodySmall?.copyWith(
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-        ],
       ),
     );
   }

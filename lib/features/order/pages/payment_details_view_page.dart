@@ -240,7 +240,8 @@ class PaymentDetailsViewsPage extends StatelessWidget {
               ),
             ],
           ),
-          if (!context.isKeyboardOpen) SizedBox(height: kSizeXXL * 2),
+          if (!context.isKeyboardOpen && !viewOnly)
+            SizedBox(height: kSizeXXL * 2),
         ],
       ),
     );
