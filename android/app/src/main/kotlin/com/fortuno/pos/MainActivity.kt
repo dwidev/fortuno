@@ -1,4 +1,4 @@
-package com.example.fortuno
+package com.fortuno.pos
 
 import io.flutter.embedding.android.FlutterActivity
 
