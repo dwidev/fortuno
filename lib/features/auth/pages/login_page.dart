@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:fortuno/core/constants/images_assets.dart';
-import 'package:fortuno/core/core.dart';
-import 'package:fortuno/core/extensions/extensions.dart';
-import 'package:fortuno/core/theme/colors.dart';
-import 'package:fortuno/features/order/pages/create_order_page.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:fortuno/features/auth/pages/welcome_page.dart';
+
+import '../../../core/constants/images_assets.dart';
+import '../../../core/constants/svg_assets.dart';
+import '../../../core/core.dart';
+import '../../order/pages/create_order_page.dart';
 
 class LoginPage extends StatelessWidget {
   static const path = '/login';
@@ -15,11 +16,12 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: Row(
         children: [
+          Expanded(flex: 3, child: WelcomePage()),
           Expanded(
             flex: 2,
             child: Container(
               padding: EdgeInsets.all(kSizeXXL),
-              color: whiteColor,
+              decoration: BoxDecoration(color: whiteColor),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -34,14 +36,6 @@ class LoginPage extends StatelessWidget {
                   Text(
                     "Kendali Bisnis di Ujung Jari, Laba Melesat Setiap Hari!",
                     style: context.textTheme.bodySmall?.copyWith(
-                      color: darkColor,
-                    ),
-                  ),
-                  SizedBox(height: kSizeXL),
-                  Text(
-                    "Selamat datang, Masuk ke akun Anda!",
-                    style: context.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
                       color: darkColor,
                     ),
                   ),
@@ -66,18 +60,6 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [sunKissedYellowColor, lemonChiffonColor],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
               ),
             ),
           ),

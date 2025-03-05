@@ -11,11 +11,11 @@ ThemeData get lightTheme {
   return ThemeData(
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: mustardYellow,
+      seedColor: darkMossGreen,
       brightness: Brightness.light,
     ),
     appBarTheme: AppBarTheme(
-      backgroundColor: mustardYellow,
+      backgroundColor: darkMossGreen,
       titleTextStyle: GoogleFonts.poppinsTextTheme().titleLarge?.copyWith(
         color: whiteColor,
       ),
