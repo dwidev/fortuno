@@ -9,17 +9,20 @@ class OrderActionWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         ButtonCircleWidget.gradient(
+          buttonSize: 35,
           icon: CupertinoIcons.printer,
           onPressed: () {},
         ),
         SizedBox(width: kSizeS),
         ButtonCircleWidget.gradient(
+          buttonSize: 35,
           gradiendBackgroundColor: [darkColor, Colors.blueAccent],
           icon: CupertinoIcons.pencil,
           onPressed: () {},
         ),
         SizedBox(width: kSizeS),
         ButtonCircleWidget.gradient(
+          buttonSize: 35,
           gradiendBackgroundColor: [darkColor, Colors.redAccent],
           icon: CupertinoIcons.trash,
           onPressed: () {},

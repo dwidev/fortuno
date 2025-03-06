@@ -77,7 +77,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
     return Scaffold(
       backgroundColor: darkLightColor,
       body: Padding(
-        padding: EdgeInsets.only(top: kToolbarHeight),
+        padding: EdgeInsets.only(top: context.padTop),
         child: Row(
           children: [
             Expanded(
@@ -268,8 +268,8 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                                     child: Row(
                                       children: [
                                         GradientButton(
-                                          noShadow: true,
-                                          width: 200,
+                                          height: 35,
+                                          width: 130,
                                           onPressed: () {
                                             showProcessDialog(
                                               context: context,

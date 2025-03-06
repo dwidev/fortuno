@@ -1,6 +1,6 @@
 import 'package:flutter_svg/svg.dart';
-import 'package:fortuno/core/constants/svg_assets.dart';
-import 'package:fortuno/core/core.dart';
+import '../../../core/constants/svg_assets.dart';
+import '../../../core/core.dart';
 
 class WelcomeWidget extends StatelessWidget {
   const WelcomeWidget({
@@ -24,13 +24,13 @@ class WelcomeWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SvgPicture.asset(svg, width: context.width / 2.9),
+        SvgPicture.asset(svg, width: context.width / 3.2),
         SizedBox(height: kSizeM),
         SizedBox(
           width: context.width / 2.5,
           child: Text(
             title,
-            style: context.textTheme.displayMedium?.copyWith(
+            style: context.textTheme.displaySmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: darkColor,
             ),
@@ -40,7 +40,7 @@ class WelcomeWidget extends StatelessWidget {
         SizedBox(height: kSizeM),
         Text(
           desc,
-          style: context.textTheme.titleSmall?.copyWith(color: darkColor),
+          style: context.textTheme.bodySmall?.copyWith(color: darkColor),
           textAlign: TextAlign.center,
         ),
         SizedBox(height: kSizeM),

@@ -13,6 +13,7 @@ class ButtonCircleWidget extends StatelessWidget {
     this.isGradientBackground = false,
     this.gradiendBackgroundColor = const [],
     this.iconColor = Colors.white,
+    this.noShadow = false,
   });
 
   factory ButtonCircleWidget.gradient({
@@ -44,6 +45,7 @@ class ButtonCircleWidget extends StatelessWidget {
 
   final bool isGradientBackground;
   final List<Color> gradiendBackgroundColor;
+  final bool noShadow;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +59,16 @@ class ButtonCircleWidget extends StatelessWidget {
         gradient:
             isGradientBackground && onPressed != null
                 ? LinearGradient(colors: gradiendBackgroundColor)
+                : null,
+        boxShadow:
+            !noShadow
+                ? const [
+                  BoxShadow(
+                    color: Color.fromARGB(128, 143, 143, 143),
+                    blurRadius: 10.0,
+                    offset: Offset(0.0, 4.0),
+                  ),
+                ]
                 : null,
       ),
       child: ElevatedButton(

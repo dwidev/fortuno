@@ -2,7 +2,7 @@ import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:fortuno/core/core.dart';
 
 class ImagePreviewWidget extends StatelessWidget {
-  const ImagePreviewWidget({super.key, required this.title, this.size = 200});
+  const ImagePreviewWidget({super.key, required this.title, this.size = 120});
 
   final double size;
   final String title;
@@ -59,7 +59,7 @@ class ImagePreviewWidget extends StatelessWidget {
                   children: [
                     Icon(
                       CupertinoIcons.eye_fill,
-                      size: size * 0.2,
+                      size: size * 0.1,
                       color: whiteColor,
                     ),
                     if (title.isNotEmpty) SizedBox(height: kSizeS),
@@ -67,7 +67,7 @@ class ImagePreviewWidget extends StatelessWidget {
                       Text(
                         title,
                         textAlign: TextAlign.center,
-                        style: context.textTheme.bodyLarge?.copyWith(
+                        style: context.textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: whiteColor,
                         ),

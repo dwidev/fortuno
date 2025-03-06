@@ -65,7 +65,7 @@ class OrderItemWidget extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      padding: EdgeInsets.all(5),
+                      padding: EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: darkColor.withAlpha(100),
@@ -75,7 +75,7 @@ class OrderItemWidget extends StatelessWidget {
                       ),
                       child: Text(
                         "200",
-                        style: context.textTheme.bodyMedium?.copyWith(
+                        style: context.textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -89,6 +89,7 @@ class OrderItemWidget extends StatelessWidget {
                 onPressed: () {},
                 buttonSize: kSizeM,
               ),
+              SizedBox(width: kSizeS),
             ],
           ),
         ],

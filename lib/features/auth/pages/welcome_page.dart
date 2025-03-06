@@ -20,7 +20,7 @@ class _WelcomePageState extends State<WelcomePage>
   void initState() {
     super.initState();
     pageController = PageController(initialPage: 1000);
-    timer = Timer.periodic(Duration(seconds: 5), (tick) {
+    timer = Timer.periodic(Duration(seconds: 3), (tick) {
       pageController.nextPage(
         duration: Duration(milliseconds: 500),
         curve: Curves.fastEaseInToSlowEaseOut,
@@ -58,7 +58,7 @@ class _WelcomePageState extends State<WelcomePage>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            height: context.height / 1.8,
+            height: context.height / 1.5,
             child: PageView.builder(
               controller: pageController,
               physics: NeverScrollableScrollPhysics(),
@@ -81,8 +81,8 @@ class _WelcomePageState extends State<WelcomePage>
               WelcomePageData.create().length,
               (i) => Container(
                 margin: EdgeInsets.only(right: 10),
-                width: 8,
-                height: 8,
+                width: 5,
+                height: 5,
                 decoration: BoxDecoration(
                   color: i == currentPage ? darkColor : darkLightColor,
                   borderRadius: BorderRadius.circular(kDefaultRadius),

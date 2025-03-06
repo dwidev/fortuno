@@ -83,7 +83,7 @@ class _CreateOrderPageState extends State<CreateOrderPage>
                     padding: EdgeInsets.all(kDefaultPadding),
                     itemBuilder: (context, index) {
                       return Card(
-                        color: primaryColor,
+                        color: whiteColor,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -115,10 +115,10 @@ class _CreateOrderPageState extends State<CreateOrderPage>
                                       ),
                                       child: Text(
                                         "20K",
-                                        style: context.textTheme.bodyLarge
+                                        style: context.textTheme.bodySmall
                                             ?.copyWith(
                                               fontWeight: FontWeight.bold,
-                                              color: deepGoldenYellow,
+                                              color: darkOliveGreen,
                                             ),
                                       ),
                                     ),
@@ -132,8 +132,11 @@ class _CreateOrderPageState extends State<CreateOrderPage>
                                 children: [
                                   Text(
                                     "Paket Berkah",
-                                    style: context.textTheme.bodyLarge
-                                        ?.copyWith(fontWeight: FontWeight.bold),
+                                    style: context.textTheme.bodyMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w800,
+                                          color: darkOliveGreen,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -191,9 +194,7 @@ class _CreateOrderPageState extends State<CreateOrderPage>
                         vertical: kSizeML,
                         horizontal: kSizeML,
                       ),
-                      color: whiteColor,
                       child: GradientButton(
-                        noShadow: true,
                         onPressed: onTapOder,
                         height: kSizeXXL,
                         child: AnimatedSwitcher(

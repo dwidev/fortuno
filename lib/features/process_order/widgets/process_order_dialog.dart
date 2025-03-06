@@ -90,7 +90,6 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
                     SizedBox(width: kSizeS),
                     GradientButton(
                       width: 80,
-                      noShimmer: true,
                       onPressed: () {},
                       child: Icon(CupertinoIcons.photo),
                     ),

@@ -48,7 +48,6 @@ Future<T?> showChangeTotalDialog<T>({
               Align(
                 alignment: Alignment.centerRight,
                 child: GradientButton(
-                  noShadow: true,
                   width: 100,
                   onPressed: () {
                     Navigator.of(context).pop(initial);

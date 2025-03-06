@@ -11,11 +11,11 @@ class MainPage extends StatelessWidget {
       bottomNavigationBar: NavigationBar(
         destinations: [
           NavigationDestination(
-            icon: Icon(CupertinoIcons.uiwindow_split_2x1, size: kSizeXL),
+            icon: Icon(CupertinoIcons.uiwindow_split_2x1, size: kSizeL),
             label: 'Buat pesanan',
           ),
           NavigationDestination(
-            icon: Badge(child: Icon(CupertinoIcons.paperplane, size: kSizeXL)),
+            icon: Badge(child: Icon(CupertinoIcons.paperplane, size: kSizeL)),
             label: 'Pesanan saya',
           ),
           NavigationDestination(

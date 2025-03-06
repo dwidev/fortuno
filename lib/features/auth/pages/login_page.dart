@@ -1,10 +1,7 @@
-import 'package:flutter_svg/svg.dart';
-import 'package:fortuno/features/auth/pages/welcome_page.dart';
-
 import '../../../core/constants/images_assets.dart';
-import '../../../core/constants/svg_assets.dart';
 import '../../../core/core.dart';
 import '../../order/pages/create_order_page.dart';
+import 'welcome_page.dart';
 
 class LoginPage extends StatelessWidget {
   static const path = '/login';
@@ -28,7 +25,7 @@ class LoginPage extends StatelessWidget {
                 children: [
                   Text(
                     "Fortuno POS",
-                    style: context.textTheme.displayMedium?.copyWith(
+                    style: context.textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: darkColor,
                     ),

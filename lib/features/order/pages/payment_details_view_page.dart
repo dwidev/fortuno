@@ -24,6 +24,7 @@ class PaymentDetailsViewsPage extends StatelessWidget {
                   buttonSize: kSizeXL,
                   onPressed: onBack,
                   iconColor: darkColor,
+                  noShadow: true,
                 ),
                 Text(
                   "Rincian Pembayaran",

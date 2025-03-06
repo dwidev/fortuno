@@ -40,7 +40,6 @@ Future<void> showSuccessDialog({
               Align(
                 alignment: Alignment.center,
                 child: GradientButton(
-                  noShadow: true,
                   width: 100,
                   onPressed: onOke,
                   child: Text("OK", style: context.textTheme.bodySmall),

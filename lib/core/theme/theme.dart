@@ -8,6 +8,7 @@ export 'default_size.dart';
 
 ThemeData get lightTheme {
   final textTheme = GoogleFonts.poppinsTextTheme();
+
   return ThemeData(
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
