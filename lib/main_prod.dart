@@ -1,14 +1,9 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'core/core.dart';
-import 'firebase_options_prod.dart';
-
 import 'core/environtments/env_enum.dart';
+import 'core/firebase/firebase.dart';
 import 'main_app.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  final env = Environtment.production;
+  await intializeFirebasApp(env);
   mainApp(Environtment.production);
 }
