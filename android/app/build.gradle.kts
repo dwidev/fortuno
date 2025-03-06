@@ -27,17 +27,23 @@ android {
 
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+    signingConfigs {
+        create("uat") {
+            storeFile = file("keystore/uat.jks")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+        
+        // TODO(dev) : change to keystore for the play store
+        create("prod") {
+            storeFile = file("keystore/uat.jks")
         }
     }
 
@@ -52,6 +58,7 @@ android {
                 name = "appName",
                 value = "Fortuno POS UAT"
             )
+            signingConfig = signingConfigs.getByName("uat")
         }
         create("prod")  {
             dimension = "app"
@@ -60,6 +67,7 @@ android {
                 name = "appName",
                 value = "Fortuno POS"
             )
+            signingConfig = signingConfigs.getByName("prod")
         }
     }
 }
