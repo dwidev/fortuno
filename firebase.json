@@ -1,0 +1,64 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "buildConfigurations": {
+                    "src/uat": {
+                        "projectId": "fortuno-app",
+                        "appId": "1:746095956521:android:a95ab62e816f3f90264238",
+                        "fileOutput": "android/app/src/uat/google-services.json"
+                    },
+                    "src/prod": {
+                        "projectId": "fortuno-app",
+                        "appId": "1:746095956521:android:9b9fad4b30a13dd5264238",
+                        "fileOutput": "android/app/src/prod/google-services.json"
+                    }
+                }
+            },
+            "ios": {
+                "buildConfigurations": {
+                    "Debug-uat": {
+                        "projectId": "fortuno-app",
+                        "appId": "1:746095956521:ios:7475dae0ffe55ec5264238",
+                        "uploadDebugSymbols": false,
+                        "fileOutput": "ios/flavors/uat/GoogleService-Info.plist"
+                    },
+                    "Release-uat": {
+                        "projectId": "fortuno-app",
+                        "appId": "1:746095956521:ios:7475dae0ffe55ec5264238",
+                        "uploadDebugSymbols": false,
+                        "fileOutput": "ios/flavors/uat/GoogleService-Info.plist"
+                    },
+                    "Debug-prod": {
+                        "projectId": "fortuno-app",
+                        "appId": "1:746095956521:ios:602665f6f901e97f264238",
+                        "uploadDebugSymbols": false,
+                        "fileOutput": "ios/flavors/prod/GoogleService-Info.plist"
+                    },
+                    "Release-prod": {
+                        "projectId": "fortuno-app",
+                        "appId": "1:746095956521:ios:602665f6f901e97f264238",
+                        "uploadDebugSymbols": false,
+                        "fileOutput": "ios/flavors/prod/GoogleService-Info.plist"
+                    }
+                }
+            },
+            "dart": {
+                "lib/firebase_options_uat.dart": {
+                    "projectId": "fortuno-app",
+                    "configurations": {
+                        "android": "1:746095956521:android:a95ab62e816f3f90264238",
+                        "ios": "1:746095956521:ios:7475dae0ffe55ec5264238"
+                    }
+                },
+                "lib/firebase_options_prod.dart": {
+                    "projectId": "fortuno-app",
+                    "configurations": {
+                        "android": "1:746095956521:android:9b9fad4b30a13dd5264238",
+                        "ios": "1:746095956521:ios:602665f6f901e97f264238"
+                    }
+                }
+            }
+        }
+    }
+}

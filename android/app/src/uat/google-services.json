@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "746095956521",
+    "project_id": "fortuno-app",
+    "storage_bucket": "fortuno-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746095956521:android:9b9fad4b30a13dd5264238",
+        "android_client_info": {
+          "package_name": "com.fortuno.pos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkKsDUYXM2_uFM21_tXykj01dJ30b-1bo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746095956521:android:a95ab62e816f3f90264238",
+        "android_client_info": {
+          "package_name": "com.fortuno.pos.uat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkKsDUYXM2_uFM21_tXykj01dJ30b-1bo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
