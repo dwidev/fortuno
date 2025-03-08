@@ -1,0 +1,1 @@
+enum EnvApp { uat, production }

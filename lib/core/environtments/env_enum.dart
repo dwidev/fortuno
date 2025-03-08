@@ -1,1 +1,0 @@
-enum Environtment { uat, production }
