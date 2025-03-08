@@ -1,5 +1,5 @@
 import 'auth_route.dart';
-import '../../features/auth/pages/login_page.dart';
+import '../../features/auth/presentations/pages/login_page.dart';
 
 import '../../features/main_page.dart';
 import '../core.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter_svg/svg.dart';
-import '../../../core/constants/svg_assets.dart';
-import '../../../core/core.dart';
+import '../../../../core/constants/svg_assets.dart';
+import '../../../../core/core.dart';
 
 class WelcomeWidget extends StatelessWidget {
   const WelcomeWidget({

@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:fortuno/core/core.dart';
-import 'package:fortuno/features/auth/widgets/welcome_widget.dart';
+import '../../../../core/core.dart';
+
+import '../widgets/welcome_widget.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});

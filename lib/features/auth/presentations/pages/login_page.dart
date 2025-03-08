@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../core/constants/images_assets.dart';
-import '../../../core/core.dart';
-import '../../order/pages/create_order_page.dart';
+import '../../../../core/constants/images_assets.dart';
+import '../../../../core/core.dart';
+import '../../../order/pages/create_order_page.dart';
 import 'welcome_page.dart';
 
 class LoginPage extends StatelessWidget {
