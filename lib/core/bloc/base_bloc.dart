@@ -1,38 +1,13 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortuno/core/core.dart';
 import 'package:fortuno/core/failures/failure.dart';
 
 import '../usecases/base_usecase.dart';
 
-/// BASE STATE
-abstract class BaseState extends Equatable {}
-
-class IsLoading extends BaseState {
-  @override
-  List<Object?> get props => [];
-}
-
-class HideLoading extends BaseState {
-  final int numLayers;
-
-  HideLoading({this.numLayers = 1})
-    : assert(numLayers >= 1, 'num layers cannot be lower than 1');
-
-  @override
-  List<Object?> get props => [numLayers];
-}
-
-class OnError extends BaseState {
-  final Failure error;
-
-  OnError({required this.error});
-
-  @override
-  List<Object?> get props => [error];
-}
-
-/// Base event
-abstract class BaseEvent extends Equatable {}
+part 'base_event.dart';
+part 'base_listener.dart';
+part 'base_state.dart';
 
 /// Base bloc
 abstract class BaseAppBloc<E extends BaseEvent, S extends BaseState>
@@ -43,13 +18,14 @@ abstract class BaseAppBloc<E extends BaseEvent, S extends BaseState>
   Future<ReturnFailure<T>> runUsecase<T>(
     Future<ReturnFailure<T>> Function() execute,
     Emitter emit, {
-    int backTo = 1,
+    LoadingOpts loadingOpts = const LoadingOpts(active: true),
   }) async {
-    emit(IsLoading());
+    emit(IsLoading(opts: loadingOpts));
 
     final res = await execute();
 
-    emit(HideLoading(numLayers: backTo));
+    final hideOpts = loadingOpts.copyWith(active: false);
+    emit(IsLoading(opts: hideOpts));
 
     return res;
   }
@@ -59,7 +35,7 @@ abstract class BaseAppBloc<E extends BaseEvent, S extends BaseState>
     List<Future<ReturnFailure<T>> Function()> executes,
     Emitter emit, {
     asyncFunc = false,
-    int backTo = 1,
+    LoadingOpts loadingOpts = const LoadingOpts(active: true),
   }) async {
     emit(IsLoading());
 
@@ -74,7 +50,8 @@ abstract class BaseAppBloc<E extends BaseEvent, S extends BaseState>
       }
     }
 
-    emit(HideLoading(numLayers: backTo));
+    final hideOpts = loadingOpts.copyWith(active: false);
+    emit(IsLoading(opts: hideOpts));
 
     return res.toList();
   }

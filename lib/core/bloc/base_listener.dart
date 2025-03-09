@@ -1,9 +1,4 @@
-import 'dart:math';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../core.dart';
-import 'base_bloc.dart';
+part of 'base_bloc.dart';
 
 class BaseListenerWidget<P extends BaseAppBloc, B extends BaseState>
     extends StatelessWidget {
@@ -22,16 +17,18 @@ class BaseListenerWidget<P extends BaseAppBloc, B extends BaseState>
 
     return BlocListener<P, BaseState>(
       listener: (context, state) {
-        if (state is IsLoading) {
+        if (state is IsLoading && state.opts.active) {
           context.loading();
         }
 
-        if (state is HideLoading) {
-          context.popUntil(state.numLayers);
+        if (state is IsLoading && !state.opts.active) {
+          if (state.opts.isDialogOrPage) {
+            context.popUntil(state.opts.numLayers);
+          }
         }
 
         if (state is OnError) {
-          print("ON ERROR $e");
+          // TODO (fahmi): handle on error UI
         }
 
         onListener(context, state);

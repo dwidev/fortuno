@@ -1,9 +1,8 @@
-import 'package:go_router/go_router.dart';
-
-import '../../../../core/bloc/base_listener.dart';
-import '../../../order/pages/create_order_page.dart';
+import '../../../../core/bloc/base_bloc.dart';
 import '../bloc/auth_bloc.dart';
 import '../pages/login_page.dart';
+import '../../../order/pages/create_order_page.dart';
+import 'package:go_router/go_router.dart';
 
 /// class for listen auth bloc
 class AuthListener extends BaseListenerWidget<AuthBloc, AuthState> {
