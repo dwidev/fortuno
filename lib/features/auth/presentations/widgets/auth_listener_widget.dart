@@ -11,7 +11,7 @@ class AuthListener extends BaseListenerWidget<AuthBloc, AuthState> {
 
   @override
   void onListener(context, state) {
-    if (state is AuthSucces) {
+    if (state is AuthSucces && state.isLoggin) {
       context.go(CreateOrderPage.path);
     }
 

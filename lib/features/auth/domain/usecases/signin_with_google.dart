@@ -14,6 +14,10 @@ class SignWithGoogle extends BaseUsecase<bool, void> {
   @override
   Future<Either<Failure, bool>> calling(void params) async {
     final email = await authRepository.signWithGoogle();
+    if (email.isEmpty) {
+      return Right(false);
+    }
+
     final requestToken = await authRepository.authenticateWitEmail(
       email: email,
     );

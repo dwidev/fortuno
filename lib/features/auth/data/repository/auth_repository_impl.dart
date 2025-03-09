@@ -1,5 +1,5 @@
-import 'package:fortuno/core/firebase/firebase.dart';
-import 'package:fortuno/features/auth/domain/entities/auth_token.dart';
+import '../../../../core/firebase/firebase.dart';
+import '../../domain/entities/auth_token.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain/repository/auth_repository.dart';
@@ -18,7 +18,7 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<String> signWithGoogle() async {
     final userCrendtial = await firebaseAuthService.signWithGoogle();
-    return userCrendtial.user?.email ?? "";
+    return userCrendtial?.user?.email ?? "";
   }
 
   @override

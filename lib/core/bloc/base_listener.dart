@@ -1,9 +1,8 @@
 import 'dart:math';
 
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortuno/core/extensions/context_extension.dart';
 
+import '../core.dart';
 import 'base_bloc.dart';
 
 class BaseListenerWidget<P extends BaseAppBloc, B extends BaseState>
@@ -25,6 +24,10 @@ class BaseListenerWidget<P extends BaseAppBloc, B extends BaseState>
       listener: (context, state) {
         if (state is IsLoading) {
           context.loading();
+        }
+
+        if (state is HideLoading) {
+          context.popUntil(state.numLayers);
         }
 
         if (state is OnError) {

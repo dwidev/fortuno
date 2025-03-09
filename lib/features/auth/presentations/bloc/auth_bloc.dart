@@ -23,24 +23,20 @@ class AuthBloc extends BaseAppBloc<AuthEvent, AuthState> {
     OnSignWithGoogleEvent event,
     Emitter emit,
   ) async {
-    emit(IsLoading());
-
-    final response = await signWithGoogle(null);
+    final response = await runUsecase(() => signWithGoogle(null), emit);
 
     response.fold(
       (err) {
         emit(OnError(error: err));
       },
       (right) {
-        emit(AuthSucces(isLoggin: true));
+        emit(AuthSucces(isLoggin: right));
       },
     );
   }
 
   Future<void> _onSignOut(OnSignOutEvent event, Emitter emit) async {
-    emit(IsLoading());
-
-    final response = await signOut(null);
+    final response = await runUsecase(() => signOut(null), emit);
 
     response.fold(
       (err) {
