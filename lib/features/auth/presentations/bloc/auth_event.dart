@@ -6,3 +6,5 @@ class AuthEvent extends BaseEvent {
 }
 
 final class OnSignWithGoogleEvent extends AuthEvent {}
+
+final class OnSignOutEvent extends AuthEvent {}

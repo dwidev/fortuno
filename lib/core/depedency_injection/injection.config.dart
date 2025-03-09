@@ -20,6 +20,7 @@ import 'package:fortuno/features/auth/data/repository/auth_repository_impl.dart'
     as _i319;
 import 'package:fortuno/features/auth/domain/repository/auth_repository.dart'
     as _i948;
+import 'package:fortuno/features/auth/domain/usecases/sign_out.dart' as _i101;
 import 'package:fortuno/features/auth/domain/usecases/signin_with_google.dart'
     as _i870;
 import 'package:fortuno/features/auth/presentations/bloc/auth_bloc.dart'
@@ -52,8 +53,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i870.SignWithGoogle>(
       () => _i870.SignWithGoogle(authRepository: gh<_i948.AuthRepository>()),
     );
+    gh.lazySingleton<_i101.SignOut>(
+      () => _i101.SignOut(authRepository: gh<_i948.AuthRepository>()),
+    );
     gh.factory<_i279.AuthBloc>(
-      () => _i279.AuthBloc(signWithGoogle: gh<_i870.SignWithGoogle>()),
+      () => _i279.AuthBloc(
+        signWithGoogle: gh<_i870.SignWithGoogle>(),
+        signOut: gh<_i101.SignOut>(),
+      ),
     );
     return this;
   }

@@ -3,6 +3,7 @@ import 'package:fortuno/core/core.dart';
 import 'package:fortuno/core/depedency_injection/injection.dart';
 import 'package:fortuno/features/auth/presentations/bloc/auth_bloc.dart';
 import 'package:fortuno/features/auth/presentations/pages/login_page.dart';
+import 'package:fortuno/features/auth/presentations/widgets/auth_listener_widget.dart';
 
 final authRoute = <RouteBase>[
   GoRoute(
@@ -11,7 +12,11 @@ final authRoute = <RouteBase>[
     builder:
         (context, state) => BlocProvider(
           create: (context) => getIt<AuthBloc>(),
-          child: LoginPage(),
+          child: AuthListener(
+            builder: (context, state) {
+              return LoginPage();
+            },
+          ),
         ),
   ),
 ];

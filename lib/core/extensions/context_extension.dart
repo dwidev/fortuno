@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fortuno/core/dialogs/loading_dialog.dart';
 
 extension BuildContextX on BuildContext {
   Size get size => MediaQuery.of(this).size;
@@ -10,4 +11,6 @@ extension BuildContextX on BuildContext {
   TextTheme get textTheme => Theme.of(this).textTheme;
 
   bool get isKeyboardOpen => MediaQuery.of(this).viewInsets.bottom > 0;
+
+  void loading() => showLoading(this);
 }

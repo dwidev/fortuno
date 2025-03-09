@@ -12,3 +12,5 @@ final class AuthSucces extends AuthState {
 
   AuthSucces({required this.isLoggin});
 }
+
+final class LoggedOut extends AuthState {}
