@@ -22,7 +22,12 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<AuthToken> signWithEmail({required String email}) async {
+  Future<AuthToken> authenticateWitEmail({required String email}) async {
     return await authRemoteDataource.signWithEmail(email: email);
+  }
+
+  @override
+  Future<void> signOut() async {
+    await firebaseAuthService.signOut();
   }
 }

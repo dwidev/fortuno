@@ -9,7 +9,7 @@ import 'core/firebase/firebase.dart';
 Future<void> mainApp(EnvApp env) async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  configureDepedencies(env: env);
+  await configureDepedencies(env: env);
 
   await intializeFirebasApp(env);
 

@@ -22,6 +22,8 @@ import 'package:fortuno/features/auth/domain/repository/auth_repository.dart'
     as _i948;
 import 'package:fortuno/features/auth/domain/usecases/signin_with_google.dart'
     as _i870;
+import 'package:fortuno/features/auth/presentations/bloc/auth_bloc.dart'
+    as _i279;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
@@ -49,6 +51,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i870.SignWithGoogle>(
       () => _i870.SignWithGoogle(authRepository: gh<_i948.AuthRepository>()),
+    );
+    gh.factory<_i279.AuthBloc>(
+      () => _i279.AuthBloc(signWithGoogle: gh<_i870.SignWithGoogle>()),
     );
     return this;
   }

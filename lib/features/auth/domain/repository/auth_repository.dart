@@ -2,5 +2,6 @@ import '../entities/auth_token.dart';
 
 abstract class AuthRepository {
   Future<String> signWithGoogle();
-  Future<AuthToken> signWithEmail({required String email});
+  Future<AuthToken> authenticateWitEmail({required String email});
+  Future<void> signOut();
 }
