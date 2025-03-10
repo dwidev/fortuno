@@ -16,13 +16,17 @@ class AuthNosqlDatasource extends AuthRemoteDataource {
       final response =
           await client.from('account').select().eq('email', email).count();
 
-      return AuthToken(
-        accessToken: "accessToken",
-        refreshToken: "refreshToken",
-      );
+      if (response.count == 1) {
+        return AuthToken(
+          accessToken: "accessToken",
+          refreshToken: "refreshToken",
+        );
+      } else {
+        return AuthToken.unAuthorize();
+      }
     } catch (e) {
       if (e is PostgrestException) {
-        return AuthToken(accessToken: "", refreshToken: "");
+        return AuthToken.unAuthorize();
       }
 
       rethrow;

@@ -3,10 +3,10 @@ import 'package:flutter/foundation.dart';
 
 import '../failures/failure.dart';
 
-typedef ReturnFailure<ReturnType> = Either<Failure, ReturnType>;
+part 'base_type.dart';
 
 abstract class BaseUsecase<ReturnType, ParamsType> {
-  Future<ReturnFailure<ReturnType>> call(ParamsType paramsType) async {
+  FutureReturn<ReturnType> call(ParamsType paramsType) async {
     try {
       final response = await calling(paramsType);
       return response.fold((left) => Left(left), (right) => Right(right));
@@ -20,5 +20,5 @@ abstract class BaseUsecase<ReturnType, ParamsType> {
     }
   }
 
-  Future<ReturnFailure<ReturnType>> calling(ParamsType params);
+  FutureReturn<ReturnType> calling(ParamsType params);
 }

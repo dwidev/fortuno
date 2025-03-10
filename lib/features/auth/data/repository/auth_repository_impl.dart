@@ -17,6 +17,7 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Future<String> signWithGoogle() async {
+    await firebaseAuthService.signOut();
     final userCrendtial = await firebaseAuthService.signWithGoogle();
     return userCrendtial?.user?.email ?? "";
   }

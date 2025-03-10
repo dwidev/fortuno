@@ -11,8 +11,18 @@ part 'base_state.dart';
 
 /// Base bloc
 abstract class BaseAppBloc<E extends BaseEvent, S extends BaseState>
-    extends Bloc<E, BaseState> {
-  BaseAppBloc(S super.initialState);
+    extends Bloc<E, S> {
+  BaseAppBloc(super.initialState);
+
+  void loading(Emitter emit, LoadingOpts loadingOpts) {
+    final newState = state.copyWith(loading: loadingOpts);
+    emit(newState);
+  }
+
+  void error(Emitter emit, Failure error) {
+    final newState = state.copyWith(error: error);
+    emit(newState);
+  }
 
   /// Function for execute single usecase the process wrap the loding
   Future<ReturnFailure<T>> runUsecase<T>(
@@ -20,12 +30,12 @@ abstract class BaseAppBloc<E extends BaseEvent, S extends BaseState>
     Emitter emit, {
     LoadingOpts loadingOpts = const LoadingOpts(active: true),
   }) async {
-    emit(IsLoading(opts: loadingOpts));
+    loading(emit, loadingOpts);
 
     final res = await execute();
 
     final hideOpts = loadingOpts.copyWith(active: false);
-    emit(IsLoading(opts: hideOpts));
+    loading(emit, hideOpts);
 
     return res;
   }
@@ -37,7 +47,7 @@ abstract class BaseAppBloc<E extends BaseEvent, S extends BaseState>
     asyncFunc = false,
     LoadingOpts loadingOpts = const LoadingOpts(active: true),
   }) async {
-    emit(IsLoading());
+    loading(emit, loadingOpts);
 
     List<ReturnFailure<T>> res = [];
 
@@ -51,7 +61,7 @@ abstract class BaseAppBloc<E extends BaseEvent, S extends BaseState>
     }
 
     final hideOpts = loadingOpts.copyWith(active: false);
-    emit(IsLoading(opts: hideOpts));
+    loading(emit, hideOpts);
 
     return res.toList();
   }

@@ -25,6 +25,18 @@ import 'package:fortuno/features/auth/domain/usecases/signin_with_google.dart'
     as _i870;
 import 'package:fortuno/features/auth/presentations/bloc/auth_bloc.dart'
     as _i279;
+import 'package:fortuno/features/order/presentations/bloc/order_bloc.dart'
+    as _i442;
+import 'package:fortuno/features/products/data/datasources/product_nosql_datasource.dart'
+    as _i294;
+import 'package:fortuno/features/products/data/datasources/products_datasource.dart'
+    as _i79;
+import 'package:fortuno/features/products/data/repository/products_repository_impl.dart'
+    as _i587;
+import 'package:fortuno/features/products/domain/repository/products_repository.dart'
+    as _i1028;
+import 'package:fortuno/features/products/domain/usecases/get_category_by_companyid.dart'
+    as _i436;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
@@ -41,13 +53,31 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i592.FirebaseAuthService>(
       () => registerModule.firebaseAuthService,
     );
+    gh.lazySingleton<_i79.ProductsDatasource>(
+      () => _i294.ProductNosqlDatasource(client: gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i720.AuthRemoteDataource>(
       () => _i787.AuthNosqlDatasource(client: gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i1028.ProductsRepository>(
+      () => _i587.ProductsRepositoryImpl(
+        productsDatasource: gh<_i79.ProductsDatasource>(),
+      ),
     );
     gh.lazySingleton<_i948.AuthRepository>(
       () => _i319.AuthRepositoryImpl(
         firebaseAuthService: gh<_i512.FirebaseAuthService>(),
         authRemoteDataource: gh<_i720.AuthRemoteDataource>(),
+      ),
+    );
+    gh.lazySingleton<_i436.GetCategoryByCompanyId>(
+      () => _i436.GetCategoryByCompanyId(
+        productsRepository: gh<_i1028.ProductsRepository>(),
+      ),
+    );
+    gh.factory<_i442.OrderBloc>(
+      () => _i442.OrderBloc(
+        getCategoryByCompanyId: gh<_i436.GetCategoryByCompanyId>(),
       ),
     );
     gh.lazySingleton<_i870.SignWithGoogle>(

@@ -1,3 +1,8 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortuno/core/depedency_injection/injection.dart';
+import 'package:fortuno/features/order/presentations/bloc/order_bloc.dart';
+import 'package:fortuno/features/order/presentations/pages/create_order_page.dart';
+
 import 'auth_route.dart';
 import '../../features/auth/presentations/pages/login_page.dart';
 
@@ -20,13 +25,16 @@ final profilRouteKey = GlobalKey<NavigatorState>(debugLabel: "profile-route");
 
 final router = GoRouter(
   navigatorKey: rootNavigatorKey,
-  initialLocation: LoginPage.path,
+  initialLocation: CreateOrderPage.path,
   routes: [
     // auth route
     ...authRoute,
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
-        return MainPage(navigationShell: navigationShell);
+        return MultiBlocProvider(
+          providers: [BlocProvider(create: (context) => getIt<OrderBloc>())],
+          child: MainPage(navigationShell: navigationShell),
+        );
       },
       branches: [
         // create order route

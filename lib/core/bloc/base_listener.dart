@@ -8,6 +8,9 @@ class BaseListenerWidget<P extends BaseAppBloc, B extends BaseState>
     required this.builder,
   });
 
+  /// if [overrideListener] its then just run the onListenerFunctions
+  bool get overrideListener => false;
+
   final Function(BuildContext context, BaseState state)? listener;
   final Function(BuildContext context, P state) builder;
 
@@ -17,19 +20,22 @@ class BaseListenerWidget<P extends BaseAppBloc, B extends BaseState>
 
     return BlocListener<P, BaseState>(
       listener: (context, state) {
-        if (state is IsLoading && state.opts.active) {
+        if (overrideListener) {
+          onListener(context, state);
+          return;
+        }
+
+        if (state.loading.active) {
           context.loading();
         }
 
-        if (state is IsLoading && !state.opts.active) {
-          if (state.opts.isDialogOrPage) {
-            context.popUntil(state.opts.numLayers);
+        if (!state.loading.active) {
+          if (state.loading.isDialogOrPage) {
+            context.popUntil(state.loading.numLayers);
           }
         }
 
-        if (state is OnError) {
-          // TODO (fahmi): handle on error UI
-        }
+        handlerError(state);
 
         onListener(context, state);
       },
@@ -39,5 +45,12 @@ class BaseListenerWidget<P extends BaseAppBloc, B extends BaseState>
 
   void onListener(BuildContext context, BaseState state) {
     listener?.call(context, state);
+  }
+
+  static void handlerError(BaseState state) {
+    if (state.error != null) {
+      debugPrint("${state.error}");
+      // TODO (fahmi): handle on error UI
+    }
   }
 }

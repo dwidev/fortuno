@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fortuno/features/products/data/datasources/products_datasource.dart';
 import 'package:fortuno/features/products/data/model/category_model.dart';
 import 'package:injectable/injectable.dart';
@@ -13,8 +15,9 @@ class ProductNosqlDatasource extends ProductsDatasource {
   Future<List<CategoryModel>> getCategories({required String companyId}) async {
     final response = await client
         .from('category')
-        .select('*')
+        .select()
         .eq('company_id', companyId);
+
     final result = response.map((e) => CategoryModel.fromMap(e)).toList();
     return result;
   }
