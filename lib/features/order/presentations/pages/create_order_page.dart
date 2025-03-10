@@ -25,7 +25,9 @@ class _CreateOrderPageState extends State<CreateOrderPage>
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
-    context.read<OrderBloc>().add(OnInitOrderPageEvent());
+    context.read<OrderBloc>().add(
+      OnInitOrderPageEvent(companyId: "898a70b4-0758-4eda-bf73-b469db14eb50"),
+    );
   }
 
   @override

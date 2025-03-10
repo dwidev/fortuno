@@ -6,7 +6,7 @@ class OrderState extends BaseState {
   const OrderState({this.categories = const [], super.error, super.loading});
 
   @override
-  List<Object?> get props => [categories, ...super.props];
+  List<Object?> get props => [categories];
 
   @override
   OrderState copyWith({

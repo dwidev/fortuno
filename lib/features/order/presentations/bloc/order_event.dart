@@ -7,4 +7,8 @@ sealed class OrderEvent extends BaseEvent {
   List<Object> get props => [];
 }
 
-class OnInitOrderPageEvent extends OrderEvent {}
+class OnInitOrderPageEvent extends OrderEvent {
+  final String companyId;
+
+  const OnInitOrderPageEvent({required this.companyId});
+}
