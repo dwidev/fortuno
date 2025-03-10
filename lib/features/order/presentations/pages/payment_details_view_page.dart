@@ -1,4 +1,4 @@
-import '../../../core/core.dart';
+import '../../../../core/core.dart';
 
 class PaymentDetailsViewsPage extends StatelessWidget {
   const PaymentDetailsViewsPage({

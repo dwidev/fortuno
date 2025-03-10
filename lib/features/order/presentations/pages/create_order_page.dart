@@ -1,5 +1,5 @@
 import 'package:fortuno/core/core.dart';
-import 'package:fortuno/features/process_order/pages/process_order_page.dart';
+import 'package:fortuno/features/order/presentations/pages/process_order_page.dart';
 
 import 'order_details_view_page.dart';
 import 'payment_details_view_page.dart';

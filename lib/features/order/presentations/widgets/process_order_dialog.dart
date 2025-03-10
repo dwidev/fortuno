@@ -1,7 +1,7 @@
 import 'package:flutter_swipe_button/flutter_swipe_button.dart';
 
-import '../../../core/core.dart';
-import '../../../core/widgets/form/text_form_field_widget.dart';
+import '../../../../core/core.dart';
+import '../../../../core/widgets/form/text_form_field_widget.dart';
 
 Future<T?> showProcessDialog<T>({
   required BuildContext context,

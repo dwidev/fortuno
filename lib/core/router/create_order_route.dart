@@ -1,6 +1,6 @@
 import 'package:fortuno/core/core.dart';
 
-import '../../features/order/pages/create_order_page.dart';
+import '../../features/order/presentations/pages/create_order_page.dart';
 
 final createOrderRoute = <RouteBase>[
   GoRoute(

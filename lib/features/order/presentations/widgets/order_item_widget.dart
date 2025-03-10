@@ -1,4 +1,4 @@
-import '../../../core/core.dart';
+import '../../../../core/core.dart';
 
 class OrderItemWidget extends StatelessWidget {
   const OrderItemWidget({super.key});
