@@ -8,4 +8,7 @@ class OrderListenerWidget extends BaseListenerWidget<OrderBloc, OrderState> {
     super.listener,
     required super.builder,
   });
+
+  @override
+  bool get overrideLoading => true;
 }

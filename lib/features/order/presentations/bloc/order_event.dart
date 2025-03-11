@@ -12,3 +12,13 @@ class OnInitOrderPageEvent extends OrderEvent {
 
   const OnInitOrderPageEvent({required this.companyId});
 }
+
+class OnClickCategory extends OrderEvent {
+  final CategoryProduct categoryProduct;
+
+  const OnClickCategory({required this.categoryProduct});
+}
+
+class OnBackToCategory extends OrderEvent {
+  const OnBackToCategory();
+}

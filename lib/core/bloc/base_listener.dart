@@ -8,8 +8,11 @@ class BaseListenerWidget<P extends BaseAppBloc, B extends BaseState>
     required this.builder,
   });
 
-  /// if [overrideListener] its then just run the onListenerFunctions
+  /// if [overrideListener] true its then just run the onListenerFunctions
   bool get overrideListener => false;
+
+  /// if [overrideLoading] true the loading listener do not running
+  bool get overrideLoading => false;
 
   final Function(BuildContext context, BaseState state)? listener;
   final Function(BuildContext context, P state) builder;
@@ -20,23 +23,20 @@ class BaseListenerWidget<P extends BaseAppBloc, B extends BaseState>
 
     return BlocListener<P, BaseState>(
       listener: (context, state) {
+        // adding overiding listener for some class parent
+        // and ignore the base listener (or the code below)
         if (overrideListener) {
           onListener(context, state);
           return;
         }
 
-        if (state.loading.active) {
-          context.loading();
-        }
+        // listen the loading state
+        if (!overrideLoading) handlerLoadingDialog(state, context);
 
-        if (!state.loading.active) {
-          if (state.loading.isDialogOrPage) {
-            context.popUntil(state.loading.numLayers);
-          }
-        }
-
+        // listen the error state
         handlerError(state);
 
+        // adding some optional listener for some class parent
         onListener(context, state);
       },
       child: builder(context, provider),
@@ -45,6 +45,18 @@ class BaseListenerWidget<P extends BaseAppBloc, B extends BaseState>
 
   void onListener(BuildContext context, BaseState state) {
     listener?.call(context, state);
+  }
+
+  static void handlerLoadingDialog(BaseState state, BuildContext context) {
+    if (state.loading.active) {
+      context.loading();
+    }
+
+    if (!state.loading.active) {
+      if (state.loading.isDialogOrPage) {
+        context.popUntil(state.loading.numLayers);
+      }
+    }
   }
 
   static void handlerError(BaseState state) {

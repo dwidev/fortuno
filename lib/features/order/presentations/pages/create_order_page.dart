@@ -1,12 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortuno/core/core.dart';
-import 'package:fortuno/features/order/presentations/bloc/order_bloc.dart';
-import 'package:fortuno/features/order/presentations/pages/process_order_page.dart';
 
-import '../../../products/domain/entities/category.dart';
+import '../../../../core/core.dart';
+import '../bloc/order_bloc.dart';
+import '../widgets/header_create_order_widget.dart';
+import '../widgets/loading_product_widget.dart';
 import '../widgets/order_listener_widget.dart';
+import '../widgets/product_card_widget.dart';
 import 'order_details_view_page.dart';
 import 'payment_details_view_page.dart';
+import 'process_order_page.dart';
 
 class CreateOrderPage extends StatefulWidget {
   static const path = '/create-order';
@@ -72,20 +74,24 @@ class _CreateOrderPageState extends State<CreateOrderPage>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: EdgeInsets.all(
-                        kDefaultPadding,
-                      ).copyWith(top: kDefaultPadding * 2),
-                      child: Text(
-                        "RM Barokah Catering",
-                        style: context.textTheme.titleLarge,
-                      ),
-                    ),
+                    HeaderCreateOrderWidget(),
                     Expanded(
                       child: BlocBuilder<OrderBloc, OrderState>(
                         builder: (context, state) {
+                          if (state.loading.active) {
+                            return LoadingProductWidget();
+                          }
+
                           if (state.categories.isEmpty) {
                             return Offstage();
+                          }
+
+                          var itemCount = 0;
+
+                          if (state is AtProductPage) {
+                            itemCount = state.products.length;
+                          } else {
+                            itemCount = state.categories.length;
                           }
 
                           return GridView.builder(
@@ -94,12 +100,27 @@ class _CreateOrderPageState extends State<CreateOrderPage>
                                   crossAxisCount: 4,
                                   crossAxisSpacing: 15,
                                   mainAxisSpacing: 15,
+                                  childAspectRatio: 0.8,
                                 ),
-                            itemCount: state.categories.length,
+                            itemCount: itemCount,
                             padding: EdgeInsets.all(kDefaultPadding),
                             itemBuilder: (context, index) {
-                              final product = state.categories[index];
-                              return ProductWidget(product: product);
+                              final cp =
+                                  state is AtProductPage
+                                      ? state.products[index]
+                                      : state.categories[index];
+                              return ProductCardWidget(
+                                product: cp,
+                                onTap: () {
+                                  if (state is AtProductPage) {
+                                  } else {
+                                    final cp = state.categories[index];
+                                    orderBloc.add(
+                                      OnClickCategory(categoryProduct: cp),
+                                    );
+                                  }
+                                },
+                              );
                             },
                           );
                         },
@@ -179,74 +200,6 @@ class _CreateOrderPageState extends State<CreateOrderPage>
           ],
         );
       },
-    );
-  }
-}
-
-class ProductWidget extends StatelessWidget {
-  const ProductWidget({super.key, required this.product});
-
-  final Product product;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: whiteColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(kDefaultRadius),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: kSizeS * 0.5,
-                  right: kSizeS * 0.5,
-                  child: Container(
-                    padding: EdgeInsets.all(kSizeS * 0.5),
-                    decoration: BoxDecoration(
-                      color: whiteColor,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Text(
-                      product.price.toString(),
-                      style: context.textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: darkOliveGreen,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              children: [
-                Text(
-                  product.name,
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: darkOliveGreen,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

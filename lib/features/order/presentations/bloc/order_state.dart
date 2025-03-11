@@ -27,3 +27,17 @@ final class OrderInitial extends OrderState {}
 final class OrderInitSuccess extends OrderState {
   const OrderInitSuccess({required super.categories});
 }
+
+final class AtProductPage extends OrderState {
+  final CategoryProduct categoryProduct;
+  final List<Product> products;
+
+  const AtProductPage({
+    required this.categoryProduct,
+    this.products = const [],
+    super.categories,
+  });
+
+  @override
+  List<Object?> get props => [categoryProduct, products];
+}
