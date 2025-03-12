@@ -12,12 +12,12 @@ class OrderState extends BaseState {
   OrderState copyWith({
     List<CategoryProduct>? categories,
     LoadingOpts? loading,
-    Failure? error,
+    ValueGetter<Failure?>? error,
   }) {
     return OrderState(
       categories: categories ?? this.categories,
       loading: loading ?? this.loading,
-      error: error ?? this.error,
+      error: error != null ? error.call() : this.error,
     );
   }
 }
@@ -47,7 +47,7 @@ final class AtProductPage extends OrderState {
     List<Package>? packages,
     List<CategoryProduct>? categories,
     LoadingOpts? loading,
-    Failure? error,
+    ValueGetter<Failure?>? error,
   }) {
     return AtProductPage(
       categoryProduct: categoryProduct ?? this.categoryProduct,

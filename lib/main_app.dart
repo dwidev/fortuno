@@ -1,9 +1,9 @@
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import 'app.dart';
 import 'core/core.dart';
 import 'core/depedency_injection/injection.dart';
 import 'core/environments/env_enum.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
 import 'core/firebase/firebase.dart';
 
 Future<void> mainApp(EnvApp env) async {

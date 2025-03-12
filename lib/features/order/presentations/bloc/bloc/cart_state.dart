@@ -11,7 +11,7 @@ class CartState extends BaseState {
   @override
   BaseState copyWith({
     LoadingOpts? loading,
-    Failure? error,
+    ValueGetter<Failure?>? error,
     List<OrderItem>? items,
   }) {
     return CartState(items: items ?? this.items);

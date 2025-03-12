@@ -4,13 +4,10 @@ class AuthState extends BaseState {
   const AuthState({super.error, super.loading});
 
   @override
-  List<Object> get props => [];
-
-  @override
-  BaseState copyWith({LoadingOpts? loading, Failure? error}) {
+  BaseState copyWith({LoadingOpts? loading, ValueGetter<Failure?>? error}) {
     return AuthState(
       loading: loading ?? this.loading,
-      error: error ?? this.error,
+      error: error != null ? error.call() : this.error,
     );
   }
 }

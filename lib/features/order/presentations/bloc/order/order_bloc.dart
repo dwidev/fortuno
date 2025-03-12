@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortuno/features/order/domain/entities/order_item.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/bloc/base_bloc.dart';

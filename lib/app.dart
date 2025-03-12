@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fortuno/core/core.dart';
 import 'package:fortuno/core/environments/env_enum.dart';
 
@@ -12,9 +13,7 @@ class App extends StatelessWidget {
       title: 'Fortuno POS ${env.name}',
       theme: lightTheme,
       routerConfig: router,
-      builder: (context, child) {
-        return child ?? Offstage();
-      },
+      builder: EasyLoading.init(),
     );
   }
 }

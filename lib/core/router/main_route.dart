@@ -1,14 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../depedency_injection/injection.dart';
+
+import '../../features/auth/presentations/pages/login_page.dart';
+import '../../features/main_page.dart';
 import '../../features/order/presentations/bloc/bloc/cart_bloc.dart';
 import '../../features/order/presentations/bloc/order/order_bloc.dart';
 import '../../features/order/presentations/pages/create_order_page.dart';
-
-import 'auth_route.dart';
-import '../../features/auth/presentations/pages/login_page.dart';
-
-import '../../features/main_page.dart';
 import '../core.dart';
+import '../depedency_injection/injection.dart';
+import 'auth_route.dart';
 import 'create_order_route.dart';
 import 'process_order_route.dart';
 import 'profile_route.dart';
@@ -26,7 +25,7 @@ final profilRouteKey = GlobalKey<NavigatorState>(debugLabel: "profile-route");
 
 final router = GoRouter(
   navigatorKey: rootNavigatorKey,
-  initialLocation: CreateOrderPage.path,
+  initialLocation: LoginPage.path,
   routes: [
     // auth route
     ...authRoute,

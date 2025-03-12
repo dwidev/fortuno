@@ -14,7 +14,7 @@ abstract class BaseState extends Equatable {
   @override
   List<Object?> get props => [error, loading];
 
-  BaseState copyWith({LoadingOpts? loading, Failure? error});
+  BaseState copyWith({LoadingOpts? loading, ValueGetter<Failure?>? error});
 }
 
 class LoadingOpts extends Equatable {

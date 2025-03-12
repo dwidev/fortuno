@@ -32,10 +32,10 @@ class BaseListenerWidget<P extends BaseAppBloc, S extends BaseState>
         }
 
         // listen the loading state
-        if (!overrideLoading) handlerLoadingDialog(state, context);
+        if (!overrideLoading) handlerLoadingDialog(context, state);
 
         // listen the error state
-        handlerError(state);
+        handlerError(context, state);
 
         // adding some optional listener for children class
         onListener(context, state);
@@ -48,22 +48,34 @@ class BaseListenerWidget<P extends BaseAppBloc, S extends BaseState>
     listener?.call(context, state);
   }
 
-  static void handlerLoadingDialog(BaseState state, BuildContext context) {
+  static void handlerLoadingDialog(BuildContext context, BaseState state) {
     if (state.loading.active) {
-      context.loading();
+      EasyLoading.instance
+        ..loadingStyle = EasyLoadingStyle.light
+        ..indicatorColor = lemonChiffonColor
+        ..animationStyle = EasyLoadingAnimationStyle.opacity;
+
+      EasyLoading.show(
+        dismissOnTap: false,
+        maskType: EasyLoadingMaskType.clear,
+      );
     }
 
     if (!state.loading.active) {
-      if (state.loading.isDialogOrPage) {
-        context.popUntil(state.loading.numLayers);
-      }
+      EasyLoading.dismiss();
     }
   }
 
-  static void handlerError(BaseState state) {
+  static void handlerError(BuildContext context, BaseState state) {
     if (state.error != null) {
       debugPrint("${state.error}");
-      // TODO (fahmi): handle on error UI
+      showErrorDialog(
+        context: context,
+        failure: state.error!,
+        onOke: () {
+          context.pop();
+        },
+      );
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fortuno/core/failures/failure.dart';
 import 'package:injectable/injectable.dart';
 

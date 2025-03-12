@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fortuno/core/dialogs/error_dialog.dart';
 import '../core.dart';
 import '../failures/failure.dart';
 
@@ -14,30 +16,39 @@ abstract class BaseAppBloc<E extends BaseEvent, S extends BaseState>
     extends Bloc<E, S> {
   BaseAppBloc(super.initialState);
 
-  void loading(Emitter emit, [LoadingOpts? loadingOpts]) {
+  void loading(Emitter emit) {
     if (state.loading.active) return;
-    final newState = state.copyWith(loading: loadingOpts);
+    final newState = state.copyWith(
+      loading: state.loading.copyWith(active: true),
+      error: () => null,
+    );
+    emit(newState);
+  }
+
+  void hideLoading(Emitter emit) {
+    if (!state.loading.active) return;
+    final newState = state.copyWith(
+      loading: state.loading.copyWith(active: false),
+      error: () => null,
+    );
     emit(newState);
   }
 
   void error(Emitter emit, Failure error) {
-    if (!state.loading.active) return;
-    final newState = state.copyWith(error: error);
+    final newState = state.copyWith(error: () => error);
     emit(newState);
   }
 
   /// Function for execute single usecase the process wrap the loding
   Future<ReturnFailure<T>> runUsecase<T>(
     Future<ReturnFailure<T>> Function() execute,
-    Emitter emit, {
-    LoadingOpts loadingOpts = const LoadingOpts(active: true),
-  }) async {
-    loading(emit, loadingOpts);
+    Emitter emit,
+  ) async {
+    loading(emit);
 
     final res = await execute();
 
-    final hideOpts = loadingOpts.copyWith(active: false);
-    loading(emit, hideOpts);
+    hideLoading(emit);
 
     return res;
   }
@@ -47,9 +58,8 @@ abstract class BaseAppBloc<E extends BaseEvent, S extends BaseState>
     List<Future<ReturnFailure<T>> Function()> executes,
     Emitter emit, {
     asyncFunc = true,
-    LoadingOpts loadingOpts = const LoadingOpts(active: true),
   }) async {
-    loading(emit, loadingOpts);
+    loading(emit);
 
     List<ReturnFailure<T>> res = [];
 
@@ -64,8 +74,7 @@ abstract class BaseAppBloc<E extends BaseEvent, S extends BaseState>
       }
     }
 
-    final hideOpts = loadingOpts.copyWith(active: false);
-    loading(emit, hideOpts);
+    hideLoading(emit);
 
     return res;
   }
