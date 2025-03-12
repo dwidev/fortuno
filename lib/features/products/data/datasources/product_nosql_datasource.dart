@@ -1,10 +1,8 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../model/category_model.dart';
+import '../model/package_model.dart';
 import '../model/product_model.dart';
 import 'products_datasource.dart';
 
@@ -57,15 +55,14 @@ class ProductNosqlDatasource extends ProductsDatasource {
   }
 
   @override
-  Future<List<ProductModel>> getPackageByCategory({
+  Future<List<PackageModel>> getPackageByCategory({
     required String categoryId,
   }) async {
     final params = <String, String>{"category_uuid": categoryId};
     final response =
         await client.rpc('get_packages_by_category', params: params).select();
 
-    log(jsonEncode(response));
-
-    return [];
+    final result = response.map((e) => PackageModel.fromMap(e)).toList();
+    return result;
   }
 }

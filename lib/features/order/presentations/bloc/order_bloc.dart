@@ -1,15 +1,14 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortuno/core/usecases/base_usecase.dart';
-import 'package:fortuno/features/products/domain/entities/package.dart';
-import 'package:fortuno/features/products/domain/usecases/get_package_by_categoryid.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/bloc/base_bloc.dart';
 import '../../../../core/failures/failure.dart';
+import '../../../../core/usecases/base_usecase.dart';
 import '../../../products/domain/entities/category.dart';
+import '../../../products/domain/entities/package.dart';
 import '../../../products/domain/entities/product.dart';
 import '../../../products/domain/usecases/get_category_by_companyid.dart';
+import '../../../products/domain/usecases/get_package_by_categoryid.dart';
 import '../../../products/domain/usecases/get_products_by_categoryid.dart';
 
 part 'order_event.dart';
@@ -59,23 +58,25 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
     final resCat = responses[0] as ReturnFailure<List<Product>>;
     final resPac = responses[1] as ReturnFailure<List<Package>>;
 
-    resCat.fold(
-      (err) {
-        error(emit, err);
-      },
-      (data) {
-        emit(
-          AtProductPage(
-            categoryProduct: event.categoryProduct,
-            categories: state.categories,
-            products: data,
-          ),
-        );
-      },
+    Failure? failure;
+    var newState = AtProductPage(
+      categoryProduct: event.categoryProduct,
+      categories: state.categories,
     );
 
-    resPac.fold((err) {
-      error(emit, err);
-    }, (data) {});
+    resCat.fold((err) => failure ??= err, (data) {
+      newState = newState.copyWith(products: data);
+    });
+
+    resPac.fold((err) => failure ??= err, (data) {
+      newState = newState.copyWith(packages: data);
+    });
+
+    if (failure != null) {
+      error(emit, failure!);
+      return;
+    }
+
+    emit(newState);
   }
 }

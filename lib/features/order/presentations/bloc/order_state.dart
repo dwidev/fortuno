@@ -31,13 +31,32 @@ final class OrderInitSuccess extends OrderState {
 final class AtProductPage extends OrderState {
   final CategoryProduct categoryProduct;
   final List<Product> products;
+  final List<Package> packages;
 
   const AtProductPage({
     required this.categoryProduct,
     this.products = const [],
+    this.packages = const [],
     super.categories,
   });
 
   @override
-  List<Object?> get props => [categoryProduct, products];
+  AtProductPage copyWith({
+    CategoryProduct? categoryProduct,
+    List<Product>? products,
+    List<Package>? packages,
+    List<CategoryProduct>? categories,
+    LoadingOpts? loading,
+    Failure? error,
+  }) {
+    return AtProductPage(
+      categoryProduct: categoryProduct ?? this.categoryProduct,
+      products: products ?? this.products,
+      packages: packages ?? this.packages,
+      categories: categories ?? this.categories,
+    );
+  }
+
+  @override
+  List<Object?> get props => [categoryProduct, packages, packages];
 }

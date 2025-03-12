@@ -41,7 +41,7 @@ class ProductsRepositoryImpl extends ProductsRepository {
     final response = await productsDatasource.getPackageByCategory(
       categoryId: categoryId,
     );
-    // final result = response.map((e) => e.toEntity()).toList();
-    return [];
+    final result = response.map((e) => e.toEntity()).toList();
+    return result;
   }
 }

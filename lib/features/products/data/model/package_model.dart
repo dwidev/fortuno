@@ -44,12 +44,12 @@ class PackageModel extends BaseModel<Package> {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'code': code,
+      'ID': id,
+      'package_name': name,
+      'package_code': code,
       'price': price,
       'is_active': isActive,
-      'create_at': createAt,
+      'created_at': createAt,
       'category': categoryModel.toMap(),
       'products': productModel.map((x) => x.toMap()).toList(),
     };
@@ -59,17 +59,15 @@ class PackageModel extends BaseModel<Package> {
     final price = BaseModel.parsePriceToDouble(map);
 
     return PackageModel(
-      id: map['id'] as String,
-      name: map['name'] as String,
-      code: map['code'] as String,
+      id: map['package_id'] as String,
+      name: map['package_name'] as String,
+      code: map['package_code'] as String,
       price: price,
       isActive: map['is_active'] as bool,
-      createAt: map['create_at'] as String,
-      categoryModel: CategoryModel.fromMap(
-        map['categoryModel'] as Map<String, dynamic>,
-      ),
-      productModel: List<ProductModel>.from(
-        (map['productMode'] as List<int>).map<ProductModel>(
+      createAt: map['created_at'] as String,
+      categoryModel: CategoryModel.fromMap(map['category']),
+      productModel: List.from(
+        (map['products']).map(
           (x) => ProductModel.fromMap(x as Map<String, dynamic>),
         ),
       ),

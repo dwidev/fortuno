@@ -44,7 +44,7 @@ abstract class BaseAppBloc<E extends BaseEvent, S extends BaseState>
   Future<List<ReturnFailure<T>>> runUsecases<T>(
     List<Future<ReturnFailure<T>> Function()> executes,
     Emitter emit, {
-    asyncFunc = false,
+    asyncFunc = true,
     LoadingOpts loadingOpts = const LoadingOpts(active: true),
   }) async {
     loading(emit, loadingOpts);
@@ -52,10 +52,12 @@ abstract class BaseAppBloc<E extends BaseEvent, S extends BaseState>
     List<ReturnFailure<T>> res = [];
 
     if (asyncFunc) {
-      res = await Future.wait(executes.map((run) => run()));
+      // asyncronus process
+      res = await Future.wait(executes.map((fn) => fn()));
     } else {
-      for (var run in executes) {
-        final r = await run();
+      // sequential process
+      for (final fn in executes) {
+        final r = await fn();
         res.add(r);
       }
     }
@@ -63,6 +65,6 @@ abstract class BaseAppBloc<E extends BaseEvent, S extends BaseState>
     final hideOpts = loadingOpts.copyWith(active: false);
     loading(emit, hideOpts);
 
-    return res.toList();
+    return res;
   }
 }
