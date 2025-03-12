@@ -1,7 +1,7 @@
 import '../../../../../core/core.dart';
 
-class PaymentDetailsViewsPage extends StatelessWidget {
-  const PaymentDetailsViewsPage({
+class CartCreateOrderViewPage extends StatelessWidget {
+  const CartCreateOrderViewPage({
     super.key,
     required this.onBack,
     this.viewOnly = false,
@@ -243,6 +243,63 @@ class PaymentDetailsViewsPage extends StatelessWidget {
           ),
           if (!context.isKeyboardOpen && !viewOnly)
             SizedBox(height: kSizeXXL * 2),
+        ],
+      ),
+    );
+  }
+}
+
+class DetailOrderItemWidget extends StatelessWidget {
+  const DetailOrderItemWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: kSizeMS),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Paket Berkah 20K",
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: darkOliveGreen,
+                  ),
+                ),
+                Text(
+                  "Nasi, Ayam bakar, Tahu, Tempe",
+                  style: context.textTheme.bodySmall,
+                ),
+                Text(
+                  "Box Kardus + alat makan",
+                  style: context.textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                "Rp 20.000 x 200 pax",
+                style: context.textTheme.bodySmall?.copyWith(
+                  fontStyle: FontStyle.italic,
+                  fontSize: 10,
+                ),
+              ),
+              Text(
+                "Rp 200.000",
+                style: context.textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

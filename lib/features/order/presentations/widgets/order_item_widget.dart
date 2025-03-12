@@ -1,7 +1,7 @@
 import '../../../../core/core.dart';
 
-class OrderItemWidget extends StatelessWidget {
-  const OrderItemWidget({super.key});
+class CartOrderItemWidget extends StatelessWidget {
+  const CartOrderItemWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

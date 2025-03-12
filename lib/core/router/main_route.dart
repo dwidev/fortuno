@@ -1,7 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortuno/core/depedency_injection/injection.dart';
-import 'package:fortuno/features/order/presentations/bloc/order/order_bloc.dart';
-import 'package:fortuno/features/order/presentations/pages/create_order_page.dart';
+import '../depedency_injection/injection.dart';
+import '../../features/order/presentations/bloc/bloc/cart_bloc.dart';
+import '../../features/order/presentations/bloc/order/order_bloc.dart';
+import '../../features/order/presentations/pages/create_order_page.dart';
 
 import 'auth_route.dart';
 import '../../features/auth/presentations/pages/login_page.dart';
@@ -32,7 +33,10 @@ final router = GoRouter(
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return MultiBlocProvider(
-          providers: [BlocProvider(create: (context) => getIt<OrderBloc>())],
+          providers: [
+            BlocProvider(create: (context) => getIt<OrderBloc>()),
+            BlocProvider(create: (context) => getIt<CartBloc>()),
+          ],
           child: MainPage(navigationShell: navigationShell),
         );
       },

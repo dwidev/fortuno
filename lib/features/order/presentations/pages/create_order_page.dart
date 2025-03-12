@@ -1,8 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortuno/features/order/presentations/pages/cart/order_cart_page.dart';
-
-import 'package:fortuno/features/products/domain/entities/package.dart';
+import 'package:fortuno/features/order/presentations/pages/cart/cart_order_page.dart';
 
 import '../../../../core/core.dart';
 import '../bloc/order/order_bloc.dart';
@@ -11,9 +8,6 @@ import '../widgets/loading_product_widget.dart';
 import '../widgets/order_listener_widget.dart';
 import '../widgets/package_list_widget.dart';
 import '../widgets/product_card_widget.dart';
-import 'cart/order_details_view_page.dart';
-import 'cart/payment_details_view_page.dart';
-import 'process_order_page.dart';
 
 class CreateOrderPage extends StatefulWidget {
   static const path = '/create-order';
@@ -107,6 +101,12 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                                 product: cp,
                                 onTap: () {
                                   if (state is AtProductPage) {
+                                    orderBloc.add(
+                                      OnAddItem(
+                                        categoryProduct: state.categoryProduct,
+                                        product: cp,
+                                      ),
+                                    );
                                   } else {
                                     final cp = state.categories[index];
                                     orderBloc.add(

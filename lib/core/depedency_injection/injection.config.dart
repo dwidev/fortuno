@@ -25,8 +25,10 @@ import 'package:fortuno/features/auth/domain/usecases/signin_with_google.dart'
     as _i870;
 import 'package:fortuno/features/auth/presentations/bloc/auth_bloc.dart'
     as _i279;
+import 'package:fortuno/features/order/presentations/bloc/bloc/cart_bloc.dart'
+    as _i1038;
 import 'package:fortuno/features/order/presentations/bloc/order/order_bloc.dart'
-    as _i442;
+    as _i886;
 import 'package:fortuno/features/products/data/datasources/product_nosql_datasource.dart'
     as _i294;
 import 'package:fortuno/features/products/data/datasources/products_datasource.dart'
@@ -53,6 +55,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModule = _$RegisterModule();
+    gh.factory<_i1038.CartBloc>(() => _i1038.CartBloc());
     gh.lazySingleton<_i454.SupabaseClient>(() => registerModule.supabaseClient);
     gh.lazySingleton<_i592.FirebaseAuthService>(
       () => registerModule.firebaseAuthService,
@@ -89,8 +92,8 @@ extension GetItInjectableX on _i174.GetIt {
         productsRepository: gh<_i1028.ProductsRepository>(),
       ),
     );
-    gh.factory<_i442.OrderBloc>(
-      () => _i442.OrderBloc(
+    gh.factory<_i886.OrderBloc>(
+      () => _i886.OrderBloc(
         getCategoryByCompanyId: gh<_i436.GetCategoryByCompanyId>(),
         getProductsByCategoryId: gh<_i852.GetProductsByCategoryId>(),
         getPackageByCategoryid: gh<_i359.GetPackageByCategoryid>(),

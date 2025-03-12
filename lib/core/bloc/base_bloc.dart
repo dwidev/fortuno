@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortuno/core/core.dart';
-import 'package:fortuno/core/failures/failure.dart';
+import '../core.dart';
+import '../failures/failure.dart';
 
 import '../usecases/base_usecase.dart';
 
@@ -14,12 +14,14 @@ abstract class BaseAppBloc<E extends BaseEvent, S extends BaseState>
     extends Bloc<E, S> {
   BaseAppBloc(super.initialState);
 
-  void loading(Emitter emit, LoadingOpts loadingOpts) {
+  void loading(Emitter emit, [LoadingOpts? loadingOpts]) {
+    if (state.loading.active) return;
     final newState = state.copyWith(loading: loadingOpts);
     emit(newState);
   }
 
   void error(Emitter emit, Failure error) {
+    if (!state.loading.active) return;
     final newState = state.copyWith(error: error);
     emit(newState);
   }
