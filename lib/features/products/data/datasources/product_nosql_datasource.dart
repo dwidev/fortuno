@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -60,6 +63,8 @@ class ProductNosqlDatasource extends ProductsDatasource {
     final params = <String, String>{"category_uuid": categoryId};
     final response =
         await client.rpc('get_packages_by_category', params: params).select();
+
+    log(jsonEncode(response));
 
     return [];
   }

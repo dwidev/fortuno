@@ -32,19 +32,13 @@ class CategoryModel extends BaseModel<CategoryProduct> {
   }
 
   factory CategoryModel.fromMap(Map<String, dynamic> map) {
-    var price = map["price"];
-
-    if (price is! double) {
-      price = price.toDouble();
-    } else {
-      price = price;
-    }
+    final price = BaseModel.parsePriceToDouble(map);
 
     return CategoryModel(
-      id: map["ID"] as String,
-      name: map["category_name"] as String,
-      code: map["category_code"] as String,
-      haveProduct: map["have_product"] as bool,
+      id: map["ID"] as String? ?? "",
+      name: map["category_name"] as String? ?? "",
+      code: map["category_code"] as String? ?? "",
+      haveProduct: map["have_product"] as bool? ?? false,
       price: price,
       createAt: map["create_at"]?.toString() ?? "",
     );

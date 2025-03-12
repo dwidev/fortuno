@@ -29,18 +29,12 @@ class ProductModel extends BaseModel<Product> {
   }
 
   factory ProductModel.fromMap(Map<String, dynamic> map) {
-    var price = map["price"];
-
-    if (price is! double && price != null) {
-      price = price.toDouble();
-    } else {
-      price = price;
-    }
+    final price = BaseModel.parsePriceToDouble(map);
 
     return ProductModel(
-      id: map["ID"] as String,
-      name: map["product_name"] as String,
-      code: map["product_code"] as String,
+      id: map["ID"] as String? ?? "",
+      name: map["product_name"] as String? ?? "",
+      code: map["product_code"] as String? ?? "",
       price: price,
       createAt: map["create_at"]?.toString() ?? "",
     );
