@@ -60,7 +60,7 @@ class _CreateOrderPageState extends State<CreateOrderPage>
   @override
   Widget build(BuildContext context) {
     return OrderListenerWidget(
-      builder: (context, orderBloc) {
+      builder: (context, orderBloc, state) {
         return Row(
           children: [
             Expanded(

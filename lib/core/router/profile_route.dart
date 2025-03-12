@@ -14,7 +14,7 @@ final profilRoute = <RouteBase>[
     builder: (context, state) {
       return MultiBlocProvider(
         providers: [BlocProvider(create: (context) => getIt<AuthBloc>())],
-        child: AuthListener(builder: (context, state) => ProfilePage()),
+        child: AuthListener(builder: (context, bloc, state) => ProfilePage()),
       );
     },
   ),

@@ -1,6 +1,6 @@
 part of 'base_bloc.dart';
 
-class BaseListenerWidget<P extends BaseAppBloc, B extends BaseState>
+class BaseListenerWidget<P extends BaseAppBloc, S extends BaseState>
     extends StatelessWidget {
   const BaseListenerWidget({
     super.key,
@@ -15,15 +15,16 @@ class BaseListenerWidget<P extends BaseAppBloc, B extends BaseState>
   bool get overrideLoading => false;
 
   final Function(BuildContext context, BaseState state)? listener;
-  final Function(BuildContext context, P state) builder;
+  final Function(BuildContext context, P bloc, BaseState state) builder;
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.read<P>();
+    final bloc = context.read<P>();
+    final state = context.watch<P>().state;
 
     return BlocListener<P, BaseState>(
       listener: (context, state) {
-        // adding overiding listener for some class parent
+        // adding overiding listener for some children class
         // and ignore the base listener (or the code below)
         if (overrideListener) {
           onListener(context, state);
@@ -36,10 +37,10 @@ class BaseListenerWidget<P extends BaseAppBloc, B extends BaseState>
         // listen the error state
         handlerError(state);
 
-        // adding some optional listener for some class parent
+        // adding some optional listener for children class
         onListener(context, state);
       },
-      child: builder(context, provider),
+      child: builder(context, bloc, state),
     );
   }
 
