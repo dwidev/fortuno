@@ -1,10 +1,14 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:fortuno/features/products/domain/entities/package.dart';
 
 import '../../../../core/core.dart';
 import '../bloc/order_bloc.dart';
 import '../widgets/header_create_order_widget.dart';
 import '../widgets/loading_product_widget.dart';
 import '../widgets/order_listener_widget.dart';
+import '../widgets/package_list_widget.dart';
 import '../widgets/product_card_widget.dart';
 import 'order_details_view_page.dart';
 import 'payment_details_view_page.dart';
@@ -76,7 +80,23 @@ class _CreateOrderPageState extends State<CreateOrderPage>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    /// HEADER APP
                     HeaderCreateOrderWidget(),
+
+                    /// PACKAGE LIST
+                    BlocBuilder<OrderBloc, OrderState>(
+                      builder: (context, state) {
+                        if (state is AtProductPage) {
+                          return PackageListWidget(packages: state.packages);
+                        }
+
+                        return Offstage();
+                      },
+                    ),
+
+                    SizedBox(height: kSizeS),
+
+                    /// PRODUCT LIST
                     Expanded(
                       child: BlocBuilder<OrderBloc, OrderState>(
                         builder: (context, state) {

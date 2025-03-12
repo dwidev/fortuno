@@ -12,6 +12,8 @@ class Package extends Equatable {
   final CategoryProduct category;
   final List<Product> items;
 
+  String get contents => items.map((e) => e.name).join(", ");
+
   const Package({
     required this.id,
     required this.name,

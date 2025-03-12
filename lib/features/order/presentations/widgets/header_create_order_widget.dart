@@ -12,7 +12,7 @@ class HeaderCreateOrderWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(
         kDefaultPadding,
-      ).copyWith(top: kDefaultPadding * 2, bottom: 0),
+      ).copyWith(top: kDefaultPadding * 2, bottom: 10),
       child: BlocBuilder<OrderBloc, OrderState>(
         builder: (context, state) {
           if (state is AtProductPage) {
@@ -20,16 +20,18 @@ class HeaderCreateOrderWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ButtonCircleWidget.gradient(
-                  buttonSize: kSizeL,
+                  buttonSize: kSizeL * 1.3,
                   icon: CupertinoIcons.back,
                   onPressed: () {
                     orderBloc.add(OnBackToCategory());
                   },
                 ),
-                SizedBox(width: kSizeM),
+                SizedBox(width: kSizeML),
                 Text(
                   state.categoryProduct.name,
-                  style: context.textTheme.titleLarge,
+                  style: context.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             );
@@ -37,7 +39,9 @@ class HeaderCreateOrderWidget extends StatelessWidget {
 
           return Text(
             "RM Barokah Catering",
-            style: context.textTheme.titleLarge,
+            style: context.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           );
         },
       ),

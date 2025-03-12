@@ -19,76 +19,95 @@ class ProductCardWidget extends StatelessWidget {
       onTap: onTap,
       child: Card(
         color: darkLightColor,
-        child: Stack(
-          children: [
-            Stack(
+        child: LayoutBuilder(
+          builder: (context, ct) {
+            return Stack(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(kDefaultRadius - 2),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                if (((product is CategoryProduct) &&
-                        !(product as CategoryProduct).haveProduct) ||
-                    product.price > 0)
-                  Positioned(
-                    top: kSizeS * 0.5,
-                    right: kSizeS * 0.5,
-                    child: Container(
-                      padding: EdgeInsets.all(kSizeS * 0.5),
+                Stack(
+                  children: [
+                    Container(
+                      width: ct.maxWidth,
+                      height: ct.maxHeight,
                       decoration: BoxDecoration(
-                        color: whiteColor,
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius: BorderRadius.circular(kDefaultRadius - 2),
                       ),
-                      child: Text(
-                        product.displayPrice,
-                        style: context.textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: darkOliveGreen,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(kDefaultRadius - 2),
+                        child: ColorFiltered(
+                          colorFilter: const ColorFilter.mode(
+                            // Colors.grey,
+                            Colors.transparent,
+                            BlendMode.dst, // Menurunkan saturasi warna
+                          ),
+                          child: Image.network(
+                            "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-              ],
-            ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Container(
-                      padding: EdgeInsets.all(kSizeS * 0.3),
-                      width: constraints.maxWidth / 1.2,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            product.name,
-                            style: context.textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w800,
+                    if (((product is CategoryProduct) &&
+                            !(product as CategoryProduct).haveProduct) ||
+                        product.price > 0)
+                      Positioned(
+                        top: kSizeS * 0.5,
+                        right: kSizeS * 0.5,
+                        child: Container(
+                          padding: EdgeInsets.all(kSizeS * 0.5),
+                          decoration: BoxDecoration(
+                            color: whiteColor,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Text(
+                            product.displayPrice,
+                            style: context.textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.bold,
                               color: darkOliveGreen,
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      return Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Container(
+                          padding: EdgeInsets.all(kSizeS * 0.3),
+                          width: constraints.maxWidth / 1.2,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                product.name,
+                                style: context.textTheme.bodyMedium?.copyWith(
+                                  color: darkOliveGreen,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                // Container(
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(kDefaultRadius - 2),
+                //     color: darkColor.withAlpha(150),
+                //   ),
+                // ),
+              ],
+            );
+          },
         ),
       ),
     );
