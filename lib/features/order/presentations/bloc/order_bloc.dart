@@ -1,4 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortuno/core/usecases/base_usecase.dart';
+import 'package:fortuno/features/products/domain/entities/package.dart';
+import 'package:fortuno/features/products/domain/usecases/get_package_by_categoryid.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/bloc/base_bloc.dart';
@@ -15,10 +19,12 @@ part 'order_state.dart';
 class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
   final GetCategoryByCompanyId getCategoryByCompanyId;
   final GetProductsByCategoryId getProductsByCategoryId;
+  final GetPackageByCategoryid getPackageByCategoryid;
 
   OrderBloc({
     required this.getCategoryByCompanyId,
     required this.getProductsByCategoryId,
+    required this.getPackageByCategoryid,
   }) : super(OrderInitial()) {
     on<OnInitOrderPageEvent>(_onInit);
     on<OnClickCategory>(_onClickCategory);
@@ -47,9 +53,11 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
   Future<void> _onClickCategory(OnClickCategory event, Emitter emit) async {
     final responses = await runUsecases([
       () => getProductsByCategoryId(event.categoryProduct.id),
+      () => getPackageByCategoryid(event.categoryProduct.id),
     ], emit);
 
-    final resCat = responses[0];
+    final resCat = responses[0] as ReturnFailure<List<Product>>;
+    final resPac = responses[1] as ReturnFailure<List<Package>>;
 
     resCat.fold(
       (err) {
@@ -65,5 +73,9 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
         );
       },
     );
+
+    resPac.fold((err) {
+      error(emit, err);
+    }, (data) {});
   }
 }

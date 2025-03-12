@@ -1,4 +1,5 @@
 import '../../../../core/core.dart';
+import '../pages/create_order_page.dart';
 
 class LoadingProductWidget extends StatelessWidget {
   const LoadingProductWidget({super.key});
@@ -7,12 +8,12 @@ class LoadingProductWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
+        crossAxisCount: CreateOrderPage.crossMaxItem,
         crossAxisSpacing: 15,
         mainAxisSpacing: 15,
         childAspectRatio: 0.8,
       ),
-      itemCount: 3,
+      itemCount: 9,
       padding: EdgeInsets.all(kDefaultPadding),
       itemBuilder: (context, index) {
         return Container(

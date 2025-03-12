@@ -52,4 +52,15 @@ class ProductNosqlDatasource extends ProductsDatasource {
     final result = productsListRaw.map((e) => ProductModel.fromMap(e)).toList();
     return result;
   }
+
+  @override
+  Future<List<ProductModel>> getPackageByCategory({
+    required String categoryId,
+  }) async {
+    final params = <String, String>{"category_uuid": categoryId};
+    final response =
+        await client.rpc('get_packages_by_category', params: params).select();
+
+    return [];
+  }
 }

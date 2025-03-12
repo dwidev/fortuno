@@ -1,3 +1,4 @@
+import 'package:fortuno/features/products/domain/entities/package.dart';
 import 'package:fortuno/features/products/domain/entities/product.dart';
 import 'package:injectable/injectable.dart';
 
@@ -31,5 +32,16 @@ class ProductsRepositoryImpl extends ProductsRepository {
     );
     final result = response.map((e) => e.toEntity()).toList();
     return result;
+  }
+
+  @override
+  Future<List<Package>> getPackageByCategory({
+    required String categoryId,
+  }) async {
+    final response = await productsDatasource.getPackageByCategory(
+      categoryId: categoryId,
+    );
+    // final result = response.map((e) => e.toEntity()).toList();
+    return [];
   }
 }

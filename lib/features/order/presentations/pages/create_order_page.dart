@@ -13,6 +13,8 @@ import 'process_order_page.dart';
 class CreateOrderPage extends StatefulWidget {
   static const path = '/create-order';
 
+  static const crossMaxItem = 5;
+
   const CreateOrderPage({super.key});
 
   @override
@@ -97,7 +99,7 @@ class _CreateOrderPageState extends State<CreateOrderPage>
                           return GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 4,
+                                  crossAxisCount: CreateOrderPage.crossMaxItem,
                                   crossAxisSpacing: 15,
                                   mainAxisSpacing: 15,
                                   childAspectRatio: 0.8,

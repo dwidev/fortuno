@@ -37,6 +37,8 @@ import 'package:fortuno/features/products/domain/repository/products_repository.
     as _i1028;
 import 'package:fortuno/features/products/domain/usecases/get_category_by_companyid.dart'
     as _i436;
+import 'package:fortuno/features/products/domain/usecases/get_package_by_categoryid.dart'
+    as _i359;
 import 'package:fortuno/features/products/domain/usecases/get_products_by_categoryid.dart'
     as _i852;
 import 'package:get_it/get_it.dart' as _i174;
@@ -82,17 +84,23 @@ extension GetItInjectableX on _i174.GetIt {
         productsRepository: gh<_i1028.ProductsRepository>(),
       ),
     );
-    gh.lazySingleton<_i870.SignWithGoogle>(
-      () => _i870.SignWithGoogle(authRepository: gh<_i948.AuthRepository>()),
-    );
-    gh.lazySingleton<_i101.SignOut>(
-      () => _i101.SignOut(authRepository: gh<_i948.AuthRepository>()),
+    gh.lazySingleton<_i359.GetPackageByCategoryid>(
+      () => _i359.GetPackageByCategoryid(
+        productsRepository: gh<_i1028.ProductsRepository>(),
+      ),
     );
     gh.factory<_i442.OrderBloc>(
       () => _i442.OrderBloc(
         getCategoryByCompanyId: gh<_i436.GetCategoryByCompanyId>(),
         getProductsByCategoryId: gh<_i852.GetProductsByCategoryId>(),
+        getPackageByCategoryid: gh<_i359.GetPackageByCategoryid>(),
       ),
+    );
+    gh.lazySingleton<_i870.SignWithGoogle>(
+      () => _i870.SignWithGoogle(authRepository: gh<_i948.AuthRepository>()),
+    );
+    gh.lazySingleton<_i101.SignOut>(
+      () => _i101.SignOut(authRepository: gh<_i948.AuthRepository>()),
     );
     gh.factory<_i279.AuthBloc>(
       () => _i279.AuthBloc(
