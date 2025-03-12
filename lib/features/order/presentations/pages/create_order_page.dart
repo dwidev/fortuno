@@ -5,7 +5,7 @@ import 'package:fortuno/features/order/presentations/pages/cart/order_cart_page.
 import 'package:fortuno/features/products/domain/entities/package.dart';
 
 import '../../../../core/core.dart';
-import '../bloc/order_bloc.dart';
+import '../bloc/order/order_bloc.dart';
 import '../widgets/header_create_order_widget.dart';
 import '../widgets/loading_product_widget.dart';
 import '../widgets/order_listener_widget.dart';

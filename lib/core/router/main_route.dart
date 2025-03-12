@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortuno/core/depedency_injection/injection.dart';
-import 'package:fortuno/features/order/presentations/bloc/order_bloc.dart';
+import 'package:fortuno/features/order/presentations/bloc/order/order_bloc.dart';
 import 'package:fortuno/features/order/presentations/pages/create_order_page.dart';
 
 import 'auth_route.dart';

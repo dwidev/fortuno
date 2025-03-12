@@ -1,15 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/bloc/base_bloc.dart';
-import '../../../../core/failures/failure.dart';
-import '../../../../core/usecases/base_usecase.dart';
-import '../../../products/domain/entities/category.dart';
-import '../../../products/domain/entities/package.dart';
-import '../../../products/domain/entities/product.dart';
-import '../../../products/domain/usecases/get_category_by_companyid.dart';
-import '../../../products/domain/usecases/get_package_by_categoryid.dart';
-import '../../../products/domain/usecases/get_products_by_categoryid.dart';
+import '../../../../../core/bloc/base_bloc.dart';
+import '../../../../../core/failures/failure.dart';
+import '../../../../../core/usecases/base_usecase.dart';
+import '../../../../products/domain/entities/category.dart';
+import '../../../../products/domain/entities/package.dart';
+import '../../../../products/domain/entities/product.dart';
+import '../../../../products/domain/usecases/get_category_by_companyid.dart';
+import '../../../../products/domain/usecases/get_package_by_categoryid.dart';
+import '../../../../products/domain/usecases/get_products_by_categoryid.dart';
 
 part 'order_event.dart';
 part 'order_state.dart';
