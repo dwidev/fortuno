@@ -12,6 +12,30 @@ class OrderItem extends Equatable {
   final Product? product;
   final Package? package;
 
+  String get title {
+    if (product != null) {
+      return product?.name ?? "";
+    }
+
+    if (package != null) {
+      return package?.name ?? "";
+    }
+
+    throw ArgumentError("product and package are null");
+  }
+
+  String get content {
+    if (product != null) {
+      return "";
+    }
+
+    if (package != null) {
+      return package?.contents ?? "";
+    }
+
+    throw ArgumentError("product and package are null");
+  }
+
   const OrderItem({
     this.id,
     required this.category,

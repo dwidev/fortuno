@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortuno/features/order/presentations/bloc/bloc/cart_bloc.dart';
 import 'package:fortuno/features/order/presentations/pages/cart/cart_order_page.dart';
 
 import '../../../../core/core.dart';
@@ -53,7 +54,17 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                     BlocBuilder<OrderBloc, OrderState>(
                       builder: (context, state) {
                         if (state is AtProductPage) {
-                          return PackageListWidget(packages: state.packages);
+                          return PackageListWidget(
+                            packages: state.packages,
+                            onTap: (package) {
+                              context.read<CartBloc>().add(
+                                AddProductToCartEvent(
+                                  categoryProduct: state.categoryProduct,
+                                  package: package,
+                                ),
+                              );
+                            },
+                          );
                         }
 
                         return Offstage();
@@ -101,8 +112,8 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                                 product: cp,
                                 onTap: () {
                                   if (state is AtProductPage) {
-                                    orderBloc.add(
-                                      OnAddItem(
+                                    context.read<CartBloc>().add(
+                                      AddProductToCartEvent(
                                         categoryProduct: state.categoryProduct,
                                         product: cp,
                                       ),

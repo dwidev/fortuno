@@ -1,10 +1,11 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../../core/core.dart';
 import '../../../../../core/widgets/form/date_form_picker_widget.dart';
 import '../../../../../core/widgets/form/text_form_field_widget.dart';
 import '../../../../../core/widgets/form/time_form_picker_widget.dart';
-import '../../bloc/order/order_bloc.dart';
+import '../../bloc/bloc/cart_bloc.dart';
 import '../../widgets/order_item_widget.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CartDetailsViewPage extends StatelessWidget {
   const CartDetailsViewPage({super.key});
@@ -24,21 +25,17 @@ class CartDetailsViewPage extends StatelessWidget {
           ),
           SizedBox(height: kSizeMS),
           Divider(),
-          // ...List.generate(3, (index) => CardOrderItemWidget()),
-          BlocBuilder<OrderBloc, OrderState>(
+          BlocBuilder<CartBloc, CartState>(
             builder: (context, state) {
-              if (state is ListOrderItems) {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: 4,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return CartOrderItemWidget();
-                  },
-                );
-              }
-
-              return Offstage();
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: state.items.length,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final item = state.items[index];
+                  return CartOrderItemWidget(item: item);
+                },
+              );
             },
           ),
           SizedBox(height: kSizeMS * 1.5),

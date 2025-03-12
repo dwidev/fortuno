@@ -19,7 +19,6 @@ class CartBloc extends BaseAppBloc<CartEvent, CartState> {
   }
 
   Future<void> _onAddItem(AddProductToCartEvent event, Emitter emit) async {
-    loading(emit);
     final newItem = OrderItem(
       category: event.categoryProduct,
       product: event.product,
@@ -27,8 +26,6 @@ class CartBloc extends BaseAppBloc<CartEvent, CartState> {
     );
     final newState = state.copyWith(items: [...state.items, newItem]);
 
-    await Future.delayed(10.seconds);
-    loading(emit, LoadingOpts(active: false));
     emit(newState);
   }
 }

@@ -1,7 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:fortuno/features/order/domain/entities/order_item.dart';
+
 import '../../../../core/core.dart';
 
 class CartOrderItemWidget extends StatelessWidget {
-  const CartOrderItemWidget({super.key});
+  const CartOrderItemWidget({super.key, required this.item});
+
+  final OrderItem item;
 
   @override
   Widget build(BuildContext context) {
@@ -30,20 +35,13 @@ class CartOrderItemWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Paket Berkah 20K",
+                  item.title,
                   style: context.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: darkOliveGreen,
                   ),
                 ),
-                Text(
-                  "Nasi, Ayam bakar, Tahu, Tempe",
-                  style: context.textTheme.bodySmall,
-                ),
-                Text(
-                  "Box Kardus + alat makan",
-                  style: context.textTheme.bodySmall,
-                ),
+                Text(item.content, style: context.textTheme.bodySmall),
               ],
             ),
           ),

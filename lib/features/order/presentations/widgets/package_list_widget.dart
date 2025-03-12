@@ -1,15 +1,21 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import '../../../../core/core.dart';
 import '../../../products/domain/entities/package.dart';
 
 class PackageListWidget extends StatelessWidget {
-  const PackageListWidget({super.key, required this.packages});
+  const PackageListWidget({
+    super.key,
+    required this.packages,
+    required this.onTap,
+  });
 
   final List<Package> packages;
+  final Function(Package package) onTap;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(maxHeight: 300),
+      constraints: BoxConstraints(maxHeight: 200),
       margin: EdgeInsets.symmetric(
         horizontal: kDefaultPadding,
       ).copyWith(top: kSizeM),
@@ -21,9 +27,7 @@ class PackageListWidget extends StatelessWidget {
             if (index == 0) {
               return InkWell(
                 borderRadius: BorderRadius.circular(kDefaultRadius),
-                onTap: () {
-                  print("Create new package");
-                },
+                onTap: () {},
                 child: Ink(
                   padding: EdgeInsets.all(kDefaultPadding * 0.5),
                   decoration: BoxDecoration(
@@ -55,7 +59,7 @@ class PackageListWidget extends StatelessWidget {
             return InkWell(
               borderRadius: BorderRadius.circular(kDefaultRadius),
               onTap: () {
-                print("click package");
+                onTap(package);
               },
               child: Ink(
                 padding: EdgeInsets.all(8),
@@ -90,7 +94,7 @@ class PackageListWidget extends StatelessWidget {
                           constraints: BoxConstraints(maxWidth: 150),
                           child: Text(
                             package.name,
-                            style: context.textTheme.bodyMedium?.copyWith(
+                            style: context.textTheme.bodySmall?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: darkOliveGreen,
                             ),
