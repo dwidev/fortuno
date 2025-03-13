@@ -29,40 +29,49 @@ class CartBloc extends BaseAppBloc<CartEvent, CartState> {
     late BaseState newState;
 
     if (state.items.isEmpty) {
-      newState = CartState(items: [newItem]);
+      newState = AddedToCart(newItem: newItem, items: [newItem]);
     } else {
       final indexUpdated = state.items.indexWhere(
         (e) => e.id == newItem.package?.id || e.id == newItem.product?.id,
       );
 
       if (indexUpdated != -1) {
-        final items = _updateQuantityItem(
+        final (items, update) = _updateQuantityItem(
           newItem: newItem,
           updated: (quantity) => quantity + event.quantity,
         );
-        newState = state.copyWith(items: items);
+        newState = (state as AddedToCart).copyWith(
+          newItem: update,
+          items: items,
+        );
       } else {
-        newState = state.copyWith(items: [newItem, ...state.items]);
+        newState = (state as AddedToCart).copyWith(
+          newItem: newItem,
+          items: [newItem, ...state.items],
+        );
       }
     }
 
     emit(newState);
   }
 
-  List<OrderItem> _updateQuantityItem({
+  (List<OrderItem>, OrderItem) _updateQuantityItem({
     required OrderItem newItem,
     required Function(int quantity) updated,
   }) {
+    OrderItem itemUpdated = newItem;
+
     final items =
         state.items.map((e) {
           if (e.id == newItem.package?.id || e.id == newItem.product?.id) {
             final newQuantity = updated(e.quantity);
-            return newItem.copyWith(quantity: newQuantity);
+            itemUpdated = newItem.copyWith(quantity: newQuantity);
+            return itemUpdated;
           }
 
           return e;
         }).toList();
 
-    return items;
+    return (items, itemUpdated);
   }
 }

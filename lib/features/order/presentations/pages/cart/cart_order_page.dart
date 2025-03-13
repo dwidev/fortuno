@@ -1,8 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:fortuno/core/bloc/base_bloc.dart';
 import 'package:fortuno/features/order/presentations/bloc/bloc/cart_bloc.dart';
+import 'package:fortuno/features/order/presentations/bloc/order/order_bloc.dart';
 import 'package:fortuno/features/products/domain/entities/category.dart';
 
 import '../../../../../core/core.dart';
@@ -56,74 +59,81 @@ class _CartOrderPageState extends State<CartOrderPage>
 
   @override
   Widget build(BuildContext context) {
-    return BaseListenerWidget<CartBloc, CartState>(
-      listener: (context, state) {},
-      builder: (context, bloc, state) {
-        return Container(
-          height: double.infinity,
-          color: Colors.white,
-          child: Stack(
-            children: [
-              TabBarView(
-                controller: tabController,
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: kDefaultPadding * 2,
-                      horizontal: kDefaultPadding,
-                    ),
-                    child: CartDetailsViewPage(),
+    return BlocListener<CartBloc, CartState>(
+      listenWhen: (previous, current) {
+        return previous.items != current.items;
+      },
+      listener: (context, state) {
+        if (state is AddedToCart && state.newItem != null) {
+          final id = state.newItem!.id;
+          final quantity = state.newItem!.quantity;
+          context.read<OrderBloc>().add(OnAddQuantity(id, quantity));
+        }
+      },
+      child: Container(
+        height: double.infinity,
+        color: Colors.white,
+        child: Stack(
+          children: [
+            TabBarView(
+              controller: tabController,
+              physics: NeverScrollableScrollPhysics(),
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: kDefaultPadding * 2,
+                    horizontal: kDefaultPadding,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: kDefaultPadding * 2,
-                      horizontal: kDefaultPadding,
-                    ),
-                    child: CartCreateOrderViewPage(
-                      onBack: () {
-                        setState(() {
-                          tabController.index = 0;
-                        });
-                      },
-                    ),
+                  child: CartDetailsViewPage(),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: kDefaultPadding * 2,
+                    horizontal: kDefaultPadding,
                   ),
-                ],
-              ),
-              if (!context.isKeyboardOpen)
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  left: 0,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: kSizeML,
-                      horizontal: kSizeML,
-                    ),
-                    child: GradientButton(
-                      onPressed: onTapOder,
-                      height: kSizeXXL,
-                      child: AnimatedSwitcher(
-                        duration: Duration(milliseconds: 500),
-                        switchInCurve: Curves.easeIn,
-                        switchOutCurve: Curves.easeOut,
-                        child: Text(
-                          tabController.index == 0
-                              ? "Proses Order"
-                              : "Buat Order",
-                          style: context.textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: darkColor,
-                          ),
+                  child: CartCreateOrderViewPage(
+                    onBack: () {
+                      setState(() {
+                        tabController.index = 0;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            if (!context.isKeyboardOpen)
+              Positioned(
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    vertical: kSizeML,
+                    horizontal: kSizeML,
+                  ),
+                  child: GradientButton(
+                    onPressed: onTapOder,
+                    height: kSizeXXL,
+                    child: AnimatedSwitcher(
+                      duration: Duration(milliseconds: 500),
+                      switchInCurve: Curves.easeIn,
+                      switchOutCurve: Curves.easeOut,
+                      child: Text(
+                        tabController.index == 0
+                            ? "Proses Order"
+                            : "Buat Order",
+                        style: context.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: darkColor,
                         ),
                       ),
                     ),
                   ),
                 ),
-            ],
-          ),
-        );
-      },
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

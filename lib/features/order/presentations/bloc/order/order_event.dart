@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'order_bloc.dart';
 
 sealed class OrderEvent extends BaseEvent {
@@ -21,4 +22,11 @@ class OnClickCategory extends OrderEvent {
 
 class OnBackToCategory extends OrderEvent {
   const OnBackToCategory();
+}
+
+class OnAddQuantity extends OrderEvent {
+  final String id;
+  final int quantity;
+
+  const OnAddQuantity(this.id, this.quantity);
 }

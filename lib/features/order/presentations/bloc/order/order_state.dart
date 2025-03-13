@@ -32,12 +32,14 @@ final class AtProductPage extends OrderState {
   final CategoryProduct categoryProduct;
   final List<Product> products;
   final List<Package> packages;
+  final Map<String, int> productCountCart;
 
   const AtProductPage({
     required this.categoryProduct,
     this.products = const [],
     this.packages = const [],
     super.categories,
+    this.productCountCart = const {},
   });
 
   @override
@@ -48,15 +50,22 @@ final class AtProductPage extends OrderState {
     List<CategoryProduct>? categories,
     LoadingOpts? loading,
     ValueGetter<Failure?>? error,
+    Map<String, int>? productCountCart,
   }) {
     return AtProductPage(
       categoryProduct: categoryProduct ?? this.categoryProduct,
       products: products ?? this.products,
       packages: packages ?? this.packages,
       categories: categories ?? this.categories,
+      productCountCart: productCountCart ?? this.productCountCart,
     );
   }
 
   @override
-  List<Object?> get props => [categoryProduct, packages, packages];
+  List<Object?> get props => [
+    categoryProduct,
+    packages,
+    packages,
+    productCountCart,
+  ];
 }

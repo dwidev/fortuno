@@ -9,7 +9,7 @@ class CartState extends BaseState {
   List<Object> get props => [items];
 
   @override
-  BaseState copyWith({
+  CartState copyWith({
     LoadingOpts? loading,
     ValueGetter<Failure?>? error,
     List<OrderItem>? items,
@@ -19,3 +19,22 @@ class CartState extends BaseState {
 }
 
 final class CartInitial extends CartState {}
+
+final class AddedToCart extends CartState {
+  final OrderItem? newItem;
+
+  const AddedToCart({this.newItem, super.items});
+
+  @override
+  AddedToCart copyWith({
+    OrderItem? newItem,
+    LoadingOpts? loading,
+    ValueGetter<Failure?>? error,
+    List<OrderItem>? items,
+  }) {
+    return AddedToCart(
+      newItem: newItem ?? this.newItem,
+      items: items ?? this.items,
+    );
+  }
+}

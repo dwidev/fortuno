@@ -7,9 +7,11 @@ class ProductCardWidget extends StatelessWidget {
   const ProductCardWidget({
     super.key,
     required this.product,
+    this.quantity = 0,
     required this.onTap,
   });
 
+  final int quantity;
   final Product product;
   final VoidCallback onTap;
 
@@ -48,21 +50,23 @@ class ProductCardWidget extends StatelessWidget {
                     ),
                     if (((product is CategoryProduct) &&
                             !(product as CategoryProduct).haveProduct) ||
-                        product.price > 0)
+                        product.price > 0 ||
+                        quantity != 0)
                       Positioned(
                         top: kSizeS * 0.5,
                         right: kSizeS * 0.5,
                         child: Container(
                           padding: EdgeInsets.all(kSizeS * 0.5),
                           decoration: BoxDecoration(
-                            color: whiteColor,
+                            color: quantity != 0 ? darkOliveGreen : whiteColor,
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: Text(
-                            product.displayPrice,
+                            quantity != 0 ? "x$quantity" : product.displayPrice,
                             style: context.textTheme.bodySmall?.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: darkOliveGreen,
+                              color:
+                                  quantity != 0 ? whiteColor : darkOliveGreen,
                             ),
                           ),
                         ),

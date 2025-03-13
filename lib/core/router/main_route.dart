@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../features/auth/presentations/pages/login_page.dart';
 import '../../features/main_page.dart';
 import '../../features/order/presentations/bloc/bloc/cart_bloc.dart';
 import '../../features/order/presentations/bloc/order/order_bloc.dart';
@@ -25,8 +24,8 @@ final profilRouteKey = GlobalKey<NavigatorState>(debugLabel: "profile-route");
 
 final router = GoRouter(
   navigatorKey: rootNavigatorKey,
-  initialLocation: LoginPage.path,
-  // initialLocation: CreateOrderPage.path,
+  // initialLocation: LoginPage.path,
+  initialLocation: CreateOrderPage.path,
   routes: [
     // auth route
     ...authRoute,

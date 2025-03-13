@@ -51,25 +51,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                     HeaderCreateOrderWidget(),
 
                     /// PACKAGE LIST
-                    BlocBuilder<OrderBloc, OrderState>(
-                      builder: (context, state) {
-                        if (state is AtProductPage) {
-                          return PackageListWidget(
-                            packages: state.packages,
-                            onTap: (package) {
-                              context.read<CartBloc>().add(
-                                AddProductToCartEvent(
-                                  categoryProduct: state.categoryProduct,
-                                  package: package,
-                                ),
-                              );
-                            },
-                          );
-                        }
-
-                        return Offstage();
-                      },
-                    ),
+                    PackageListWidget(),
 
                     SizedBox(height: kSizeS),
 
@@ -108,8 +90,15 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                                   state is AtProductPage
                                       ? state.products[index]
                                       : state.categories[index];
+
+                              var quantity = 0;
+                              if (state is AtProductPage) {
+                                quantity = state.productCountCart[cp.id] ?? 0;
+                              }
+
                               return ProductCardWidget(
                                 product: cp,
+                                quantity: quantity,
                                 onTap: () {
                                   if (state is AtProductPage) {
                                     context.read<CartBloc>().add(

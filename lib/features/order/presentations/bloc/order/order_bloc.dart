@@ -31,6 +31,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
     on<OnBackToCategory>((event, emit) {
       emit(OrderInitSuccess(categories: state.categories));
     });
+    on<OnAddQuantity>(_onAddQuantity);
   }
 
   Future<void> _onInit(OnInitOrderPageEvent event, Emitter emit) async {
@@ -79,5 +80,22 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
     }
 
     emit(newState);
+  }
+
+  void _onAddQuantity(OnAddQuantity event, Emitter emit) {
+    if (state is AtProductPage) {
+      var productQuantityMap = {event.id: event.quantity};
+      final s = (state as AtProductPage);
+      final exist = s.productCountCart.containsKey(event.id);
+
+      final newMap = Map<String, int>.from(s.productCountCart);
+      if (exist) {
+        newMap[event.id] = event.quantity;
+      } else {
+        newMap.addAll(productQuantityMap);
+      }
+
+      emit(s.copyWith(productCountCart: newMap));
+    }
   }
 }
