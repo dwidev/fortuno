@@ -38,7 +38,7 @@ class CartBloc extends BaseAppBloc<CartEvent, CartState> {
       if (indexUpdated != -1) {
         final (items, update) = _updateQuantityItem(
           newItem: newItem,
-          updated: (quantity) => quantity + event.quantity,
+          quantity: event.quantity,
         );
         newState = (state as AddedToCart).copyWith(
           newItem: update,
@@ -57,15 +57,14 @@ class CartBloc extends BaseAppBloc<CartEvent, CartState> {
 
   (List<OrderItem>, OrderItem) _updateQuantityItem({
     required OrderItem newItem,
-    required Function(int quantity) updated,
+    required int quantity,
   }) {
     OrderItem itemUpdated = newItem;
 
     final items =
         state.items.map((e) {
           if (e.id == newItem.package?.id || e.id == newItem.product?.id) {
-            final newQuantity = updated(e.quantity);
-            itemUpdated = newItem.copyWith(quantity: newQuantity);
+            itemUpdated = newItem.copyWith(quantity: quantity);
             return itemUpdated;
           }
 

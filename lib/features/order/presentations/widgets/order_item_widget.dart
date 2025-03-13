@@ -12,100 +12,134 @@ class CartOrderItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<CartBloc>();
-
     return Padding(
       padding: EdgeInsets.symmetric(vertical: kSizeMS),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            height: kSizeXXL * 1.1,
-            width: kSizeXXL * 1.1,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                image: NetworkImage(
-                  "https://asset.kompas.com/crops/WTuA1Jn_cJEFlr9UgBhA-72n8yI=/3x0:700x465/1200x800/data/photo/2020/12/30/5fec5602f116e.jpg",
-                ),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          SizedBox(width: 10),
           Expanded(
-            child: Column(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  item.title,
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: darkOliveGreen,
+                Container(
+                  height: kSizeXXL * 1.1,
+                  width: kSizeXXL * 1.1,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        "https://asset.kompas.com/crops/WTuA1Jn_cJEFlr9UgBhA-72n8yI=/3x0:700x465/1200x800/data/photo/2020/12/30/5fec5602f116e.jpg",
+                      ),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-                Text(item.content, style: context.textTheme.bodySmall),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.title,
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: darkOliveGreen,
+                        ),
+                      ),
+                      Text(item.content, style: context.textTheme.bodySmall),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
-          Row(
-            children: [
-              ButtonCircleWidget.gradient(
-                icon: Icons.remove,
-                onPressed: () {},
-                buttonSize: kSizeM,
-              ),
-              SizedBox(width: kSizeMS),
-              InkWell(
-                onTap: () async {
-                  final newQuantity = await showChangeTotalDialog<int>(
-                    context: context,
-                    initial: item.quantity,
-                  );
-                  bloc.add(
-                    AddProductToCartEvent(
-                      categoryProduct: item.category,
-                      package: item.package,
-                      product: item.product,
-                      quantity: newQuantity ?? item.quantity,
-                    ),
-                  );
-                },
-                child: Column(
-                  children: [
-                    Container(
-                      width: 49,
-                      padding: EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: darkColor.withAlpha(100),
-                          width: 0.8,
-                        ),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        item.quantity.toString(),
-                        style: context.textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: kSizeMS),
-              ButtonCircleWidget.gradient(
-                icon: Icons.add,
-                onPressed: () {},
-                buttonSize: kSizeM,
-              ),
-              SizedBox(width: kSizeS),
-            ],
-          ),
+          IncrementCartWidget(item: item),
         ],
       ),
+    );
+  }
+}
+
+class IncrementCartWidget extends StatelessWidget {
+  const IncrementCartWidget({super.key, required this.item});
+
+  final OrderItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = context.read<CartBloc>();
+    return Row(
+      children: [
+        ButtonCircleWidget.gradient(
+          icon: Icons.remove,
+          onPressed: () {
+            bloc.add(
+              AddProductToCartEvent(
+                categoryProduct: item.category,
+                package: item.package,
+                product: item.product,
+                quantity: item.quantity - 1,
+              ),
+            );
+          },
+          buttonSize: kSizeM,
+        ),
+        SizedBox(width: kSizeSS),
+        InkWell(
+          onTap: () async {
+            final newQuantity = await showChangeTotalDialog<int>(
+              context: context,
+              initial: item.quantity,
+            );
+            bloc.add(
+              AddProductToCartEvent(
+                categoryProduct: item.category,
+                package: item.package,
+                product: item.product,
+                quantity: newQuantity ?? item.quantity,
+              ),
+            );
+          },
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 3, vertical: 2),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: darkColor.withAlpha(100),
+                    width: 0.8,
+                  ),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(
+                  textAlign: TextAlign.center,
+                  item.quantity.toString(),
+                  style: context.textTheme.labelSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: kSizeS,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(width: kSizeSS),
+        ButtonCircleWidget.gradient(
+          icon: Icons.add,
+          onPressed: () {
+            bloc.add(
+              AddProductToCartEvent(
+                categoryProduct: item.category,
+                package: item.package,
+                product: item.product,
+                quantity: item.quantity + 1,
+              ),
+            );
+          },
+          buttonSize: kSizeM,
+        ),
+        SizedBox(width: kSizeS),
+      ],
     );
   }
 }

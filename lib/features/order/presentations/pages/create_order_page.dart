@@ -105,6 +105,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                                       AddProductToCartEvent(
                                         categoryProduct: state.categoryProduct,
                                         product: cp,
+                                        quantity: quantity + 1,
                                       ),
                                     );
                                   } else {

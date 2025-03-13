@@ -67,6 +67,7 @@ class PackageListWidget extends StatelessWidget {
                       AddProductToCartEvent(
                         categoryProduct: state.categoryProduct,
                         package: package,
+                        quantity: quantity + 1,
                       ),
                     );
                   },

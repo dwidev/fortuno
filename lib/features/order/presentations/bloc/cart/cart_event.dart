@@ -14,9 +14,9 @@ final class AddProductToCartEvent extends CartEvent {
   final int quantity;
 
   const AddProductToCartEvent({
-    this.categoryProduct,
+    required this.quantity,
     this.product,
     this.package,
-    this.quantity = 1,
+    this.categoryProduct,
   });
 }
