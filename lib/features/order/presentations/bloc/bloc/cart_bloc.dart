@@ -23,9 +23,46 @@ class CartBloc extends BaseAppBloc<CartEvent, CartState> {
       category: event.categoryProduct,
       product: event.product,
       package: event.package,
+      quantity: event.quantity,
     );
-    final newState = state.copyWith(items: [...state.items, newItem]);
+
+    late BaseState newState;
+
+    if (state.items.isEmpty) {
+      newState = CartState(items: [newItem]);
+    } else {
+      final indexUpdated = state.items.indexWhere(
+        (e) => e.id == newItem.package?.id || e.id == newItem.product?.id,
+      );
+
+      if (indexUpdated != -1) {
+        final items = _updateQuantityItem(
+          newItem: newItem,
+          updated: (quantity) => quantity + event.quantity,
+        );
+        newState = state.copyWith(items: items);
+      } else {
+        newState = state.copyWith(items: [newItem, ...state.items]);
+      }
+    }
 
     emit(newState);
+  }
+
+  List<OrderItem> _updateQuantityItem({
+    required OrderItem newItem,
+    required Function(int quantity) updated,
+  }) {
+    final items =
+        state.items.map((e) {
+          if (e.id == newItem.package?.id || e.id == newItem.product?.id) {
+            final newQuantity = updated(e.quantity);
+            return newItem.copyWith(quantity: newQuantity);
+          }
+
+          return e;
+        }).toList();
+
+    return items;
   }
 }

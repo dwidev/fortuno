@@ -26,6 +26,7 @@ final profilRouteKey = GlobalKey<NavigatorState>(debugLabel: "profile-route");
 final router = GoRouter(
   navigatorKey: rootNavigatorKey,
   initialLocation: LoginPage.path,
+  // initialLocation: CreateOrderPage.path,
   routes: [
     // auth route
     ...authRoute,

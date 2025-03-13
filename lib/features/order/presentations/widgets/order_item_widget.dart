@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortuno/features/order/domain/entities/order_item.dart';
+import 'package:fortuno/features/order/presentations/bloc/bloc/cart_bloc.dart';
 
 import '../../../../core/core.dart';
 
@@ -10,6 +12,8 @@ class CartOrderItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<CartBloc>();
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: kSizeMS),
       child: Row(
@@ -55,14 +59,23 @@ class CartOrderItemWidget extends StatelessWidget {
               SizedBox(width: kSizeMS),
               InkWell(
                 onTap: () async {
-                  await showChangeTotalDialog<int>(
+                  final newQuantity = await showChangeTotalDialog<int>(
                     context: context,
-                    initial: 200,
+                    initial: item.quantity,
+                  );
+                  bloc.add(
+                    AddProductToCartEvent(
+                      categoryProduct: item.category,
+                      package: item.package,
+                      product: item.product,
+                      quantity: newQuantity ?? item.quantity,
+                    ),
                   );
                 },
                 child: Column(
                   children: [
                     Container(
+                      width: 49,
                       padding: EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         border: Border.all(
@@ -72,7 +85,8 @@ class CartOrderItemWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Text(
-                        "200",
+                        textAlign: TextAlign.center,
+                        item.quantity.toString(),
                         style: context.textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
