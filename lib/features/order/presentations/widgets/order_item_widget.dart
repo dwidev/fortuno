@@ -46,7 +46,13 @@ class CartOrderItemWidget extends StatelessWidget {
                           color: darkOliveGreen,
                         ),
                       ),
-                      Text(item.content, style: context.textTheme.bodySmall),
+                      SizedBox(
+                        width: 200,
+                        child: Text(
+                          item.content,
+                          style: context.textTheme.bodySmall,
+                        ),
+                      ),
                     ],
                   ),
                 ),

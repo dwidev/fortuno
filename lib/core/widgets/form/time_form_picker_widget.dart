@@ -1,22 +1,30 @@
+import 'package:fortuno/core/widgets/form/text_form_field_widget.dart';
+
 import '../../core.dart';
 
 class TimeFormPickerWidget extends StatelessWidget {
-  const TimeFormPickerWidget({super.key, required this.title});
+  const TimeFormPickerWidget({
+    super.key,
+    required this.title,
+    this.validator,
+    this.optional = false,
+    this.controller,
+    this.hintText = "",
+    this.initialValue,
+  });
 
+  final TextEditingController? controller;
   final String title;
+  final String hintText;
+  final String? initialValue;
+  final String? Function(String? value)? validator;
+  final bool optional;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: context.textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: kSizeMS),
         InkWell(
           onTap: () {
             showTimePicker(
@@ -27,18 +35,11 @@ class TimeFormPickerWidget extends StatelessWidget {
               ),
             );
           },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(kSizeMS),
-              color: darkLightColor,
-            ),
-            padding: EdgeInsets.symmetric(horizontal: kSizeMS),
-            child: TextFormField(
-              decoration: InputDecoration(
-                hintText: "00:00 WIB",
-                enabled: false,
-              ),
-            ),
+          child: TextFormFieldWidget(
+            controller: controller,
+            title: 'Jam',
+            hintText: "00:00 WIB",
+            enable: false,
           ),
         ),
       ],

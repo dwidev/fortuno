@@ -9,6 +9,8 @@ class TextFormFieldWidget extends StatelessWidget {
     this.hintText = '',
     this.maxLines = 1,
     this.validator,
+    this.optional = false,
+    this.enable = true,
   });
 
   final TextEditingController? controller;
@@ -17,6 +19,8 @@ class TextFormFieldWidget extends StatelessWidget {
   final String? initialValue;
   final int maxLines;
   final String? Function(String? value)? validator;
+  final bool optional;
+  final bool enable;
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +35,35 @@ class TextFormFieldWidget extends StatelessWidget {
             ),
           ),
         if (title.isNotEmpty) SizedBox(height: kSizeMS),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(kSizeMS),
-            color: darkLightColor,
-          ),
-          padding: EdgeInsets.symmetric(horizontal: kSizeMS),
-          child: TextFormField(
-            controller: controller,
-            initialValue: initialValue,
-            maxLines: maxLines,
-            decoration: InputDecoration(
-              hintText: hintText.isEmpty ? "Masukan $title" : hintText,
+        TextFormField(
+          controller: controller,
+          initialValue: initialValue,
+          maxLines: maxLines,
+          decoration: InputDecoration(
+            enabled: enable,
+            filled: true,
+            fillColor: darkLightColor, // Warna background
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(kSizeMS),
+              borderSide: BorderSide.none,
             ),
-            validator: validator,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: lemonChiffonColor),
+            ),
+            hintText: hintText.isEmpty ? "Masukan $title" : hintText,
           ),
+          validator: (value) {
+            if (optional) {
+              return validator?.call(value);
+            }
+
+            if (value != null && value.isEmpty) {
+              return '$title wajib di isi!';
+            }
+
+            return null;
+          },
         ),
       ],
     );

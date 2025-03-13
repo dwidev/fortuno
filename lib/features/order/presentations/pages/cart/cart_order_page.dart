@@ -20,11 +20,13 @@ class CartOrderPage extends StatefulWidget {
 class _CartOrderPageState extends State<CartOrderPage>
     with TickerProviderStateMixin {
   late TabController tabController;
+  late GlobalKey<FormState> formKey;
 
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
+    formKey = GlobalKey<FormState>();
   }
 
   @override
@@ -34,6 +36,8 @@ class _CartOrderPageState extends State<CartOrderPage>
   }
 
   void onTapOder() {
+    if (formKey.currentState?.validate() == false) return;
+
     if (tabController.index == 0) {
       setState(() {
         tabController.index += 1;
@@ -80,7 +84,7 @@ class _CartOrderPageState extends State<CartOrderPage>
                     vertical: kDefaultPadding * 2,
                     horizontal: kDefaultPadding,
                   ),
-                  child: CartDetailsViewPage(),
+                  child: CartDetailsViewPage(formKey: formKey),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
