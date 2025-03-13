@@ -2,8 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortuno/features/order/presentations/bloc/order/order_bloc.dart';
 
 import '../../../../core/core.dart';
-import '../../../products/domain/entities/package.dart';
-import '../bloc/bloc/cart_bloc.dart';
+import '../bloc/cart/cart_bloc.dart';
 
 class PackageListWidget extends StatelessWidget {
   const PackageListWidget({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../features/main_page.dart';
-import '../../features/order/presentations/bloc/bloc/cart_bloc.dart';
+import '../../features/order/presentations/bloc/cart/cart_bloc.dart';
 import '../../features/order/presentations/bloc/order/order_bloc.dart';
 import '../../features/order/presentations/pages/create_order_page.dart';
 import '../core.dart';

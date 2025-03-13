@@ -25,7 +25,7 @@ import 'package:fortuno/features/auth/domain/usecases/signin_with_google.dart'
     as _i870;
 import 'package:fortuno/features/auth/presentations/bloc/auth_bloc.dart'
     as _i279;
-import 'package:fortuno/features/order/presentations/bloc/bloc/cart_bloc.dart'
+import 'package:fortuno/features/order/presentations/bloc/cart/cart_bloc.dart'
     as _i1038;
 import 'package:fortuno/features/order/presentations/bloc/order/order_bloc.dart'
     as _i886;

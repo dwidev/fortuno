@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:fortuno/core/bloc/base_bloc.dart';
-import 'package:fortuno/features/order/presentations/bloc/bloc/cart_bloc.dart';
+import 'package:fortuno/features/order/presentations/bloc/cart/cart_bloc.dart';
 import 'package:fortuno/features/order/presentations/bloc/order/order_bloc.dart';
 import 'package:fortuno/features/products/domain/entities/category.dart';
 

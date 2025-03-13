@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortuno/features/order/presentations/bloc/bloc/cart_bloc.dart';
+import 'package:fortuno/features/order/presentations/bloc/cart/cart_bloc.dart';
 import 'package:fortuno/features/order/presentations/pages/cart/cart_order_page.dart';
 
 import '../../../../core/core.dart';
