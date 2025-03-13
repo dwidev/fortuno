@@ -12,7 +12,7 @@ class HeaderCreateOrderWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(
         kDefaultPadding,
-      ).copyWith(top: kDefaultPadding * 2, bottom: 10),
+      ).copyWith(top: kDefaultPadding * 3, bottom: 10),
       child: BlocBuilder<OrderBloc, OrderState>(
         builder: (context, state) {
           if (state is AtProductPage) {

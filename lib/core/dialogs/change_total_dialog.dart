@@ -76,29 +76,41 @@ class _TotalDialogPageState extends State<_TotalDialogPage> {
               ],
             ),
             Divider(),
-            SizedBox(height: kSizeM),
-            TextFormFieldWidget(
-              controller: controller,
-              title: "Total",
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Nilai tidak boleh kosong";
-                }
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: kSizeM),
+                    TextFormFieldWidget(
+                      controller: controller,
+                      title: "Total",
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Nilai tidak boleh kosong";
+                        }
 
-                return null;
-              },
-            ),
-            SizedBox(height: kSizeM),
-            Align(
-              alignment: Alignment.centerRight,
-              child: GradientButton(
-                width: 100,
-                onPressed: () {
-                  if (key.currentState?.validate() == false) return;
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: kSizeM),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: GradientButton(
+                        width: 100,
+                        onPressed: () {
+                          if (key.currentState?.validate() == false) return;
 
-                  Navigator.of(context).pop(resultValue);
-                },
-                child: Text("Simpan", style: context.textTheme.bodySmall),
+                          Navigator.of(context).pop(resultValue);
+                        },
+                        child: Text(
+                          "Simpan",
+                          style: context.textTheme.bodySmall,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

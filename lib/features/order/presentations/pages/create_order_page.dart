@@ -38,53 +38,52 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
           children: [
             Expanded(
               flex: 3,
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: kSizeM,
-                  horizontal: kSizeML,
-                ),
-                height: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /// HEADER APP
-                    HeaderCreateOrderWidget(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// HEADER APP
+                  HeaderCreateOrderWidget(),
 
-                    /// PACKAGE LIST
-                    PackageListWidget(),
+                  /// PACKAGE LIST
+                  PackageListWidget(),
 
-                    SizedBox(height: kSizeS),
+                  SizedBox(height: kSizeS),
 
-                    /// CATEGORY & PRODUCT LIST
-                    Expanded(
-                      child: BlocBuilder<OrderBloc, OrderState>(
-                        builder: (context, state) {
-                          if (state.loading.active) {
-                            return LoadingProductWidget();
-                          }
+                  /// CATEGORY & PRODUCT LIST
+                  Expanded(
+                    child: BlocBuilder<OrderBloc, OrderState>(
+                      builder: (context, state) {
+                        if (state.loading.active) {
+                          return LoadingProductWidget();
+                        }
 
-                          if (state.categories.isEmpty) {
-                            return Offstage();
-                          }
+                        if (state.categories.isEmpty) {
+                          return Offstage();
+                        }
 
-                          var itemCount = 0;
+                        var itemCount = 0;
 
-                          if (state is AtProductPage) {
-                            itemCount = state.products.length;
-                          } else {
-                            itemCount = state.categories.length;
-                          }
+                        if (state is AtProductPage) {
+                          itemCount = state.products.length;
+                        } else {
+                          itemCount = state.categories.length;
+                        }
 
-                          return GridView.builder(
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: kDefaultPadding,
+                          ).copyWith(top: kSizeS),
+                          child: GridView.builder(
+                            shrinkWrap: true,
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: CreateOrderPage.crossMaxItem,
-                                  crossAxisSpacing: 15,
-                                  mainAxisSpacing: 15,
-                                  childAspectRatio: 0.8,
+                                  crossAxisSpacing: 2,
+                                  mainAxisSpacing: 2,
+                                  childAspectRatio: 0.85,
                                 ),
                             itemCount: itemCount,
-                            padding: EdgeInsets.all(kDefaultPadding),
+                            // padding: EdgeInsets.all(kDefaultPadding),
                             itemBuilder: (context, index) {
                               final cp =
                                   state is AtProductPage
@@ -117,12 +116,12 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                                 },
                               );
                             },
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             Expanded(flex: 2, child: CartOrderPage()),
