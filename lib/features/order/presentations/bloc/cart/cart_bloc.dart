@@ -18,6 +18,7 @@ class CartBloc extends BaseAppBloc<CartEvent, CartState> {
   final CacheOrderFromCart cacheOrderFromCart;
   CartBloc({required this.cacheOrderFromCart}) : super(CartInitial()) {
     on<AddProductToCartEvent>(_onAddItem);
+    on<RemoveProductFromCart>(_onRemoveItem);
   }
 
   Future<void> _onAddItem(AddProductToCartEvent event, Emitter emit) async {
@@ -79,5 +80,34 @@ class CartBloc extends BaseAppBloc<CartEvent, CartState> {
         }).toList();
 
     return (items, itemUpdated);
+  }
+
+  Future<void> _onRemoveItem(RemoveProductFromCart event, Emitter emit) async {
+    final removedItem = OrderItem(
+      category: event.categoryProduct,
+      product: event.product,
+      package: event.package,
+      quantity: 0,
+    );
+
+    final indexUpdated = state.items.indexWhere(
+      (e) => e.id == event.package?.id || e.id == event.product?.id,
+    );
+
+    final items = state.items.toList();
+    items.removeAt(indexUpdated);
+
+    final newState = (state as AddedToCart).copyWith(
+      items: items,
+      newItem: removedItem,
+    );
+
+    final cache = CacheOrderFromCartParams(
+      categoryId: event.categoryProduct?.id ?? "",
+      orders: items,
+    );
+    cacheOrderFromCart(cache);
+
+    emit(newState);
   }
 }

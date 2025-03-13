@@ -73,12 +73,24 @@ class IncrementCartWidget extends StatelessWidget {
         ButtonCircleWidget.gradient(
           icon: Icons.remove,
           onPressed: () {
+            final q = item.quantity - 1;
+            if (q == 0) {
+              bloc.add(
+                RemoveProductFromCart(
+                  categoryProduct: item.category,
+                  package: item.package,
+                  product: item.product,
+                ),
+              );
+              return;
+            }
+
             bloc.add(
               AddProductToCartEvent(
                 categoryProduct: item.category,
                 package: item.package,
                 product: item.product,
-                quantity: item.quantity - 1,
+                quantity: q,
               ),
             );
           },

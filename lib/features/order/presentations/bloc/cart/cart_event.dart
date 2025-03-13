@@ -20,3 +20,12 @@ final class AddProductToCartEvent extends CartEvent {
     this.categoryProduct,
   });
 }
+
+final class RemoveProductFromCart extends AddProductToCartEvent {
+  const RemoveProductFromCart({
+    super.categoryProduct,
+    super.product,
+    super.package,
+    super.quantity = 0,
+  });
+}

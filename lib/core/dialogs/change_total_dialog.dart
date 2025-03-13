@@ -68,8 +68,7 @@ class _TotalDialogPageState extends State<_TotalDialogPage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    if (key.currentState?.validate() == false) return;
-                    Navigator.of(context).pop(resultValue);
+                    Navigator.of(context).pop(widget.inital);
                   },
                   icon: Icon(CupertinoIcons.clear, size: kSizeM),
                 ),
@@ -88,6 +87,10 @@ class _TotalDialogPageState extends State<_TotalDialogPage> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Nilai tidak boleh kosong";
+                        }
+
+                        if ((int.tryParse(value) ?? 0) < 0) {
+                          return "Nilai kurang dari 0";
                         }
 
                         return null;

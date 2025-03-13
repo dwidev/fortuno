@@ -94,19 +94,17 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
   }
 
   void _onAddQuantity(OnAddQuantity event, Emitter emit) {
-    if (state is AtProductPage) {
-      var productQuantityMap = {event.id: event.quantity};
-      final s = (state as AtProductPage);
-      final exist = s.productCountCart.containsKey(event.id);
+    if (state is! AtProductPage) return;
 
-      final newMap = Map<String, int>.from(s.productCountCart);
-      if (exist) {
-        newMap[event.id] = event.quantity;
-      } else {
-        newMap.addAll(productQuantityMap);
-      }
+    final s = (state as AtProductPage);
+    final newMap = Map<String, int>.from(s.productCountCart);
 
-      emit(s.copyWith(productCountCart: newMap));
+    if (event.quantity == 0) {
+      newMap.remove(event.id);
+    } else {
+      newMap[event.id] = event.quantity;
     }
+
+    emit(s.copyWith(productCountCart: newMap));
   }
 }

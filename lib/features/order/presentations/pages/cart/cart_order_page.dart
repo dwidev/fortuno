@@ -56,7 +56,8 @@ class _CartOrderPageState extends State<CartOrderPage>
   Widget build(BuildContext context) {
     return BlocListener<CartBloc, CartState>(
       listenWhen: (previous, current) {
-        return previous.items != current.items;
+        final ok = previous.items != current.items || current.items.isEmpty;
+        return ok;
       },
       listener: (context, state) {
         if (state is AddedToCart && state.newItem != null) {
