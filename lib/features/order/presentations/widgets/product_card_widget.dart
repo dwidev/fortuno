@@ -37,7 +37,6 @@ class ProductCardWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(kDefaultRadius - 2),
                         child: ColorFiltered(
                           colorFilter: const ColorFilter.mode(
-                            // Colors.grey,
                             Colors.transparent,
                             BlendMode.dst, // Menurunkan saturasi warna
                           ),

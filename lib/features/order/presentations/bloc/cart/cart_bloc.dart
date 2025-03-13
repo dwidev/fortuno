@@ -1,20 +1,22 @@
 import 'package:bloc/bloc.dart';
-import 'package:fortuno/core/core.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/bloc/base_bloc.dart';
+import '../../../../../core/core.dart';
 import '../../../../../core/failures/failure.dart';
 import '../../../../products/domain/entities/category.dart';
 import '../../../../products/domain/entities/package.dart';
 import '../../../../products/domain/entities/product.dart';
 import '../../../domain/entities/order_item.dart';
+import '../../../domain/usecases/cache_order_from_cart.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';
 
 @injectable
 class CartBloc extends BaseAppBloc<CartEvent, CartState> {
-  CartBloc() : super(CartInitial()) {
+  final CacheOrderFromCart cacheOrderFromCart;
+  CartBloc({required this.cacheOrderFromCart}) : super(CartInitial()) {
     on<AddProductToCartEvent>(_onAddItem);
   }
 
@@ -26,7 +28,7 @@ class CartBloc extends BaseAppBloc<CartEvent, CartState> {
       quantity: event.quantity,
     );
 
-    late BaseState newState;
+    late AddedToCart newState;
 
     if (state.items.isEmpty) {
       newState = AddedToCart(newItem: newItem, items: [newItem]);
@@ -52,6 +54,11 @@ class CartBloc extends BaseAppBloc<CartEvent, CartState> {
       }
     }
 
+    final cache = CacheOrderFromCartParams(
+      categoryId: event.categoryProduct?.id ?? "",
+      orders: newState.items,
+    );
+    cacheOrderFromCart(cache);
     emit(newState);
   }
 

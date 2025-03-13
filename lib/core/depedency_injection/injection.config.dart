@@ -25,8 +25,14 @@ import 'package:fortuno/features/auth/domain/usecases/signin_with_google.dart'
     as _i870;
 import 'package:fortuno/features/auth/presentations/bloc/auth_bloc.dart'
     as _i279;
+import 'package:fortuno/features/order/data/repository/order_repository_imp.dart'
+    as _i2;
+import 'package:fortuno/features/order/domain/repository/order_repository.dart'
+    as _i996;
+import 'package:fortuno/features/order/domain/usecases/cache_order_from_cart.dart'
+    as _i258;
 import 'package:fortuno/features/order/presentations/bloc/cart/cart_bloc.dart'
-    as _i1038;
+    as _i184;
 import 'package:fortuno/features/order/presentations/bloc/order/order_bloc.dart'
     as _i886;
 import 'package:fortuno/features/products/data/datasources/product_nosql_datasource.dart'
@@ -55,7 +61,6 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModule = _$RegisterModule();
-    gh.factory<_i1038.CartBloc>(() => _i1038.CartBloc());
     gh.lazySingleton<_i454.SupabaseClient>(() => registerModule.supabaseClient);
     gh.lazySingleton<_i592.FirebaseAuthService>(
       () => registerModule.firebaseAuthService,
@@ -65,6 +70,10 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i720.AuthRemoteDataource>(
       () => _i787.AuthNosqlDatasource(client: gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i996.OrderRepository>(
+      () => _i2.OrderRepositoryImpl(),
+      dispose: (i) => i.dispose(),
     );
     gh.lazySingleton<_i1028.ProductsRepository>(
       () => _i587.ProductsRepositoryImpl(
@@ -99,6 +108,11 @@ extension GetItInjectableX on _i174.GetIt {
         getPackageByCategoryid: gh<_i359.GetPackageByCategoryid>(),
       ),
     );
+    gh.lazySingleton<_i258.CacheOrderFromCart>(
+      () => _i258.CacheOrderFromCart(
+        orderRepository: gh<_i996.OrderRepository>(),
+      ),
+    );
     gh.lazySingleton<_i870.SignWithGoogle>(
       () => _i870.SignWithGoogle(authRepository: gh<_i948.AuthRepository>()),
     );
@@ -110,6 +124,9 @@ extension GetItInjectableX on _i174.GetIt {
         signWithGoogle: gh<_i870.SignWithGoogle>(),
         signOut: gh<_i101.SignOut>(),
       ),
+    );
+    gh.factory<_i184.CartBloc>(
+      () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
     );
     return this;
   }

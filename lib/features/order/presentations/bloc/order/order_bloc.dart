@@ -29,7 +29,12 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
     on<OnInitOrderPageEvent>(_onInit);
     on<OnClickCategory>(_onClickCategory);
     on<OnBackToCategory>((event, emit) {
-      emit(OrderInitSuccess(categories: state.categories));
+      emit(
+        OrderInitSuccess(
+          categories: state.categories,
+          productCountCart: state.productCountCart,
+        ),
+      );
     });
     on<OnAddQuantity>(_onAddQuantity);
   }
@@ -46,7 +51,12 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
         error(emit, err);
       },
       (right) {
-        emit(OrderInitSuccess(categories: right));
+        emit(
+          OrderInitSuccess(
+            categories: right,
+            productCountCart: state.productCountCart,
+          ),
+        );
       },
     );
   }
@@ -64,6 +74,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
     var newState = AtProductPage(
       categoryProduct: event.categoryProduct,
       categories: state.categories,
+      productCountCart: state.productCountCart,
     );
 
     resCat.fold((err) => failure ??= err, (data) {
