@@ -52,8 +52,8 @@ class TextFormFieldWidget extends StatelessWidget {
               borderSide: BorderSide(color: lemonChiffonColor),
             ),
             hintText: hintText.isEmpty ? "Masukan $title" : hintText,
-            labelStyle: TextStyle(color: darkColor),
           ),
+          style: TextStyle(color: darkColor),
           validator: (value) {
             if (optional) {
               return validator?.call(value);
