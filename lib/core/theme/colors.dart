@@ -6,7 +6,7 @@ const softPinkColor = Color(0x07f93263);
 const secondarySoftColor = Color(0xffFFDFDF);
 const whiteColor = Colors.white;
 const darkLightColor = Color(0xffF7F7F9);
-final darkColor = const Color(0xff352F44).withValues(alpha: 0.8);
+final darkColor = Color(0xFF2E2E2E);
 const blueLightColor = Color(0xff00A9FF);
 const softblueColor = Color(0xffAEDEFC);
 const blackColor = Color(0xff0F0F0F);
@@ -35,3 +35,13 @@ const mustardYellow = Color(0xffB88A00); // Mustard Yellow
 const warmAmber = Color(0xffA6761D); // Warm Amber
 const bronzeYellow = Color(0xff805B26); // Bronze Yellow
 const antiqueGold = Color(0xff746C48); // Antique Gold
+
+const Color shimmerBaseColor = Color(
+  0xFFE0E0E0,
+); // Warna dasar shimmer (abu-abu terang)
+const Color shimmerHighlightColor = Color(
+  0xFFF5F5F5,
+); // Warna highlight shimmer (lebih terang)
+const Color shimmerDarkColor = Color(
+  0xFFBDBDBD,
+); // Warna gelap shimmer (abu-abu lebih tua)

@@ -1,6 +1,6 @@
 part of 'base_bloc.dart';
 
-class BaseListenerWidget<P extends BaseAppBloc, B extends BaseState>
+class BaseListenerWidget<P extends BaseAppBloc, S extends BaseState>
     extends StatelessWidget {
   const BaseListenerWidget({
     super.key,
@@ -8,36 +8,69 @@ class BaseListenerWidget<P extends BaseAppBloc, B extends BaseState>
     required this.builder,
   });
 
+  /// if [overrideListener] true its then just run the onListenerFunctions
+  bool get overrideListener => false;
+
+  /// if [overrideLoading] true the loading listener do not running
+  bool get overrideLoading => false;
+
   final Function(BuildContext context, BaseState state)? listener;
-  final Function(BuildContext context, P state) builder;
+  final Function(BuildContext context, P bloc, BaseState state) builder;
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.read<P>();
+    final bloc = context.read<P>();
+    final state = context.watch<P>().state;
 
     return BlocListener<P, BaseState>(
       listener: (context, state) {
-        if (state is IsLoading && state.opts.active) {
-          context.loading();
+        // adding overiding listener for some children class
+        // and ignore the base listener (or the code below)
+        if (overrideListener) {
+          onListener(context, state);
+          return;
         }
 
-        if (state is IsLoading && !state.opts.active) {
-          if (state.opts.isDialogOrPage) {
-            context.popUntil(state.opts.numLayers);
-          }
-        }
+        // listen the loading state
+        if (!overrideLoading) handlerLoadingDialog(context, state);
 
-        if (state is OnError) {
-          // TODO (fahmi): handle on error UI
-        }
+        // listen the error state
+        handlerError(context, state);
 
+        // adding some optional listener for children class
         onListener(context, state);
       },
-      child: builder(context, provider),
+      child: builder(context, bloc, state),
     );
   }
 
   void onListener(BuildContext context, BaseState state) {
     listener?.call(context, state);
+  }
+
+  static void handlerLoadingDialog(BuildContext context, BaseState state) {
+    if (state.loading.active) {
+      EasyLoading.show(
+        dismissOnTap: false,
+        maskType: EasyLoadingMaskType.clear,
+      );
+    }
+
+    if (!state.loading.active) {
+      EasyLoading.dismiss();
+    }
+  }
+
+  static void handlerError(BuildContext context, BaseState state) {
+    if (state.error != null) {
+      debugPrint("${state.error}");
+      showErrorDialog(
+        context: context,
+        failure: state.error!,
+        onOke: () {
+          context.pop();
+        },
+      );
+    }
   }
 }

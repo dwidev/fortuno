@@ -6,6 +6,9 @@ class AuthToken extends Equatable {
 
   const AuthToken({required this.accessToken, required this.refreshToken});
 
+  factory AuthToken.unAuthorize() =>
+      AuthToken(accessToken: "", refreshToken: "");
+
   @override
   List<Object> get props => [accessToken, refreshToken];
 

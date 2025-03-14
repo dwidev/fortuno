@@ -1,31 +1,26 @@
-import 'package:equatable/equatable.dart';
+import 'product.dart';
 
-class CategoryProduct extends Equatable {
-  final String id;
-  final String name;
-  final String code;
+class CategoryProduct extends Product {
   final bool haveProduct;
-  final double price;
-  final String createAt;
 
   const CategoryProduct({
-    required this.id,
-    required this.name,
-    required this.code,
+    required super.id,
+    required super.name,
+    required super.code,
+    required super.price,
+    required super.createAt,
     required this.haveProduct,
-    required this.price,
-    required this.createAt,
   });
 
   const CategoryProduct.initial({
-    this.id = '',
-    this.name = '',
-    this.code = '',
+    super.id = '',
+    super.name = '',
+    super.code = '',
+    super.price = 0.0,
+    super.createAt = '',
     this.haveProduct = false,
-    this.price = 0.0,
-    this.createAt = '',
   });
 
   @override
-  List<Object?> get props => [id, name, code, haveProduct, price, createAt];
+  List<Object?> get props => [...super.props, haveProduct];
 }

@@ -1,7 +1,21 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'base_bloc.dart';
 
 /// BASE STATE
-abstract class BaseState extends Equatable {}
+abstract class BaseState extends Equatable {
+  final Failure? error;
+  final LoadingOpts loading;
+
+  const BaseState({
+    this.loading = const LoadingOpts(active: false),
+    this.error,
+  });
+
+  @override
+  List<Object?> get props => [error, loading];
+
+  BaseState copyWith({LoadingOpts? loading, ValueGetter<Failure?>? error});
+}
 
 class LoadingOpts extends Equatable {
   final bool active;
@@ -27,22 +41,4 @@ class LoadingOpts extends Equatable {
       isDialogOrPage: isDialogOrPage ?? this.isDialogOrPage,
     );
   }
-}
-
-class IsLoading extends BaseState {
-  final LoadingOpts opts;
-
-  IsLoading({this.opts = const LoadingOpts(active: true)});
-
-  @override
-  List<Object?> get props => [opts];
-}
-
-class OnError extends BaseState {
-  final Failure error;
-
-  OnError({required this.error});
-
-  @override
-  List<Object?> get props => [error];
 }

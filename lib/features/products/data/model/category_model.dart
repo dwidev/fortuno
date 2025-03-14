@@ -22,23 +22,25 @@ class CategoryModel extends BaseModel<CategoryProduct> {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'code': code,
-      'haveProduct': haveProduct,
+      'ID': id,
+      'category_name': name,
+      'category_code': code,
+      'have_product': haveProduct,
       'price': price,
-      'createAt': createAt,
+      'create_at': createAt,
     };
   }
 
   factory CategoryModel.fromMap(Map<String, dynamic> map) {
+    final price = BaseModel.parsePriceToDouble(map);
+
     return CategoryModel(
-      id: map['id'] as String,
-      name: map['name'] as String,
-      code: map['code'] as String,
-      haveProduct: map['haveProduct'] as bool,
-      price: map['price'] as double,
-      createAt: map['createAt'] as String,
+      id: map["ID"] as String? ?? "",
+      name: map["category_name"] as String? ?? "",
+      code: map["category_code"] as String? ?? "",
+      haveProduct: map["have_product"] as bool? ?? false,
+      price: price,
+      createAt: map["create_at"]?.toString() ?? "",
     );
   }
 

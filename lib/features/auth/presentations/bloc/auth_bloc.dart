@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/widgets.dart';
+import 'package:fortuno/core/failures/failure.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/bloc/base_bloc.dart';
@@ -27,7 +29,7 @@ class AuthBloc extends BaseAppBloc<AuthEvent, AuthState> {
 
     response.fold(
       (err) {
-        emit(OnError(error: err));
+        error(emit, err);
       },
       (right) {
         emit(AuthSucces(isLoggin: right));
@@ -40,7 +42,7 @@ class AuthBloc extends BaseAppBloc<AuthEvent, AuthState> {
 
     response.fold(
       (err) {
-        emit(OnError(error: err));
+        error(emit, err);
       },
       (right) {
         emit(LoggedOut());

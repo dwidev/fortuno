@@ -14,7 +14,7 @@ final authRoute = <RouteBase>[
         (context, state) => BlocProvider(
           create: (context) => getIt<AuthBloc>(),
           child: AuthListener(
-            builder: (context, state) {
+            builder: (context, bloc, state) {
               return LoginPage();
             },
           ),

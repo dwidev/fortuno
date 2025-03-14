@@ -1,11 +1,19 @@
-import 'package:fortuno/core/core.dart';
-import 'package:fortuno/features/order/presentations/pages/process_order_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortuno/features/order/presentations/bloc/cart/cart_bloc.dart';
+import 'package:fortuno/features/order/presentations/pages/cart/cart_order_page.dart';
 
-import 'order_details_view_page.dart';
-import 'payment_details_view_page.dart';
+import '../../../../core/core.dart';
+import '../bloc/order/order_bloc.dart';
+import '../widgets/header_create_order_widget.dart';
+import '../widgets/loading_product_widget.dart';
+import '../widgets/order_listener_widget.dart';
+import '../widgets/package_list_widget.dart';
+import '../widgets/product_card_widget.dart';
 
 class CreateOrderPage extends StatefulWidget {
   static const path = '/create-order';
+
+  static const crossMaxItem = 5;
 
   const CreateOrderPage({super.key});
 
@@ -13,212 +21,113 @@ class CreateOrderPage extends StatefulWidget {
   State<CreateOrderPage> createState() => _CreateOrderPageState();
 }
 
-class _CreateOrderPageState extends State<CreateOrderPage>
-    with TickerProviderStateMixin {
-  late TabController tabController;
-
+class _CreateOrderPageState extends State<CreateOrderPage> {
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    tabController.dispose();
-  }
-
-  void onTapOder() {
-    if (tabController.index == 0) {
-      setState(() {
-        tabController.index += 1;
-      });
-      return;
-    }
-
-    showSuccessDialog(
-      context: context,
-      desc: "Pesanan berhasil dibuat",
-      onOke: () {
-        context.pop();
-        context.go(ProcessOrderPage.path);
-        tabController.index = 0;
-      },
+    context.read<OrderBloc>().add(
+      OnInitOrderPageEvent(companyId: "898a70b4-0758-4eda-bf73-b469db14eb50"),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 3,
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              vertical: kSizeM,
-              horizontal: kSizeML,
-            ),
-            height: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(
-                    kDefaultPadding,
-                  ).copyWith(top: kDefaultPadding * 2),
-                  child: Text(
-                    "RM Barokah Catering",
-                    style: context.textTheme.titleLarge,
-                  ),
-                ),
-                Expanded(
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      crossAxisSpacing: 15,
-                      mainAxisSpacing: 15,
-                    ),
-                    itemCount: 5,
-                    padding: EdgeInsets.all(kDefaultPadding),
-                    itemBuilder: (context, index) {
-                      return Card(
-                        color: whiteColor,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                        kDefaultRadius,
+    return OrderListenerWidget(
+      builder: (context, orderBloc, state) {
+        return Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// HEADER APP
+                  HeaderCreateOrderWidget(),
+
+                  /// PACKAGE LIST
+                  PackageListWidget(),
+
+                  SizedBox(height: kSizeS),
+
+                  /// CATEGORY & PRODUCT LIST
+                  Expanded(
+                    child: BlocBuilder<OrderBloc, OrderState>(
+                      builder: (context, state) {
+                        if (state.loading.active) {
+                          return LoadingProductWidget();
+                        }
+
+                        if (state.categories.isEmpty) {
+                          return Offstage();
+                        }
+
+                        var itemCount = 0;
+
+                        if (state is AtProductPage) {
+                          itemCount = state.products.length;
+                        } else {
+                          itemCount = state.categories.length;
+                        }
+
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: kDefaultPadding,
+                          ).copyWith(top: kSizeS),
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: CreateOrderPage.crossMaxItem,
+                                  crossAxisSpacing: 2,
+                                  mainAxisSpacing: 2,
+                                  childAspectRatio: 0.85,
+                                ),
+                            itemCount: itemCount,
+                            // padding: EdgeInsets.all(kDefaultPadding),
+                            itemBuilder: (context, index) {
+                              final cp =
+                                  state is AtProductPage
+                                      ? state.products[index]
+                                      : state.categories[index];
+
+                              var quantity = 0;
+                              if (state is AtProductPage) {
+                                quantity = state.productCountCart[cp.id] ?? 0;
+                              }
+
+                              return ProductCardWidget(
+                                product: cp,
+                                quantity: quantity,
+                                onTap: () {
+                                  if (state is AtProductPage) {
+                                    context.read<CartBloc>().add(
+                                      AddProductToCartEvent(
+                                        categoryProduct: state.categoryProduct,
+                                        product: cp,
+                                        quantity: quantity + 1,
                                       ),
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                          "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
-                                        ),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: kSizeS * 0.5,
-                                    right: kSizeS * 0.5,
-                                    child: Container(
-                                      padding: EdgeInsets.all(kSizeS * 0.5),
-                                      decoration: BoxDecoration(
-                                        color: whiteColor,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: Text(
-                                        "20K",
-                                        style: context.textTheme.bodySmall
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.bold,
-                                              color: darkOliveGreen,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Paket Berkah",
-                                    style: context.textTheme.bodyMedium
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w800,
-                                          color: darkOliveGreen,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Container(
-            height: double.infinity,
-            color: Colors.white,
-            child: Stack(
-              children: [
-                TabBarView(
-                  controller: tabController,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: kDefaultPadding * 2,
-                        horizontal: kDefaultPadding,
-                      ),
-                      child: OrderDetailsViewPage(),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: kDefaultPadding * 2,
-                        horizontal: kDefaultPadding,
-                      ),
-                      child: PaymentDetailsViewsPage(
-                        onBack: () {
-                          setState(() {
-                            tabController.index = 0;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                if (!context.isKeyboardOpen)
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: kSizeML,
-                        horizontal: kSizeML,
-                      ),
-                      child: GradientButton(
-                        onPressed: onTapOder,
-                        height: kSizeXXL,
-                        child: AnimatedSwitcher(
-                          duration: Duration(milliseconds: 500),
-                          switchInCurve: Curves.easeIn,
-                          switchOutCurve: Curves.easeOut,
-                          child: Text(
-                            tabController.index == 0
-                                ? "Proses Order"
-                                : "Buat Order",
-                            style: context.textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: darkColor,
-                            ),
+                                    );
+                                  } else {
+                                    final cp = state.categories[index];
+                                    orderBloc.add(
+                                      OnClickCategory(categoryProduct: cp),
+                                    );
+                                  }
+                                },
+                              );
+                            },
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
                   ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ),
-      ],
+            Expanded(flex: 2, child: CartOrderPage.init()),
+          ],
+        );
+      },
     );
   }
 }

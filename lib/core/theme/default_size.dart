@@ -1,5 +1,5 @@
 // default size
-const kDefaultPadding = kSizeM;
+const kDefaultPadding = kSizeMS;
 const kDefaultRadius = kSizeMS;
 
 // size

@@ -1,0 +1,57 @@
+import 'package:equatable/equatable.dart';
+import 'package:fortuno/features/products/domain/entities/category.dart';
+import 'package:fortuno/features/products/domain/entities/product.dart';
+
+class Package extends Equatable {
+  final String id;
+  final String name;
+  final String code;
+  final double price;
+  final bool isActive;
+  final String createAt;
+  final CategoryProduct category;
+  final List<Product> items;
+
+  String get contents => items.map((e) => e.name).join(", ");
+
+  const Package({
+    required this.id,
+    required this.name,
+    required this.code,
+    required this.price,
+    required this.isActive,
+    required this.createAt,
+    required this.category,
+    required this.items,
+  });
+
+  Package copyWith({
+    String? id,
+    String? name,
+    String? code,
+    double? price,
+    bool? isActive,
+    String? createAt,
+    CategoryProduct? category,
+    List<Product>? items,
+  }) {
+    return Package(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      code: code ?? this.code,
+      price: price ?? this.price,
+      isActive: isActive ?? this.isActive,
+      createAt: createAt ?? this.createAt,
+      category: category ?? this.category,
+      items: items ?? this.items,
+    );
+  }
+
+  @override
+  List<Object> get props {
+    return [id, name, code, price, isActive, createAt, category, items];
+  }
+
+  @override
+  bool get stringify => true;
+}

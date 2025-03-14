@@ -1,8 +1,15 @@
 part of 'auth_bloc.dart';
 
-sealed class AuthState extends BaseState {
+class AuthState extends BaseState {
+  const AuthState({super.error, super.loading});
+
   @override
-  List<Object> get props => [];
+  BaseState copyWith({LoadingOpts? loading, ValueGetter<Failure?>? error}) {
+    return AuthState(
+      loading: loading ?? this.loading,
+      error: error != null ? error.call() : this.error,
+    );
+  }
 }
 
 final class AuthInitial extends AuthState {}
@@ -10,7 +17,7 @@ final class AuthInitial extends AuthState {}
 final class AuthSucces extends AuthState {
   final bool isLoggin;
 
-  AuthSucces({required this.isLoggin});
+  const AuthSucces({required this.isLoggin});
 }
 
 final class LoggedOut extends AuthState {}

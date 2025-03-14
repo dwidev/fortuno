@@ -22,6 +22,7 @@ class ButtonCircleWidget extends StatelessWidget {
     double buttonSize = _defaultButtonSize,
     List<Color>? gradiendBackgroundColor,
     Color iconColor = Colors.white,
+    bool noShadow = true,
   }) {
     return ButtonCircleWidget(
       icon: icon,
@@ -31,6 +32,7 @@ class ButtonCircleWidget extends StatelessWidget {
           gradiendBackgroundColor ?? [mutedLemonColor, sageGreenColor],
       onPressed: onPressed,
       buttonSize: buttonSize,
+      noShadow: noShadow,
     );
   }
 

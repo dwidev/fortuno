@@ -1,10 +1,8 @@
-import 'package:fortuno/features/order/presentations/widgets/process_order_dialog.dart';
-
+import '../../../../core/core.dart';
 import '../widgets/order_action_widget.dart';
 import '../widgets/order_package_widget.dart';
-
-import '../../../../core/core.dart';
-import 'payment_details_view_page.dart';
+import '../widgets/process_order_dialog.dart';
+import 'cart/cart_create_order_view_page.dart';
 
 class ProcessOrderPage extends StatefulWidget {
   static String path = '/process-order';
@@ -240,7 +238,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              PaymentDetailsViewsPage(
+                                              CartCreateOrderViewPage(
                                                 onBack: () {},
                                                 viewOnly: true,
                                               ),

@@ -9,3 +9,4 @@ export 'widgets/widgets.dart';
 export 'dialogs/dialogs.dart';
 export 'constants/lottie_assets.dart';
 export 'router/main_route.dart';
+export 'utils/date_format.dart';
