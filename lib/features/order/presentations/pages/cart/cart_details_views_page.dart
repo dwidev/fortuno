@@ -60,7 +60,7 @@ class CartDetailsViewPage extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   final item = state.items[index];
-                  return CartProcessingItemWidget(item: item);
+                  return CartOrderItem(item: item);
                 },
               );
             },

@@ -63,6 +63,8 @@ class PackageListWidget extends StatelessWidget {
                 return InkWell(
                   borderRadius: BorderRadius.circular(kDefaultRadius),
                   onTap: () {
+                    if (state.finishSelected) return;
+
                     context.read<CartBloc>().add(
                       AddProductToCartEvent(
                         categoryProduct: state.categoryProduct,

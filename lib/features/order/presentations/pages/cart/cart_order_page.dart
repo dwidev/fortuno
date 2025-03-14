@@ -1,12 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:fortuno/core/depedency_injection/injection.dart';
-import 'package:fortuno/features/order/presentations/bloc/cart/cart_bloc.dart';
-import 'package:fortuno/features/order/presentations/bloc/cart/cart_processing_bloc.dart';
-import 'package:fortuno/features/order/presentations/bloc/order/order_bloc.dart';
-import 'package:fortuno/features/products/domain/entities/category.dart';
 
 import '../../../../../core/core.dart';
+import '../../../../../core/depedency_injection/injection.dart';
+import '../../../../products/domain/entities/category.dart';
+import '../../bloc/cart/cart_bloc.dart';
+import '../../bloc/cart/cart_processing_bloc.dart';
+import '../../bloc/order/order_bloc.dart';
 import '../process_order_page.dart';
 import 'cart_create_order_view_page.dart';
 import 'cart_details_views_page.dart';
@@ -62,6 +62,9 @@ class _CartOrderPageState extends State<CartOrderPage>
     if (cartProcess.formKey.currentState?.validate() == false) return;
 
     if (tabController.index == 0) {
+      final orderBloc = context.read<OrderBloc>();
+      orderBloc.add(OnFinishSelectedProduct(isFinish: true));
+
       setState(() {
         tabController.index += 1;
       });
@@ -77,6 +80,15 @@ class _CartOrderPageState extends State<CartOrderPage>
         tabController.index = 0;
       },
     );
+  }
+
+  void onBack() {
+    final orderBloc = context.read<OrderBloc>();
+    orderBloc.add(OnFinishSelectedProduct(isFinish: false));
+
+    setState(() {
+      tabController.index = 0;
+    });
   }
 
   @override
@@ -114,13 +126,7 @@ class _CartOrderPageState extends State<CartOrderPage>
                     vertical: kDefaultPadding * 2,
                     horizontal: kDefaultPadding,
                   ),
-                  child: CartCreateOrderViewPage(
-                    onBack: () {
-                      setState(() {
-                        tabController.index = 0;
-                      });
-                    },
-                  ),
+                  child: CartCreateOrderViewPage(onBack: onBack),
                 ),
               ],
             ),

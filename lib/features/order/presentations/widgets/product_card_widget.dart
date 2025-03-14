@@ -1,4 +1,6 @@
-import 'package:fortuno/features/products/domain/entities/category.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/order/order_bloc.dart';
+import '../../../products/domain/entities/category.dart';
 
 import '../../../../core/core.dart';
 import '../../../products/domain/entities/product.dart';
@@ -17,8 +19,12 @@ class ProductCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isFinish = context.select<OrderBloc, bool>((value) {
+      return value.state.finishSelected;
+    });
+
     return GestureDetector(
-      onTap: onTap,
+      onTap: !isFinish ? onTap : null,
       child: Card(
         color: darkLightColor,
         child: LayoutBuilder(

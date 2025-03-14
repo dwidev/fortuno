@@ -1,4 +1,8 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortuno/features/order/domain/entities/order_item.dart';
+
 import '../../../../../core/core.dart';
+import '../../bloc/cart/cart_bloc.dart';
 
 class CartCreateOrderViewPage extends StatelessWidget {
   const CartCreateOrderViewPage({
@@ -12,6 +16,10 @@ class CartCreateOrderViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final totalPriceOrder = context.select<CartBloc, String>(
+      (value) => value.state.items.totalPriceString,
+    );
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -19,13 +27,13 @@ class CartCreateOrderViewPage extends StatelessWidget {
           if (!viewOnly)
             Row(
               children: [
-                ButtonCircleWidget(
+                ButtonCircleWidget.gradient(
                   icon: CupertinoIcons.back,
                   buttonSize: kSizeXL,
                   onPressed: onBack,
                   iconColor: darkColor,
-                  noShadow: true,
                 ),
+                SizedBox(width: kSizeM),
                 Text(
                   "Rincian Pembayaran",
                   style: context.textTheme.bodyLarge?.copyWith(
@@ -35,7 +43,8 @@ class CartCreateOrderViewPage extends StatelessWidget {
                 ),
               ],
             ),
-          if (!viewOnly) Divider(),
+          if (!viewOnly) ...[SizedBox(height: kSizeS), Divider()],
+          SizedBox(height: kSizeS),
           Text(
             "Rincian pesanan",
             style: context.textTheme.bodyMedium?.copyWith(
@@ -43,57 +52,65 @@ class CartCreateOrderViewPage extends StatelessWidget {
               color: mustardYellow,
             ),
           ),
-          ...List.generate(
-            3,
-            (index) => Padding(
-              padding: EdgeInsets.symmetric(vertical: kSizeMS),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+          BlocBuilder<CartBloc, CartState>(
+            builder: (context, state) {
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: state.items.length,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final item = state.items[index];
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: kSizeMS),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          "Paket Berkah 20K",
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: darkOliveGreen,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.title,
+                                style: context.textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: darkOliveGreen,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 300,
+                                child: Text(
+                                  item.contents,
+                                  style: context.textTheme.bodySmall,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Text(
-                          "Nasi, Ayam bakar, Tahu, Tempe",
-                          style: context.textTheme.bodySmall,
-                        ),
-                        Text(
-                          "Box Kardus + alat makan",
-                          style: context.textTheme.bodySmall,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              "${item.priceString} ${item.quantityTitle}",
+                              style: context.textTheme.bodySmall?.copyWith(
+                                fontStyle: FontStyle.italic,
+                                fontSize: 10,
+                              ),
+                            ),
+                            Text(
+                              item.totalPriceString,
+                              style: context.textTheme.bodyLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        "Rp 20.000 x 200 pax",
-                        style: context.textTheme.bodySmall?.copyWith(
-                          fontStyle: FontStyle.italic,
-                          fontSize: 10,
-                        ),
-                      ),
-                      Text(
-                        "Rp 200.000",
-                        style: context.textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+                  );
+                },
+              );
+            },
           ),
           SizedBox(height: kSizeM),
           Row(
@@ -106,7 +123,7 @@ class CartCreateOrderViewPage extends StatelessWidget {
                 ),
               ),
               Text(
-                "Rp 2.000.000",
+                totalPriceOrder,
                 style: context.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

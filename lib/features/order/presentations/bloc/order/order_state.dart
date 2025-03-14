@@ -3,10 +3,12 @@ part of 'order_bloc.dart';
 class OrderState extends BaseState {
   final List<CategoryProduct> categories;
   final Map<String, int> productCountCart;
+  final bool finishSelected;
 
   const OrderState({
     this.categories = const [],
     this.productCountCart = const {},
+    this.finishSelected = false,
     super.error,
     super.loading,
   });
@@ -36,6 +38,7 @@ final class OrderInitSuccess extends OrderState {
   const OrderInitSuccess({
     required super.categories,
     required super.productCountCart,
+    required super.finishSelected,
   });
 }
 
@@ -48,6 +51,7 @@ final class AtProductPage extends OrderState {
     required this.categoryProduct,
     required super.categories,
     required super.productCountCart,
+    required super.finishSelected,
     this.products = const [],
     this.packages = const [],
   });
@@ -55,6 +59,7 @@ final class AtProductPage extends OrderState {
   @override
   AtProductPage copyWith({
     CategoryProduct? categoryProduct,
+    bool? finishSelected,
     List<Product>? products,
     List<Package>? packages,
     List<CategoryProduct>? categories,
@@ -68,12 +73,14 @@ final class AtProductPage extends OrderState {
       products: products ?? this.products,
       packages: packages ?? this.packages,
       categories: categories ?? this.categories,
+      finishSelected: finishSelected ?? this.finishSelected,
     );
   }
 
   @override
   List<Object?> get props => [
     categoryProduct,
+    finishSelected,
     packages,
     packages,
     productCountCart,
