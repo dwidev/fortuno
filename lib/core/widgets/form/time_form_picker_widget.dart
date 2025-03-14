@@ -2,10 +2,11 @@ import 'package:fortuno/core/widgets/form/text_form_field_widget.dart';
 
 import '../../core.dart';
 
-class TimeFormPickerWidget extends StatelessWidget {
+class TimeFormPickerWidget extends StatefulWidget {
   const TimeFormPickerWidget({
     super.key,
     required this.title,
+    this.onChange,
     this.validator,
     this.optional = false,
     this.controller,
@@ -19,6 +20,14 @@ class TimeFormPickerWidget extends StatelessWidget {
   final String? initialValue;
   final String? Function(String? value)? validator;
   final bool optional;
+  final Function(TimeOfDay date)? onChange;
+
+  @override
+  State<TimeFormPickerWidget> createState() => _TimeFormPickerWidgetState();
+}
+
+class _TimeFormPickerWidgetState extends State<TimeFormPickerWidget> {
+  TimeOfDay? value;
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +35,29 @@ class TimeFormPickerWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InkWell(
-          onTap: () {
-            showTimePicker(
+          onTap: () async {
+            final time = await showTimePicker(
               context: context,
-              initialTime: TimeOfDay(
-                hour: DateTime.now().hour,
-                minute: DateTime.now().minute,
-              ),
+              initialTime:
+                  value ??
+                  TimeOfDay(
+                    hour: DateTime.now().hour,
+                    minute: DateTime.now().minute,
+                  ),
             );
+
+            if (time == null) return;
+            String formattedTime =
+                "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
+
+            widget.controller?.text = formattedTime;
+            widget.onChange?.call(time);
+            setState(() {
+              value = time;
+            });
           },
           child: TextFormFieldWidget(
-            controller: controller,
+            controller: widget.controller,
             title: 'Jam',
             hintText: "00:00 WIB",
             enable: false,

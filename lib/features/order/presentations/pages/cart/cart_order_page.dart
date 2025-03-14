@@ -1,5 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fortuno/core/depedency_injection/injection.dart';
 import 'package:fortuno/features/order/presentations/bloc/cart/cart_bloc.dart';
+import 'package:fortuno/features/order/presentations/bloc/cart/cart_processing_bloc.dart';
 import 'package:fortuno/features/order/presentations/bloc/order/order_bloc.dart';
 import 'package:fortuno/features/products/domain/entities/category.dart';
 
@@ -13,6 +16,13 @@ class CartOrderPage extends StatefulWidget {
 
   const CartOrderPage({super.key, this.categoryProduct});
 
+  static init({Key? key, CategoryProduct? categoryProduct}) {
+    return BlocProvider(
+      create: (context) => getIt<CartProcessingBloc>(),
+      child: CartOrderPage(key: key, categoryProduct: categoryProduct),
+    );
+  }
+
   @override
   State<CartOrderPage> createState() => _CartOrderPageState();
 }
@@ -20,13 +30,11 @@ class CartOrderPage extends StatefulWidget {
 class _CartOrderPageState extends State<CartOrderPage>
     with TickerProviderStateMixin {
   late TabController tabController;
-  late GlobalKey<FormState> formKey;
 
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
-    formKey = GlobalKey<FormState>();
   }
 
   @override
@@ -36,7 +44,22 @@ class _CartOrderPageState extends State<CartOrderPage>
   }
 
   void onTapOder() {
-    if (formKey.currentState?.validate() == false) return;
+    final cartBloc = context.read<CartBloc>();
+    if (cartBloc.state.items.isEmpty) {
+      EasyLoading.instance
+        ..maskColor = Colors.amber
+        ..backgroundColor = Colors.red
+        ..toastPosition = EasyLoadingToastPosition.bottom;
+      EasyLoading.showToast(
+        "Silahkan pilih salah satu produk/package!!!",
+        dismissOnTap: true,
+        duration: 1.seconds,
+      );
+      return;
+    }
+
+    final cartProcess = context.read<CartProcessingBloc>();
+    if (cartProcess.formKey.currentState?.validate() == false) return;
 
     if (tabController.index == 0) {
       setState(() {
@@ -84,7 +107,7 @@ class _CartOrderPageState extends State<CartOrderPage>
                     vertical: kDefaultPadding * 2,
                     horizontal: kDefaultPadding,
                   ),
-                  child: CartDetailsViewPage(formKey: formKey),
+                  child: CartDetailsViewPage(),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(

@@ -12,6 +12,7 @@ class App extends StatelessWidget {
     return MaterialApp.router(
       title: 'Fortuno POS ${env.name}',
       theme: lightTheme,
+      locale: Locale('id', '_'),
       routerConfig: router,
       builder: EasyLoading.init(),
     );

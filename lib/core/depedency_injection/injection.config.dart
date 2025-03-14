@@ -33,6 +33,8 @@ import 'package:fortuno/features/order/domain/usecases/cache_order_from_cart.dar
     as _i258;
 import 'package:fortuno/features/order/presentations/bloc/cart/cart_bloc.dart'
     as _i184;
+import 'package:fortuno/features/order/presentations/bloc/cart/cart_processing_bloc.dart'
+    as _i617;
 import 'package:fortuno/features/order/presentations/bloc/order/order_bloc.dart'
     as _i886;
 import 'package:fortuno/features/products/data/datasources/product_nosql_datasource.dart'
@@ -61,6 +63,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModule = _$RegisterModule();
+    gh.factory<_i617.CartProcessingBloc>(() => _i617.CartProcessingBloc());
     gh.lazySingleton<_i454.SupabaseClient>(() => registerModule.supabaseClient);
     gh.lazySingleton<_i592.FirebaseAuthService>(
       () => registerModule.firebaseAuthService,

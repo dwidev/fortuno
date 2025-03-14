@@ -5,8 +5,8 @@ import 'package:fortuno/features/order/presentations/bloc/cart/cart_bloc.dart';
 
 import '../../../../core/core.dart';
 
-class CartOrderItemWidget extends StatelessWidget {
-  const CartOrderItemWidget({super.key, required this.item});
+class CartProcessingItemWidget extends StatelessWidget {
+  const CartProcessingItemWidget({super.key, required this.item});
 
   final OrderItem item;
 

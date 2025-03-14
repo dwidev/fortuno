@@ -50,11 +50,6 @@ class BaseListenerWidget<P extends BaseAppBloc, S extends BaseState>
 
   static void handlerLoadingDialog(BuildContext context, BaseState state) {
     if (state.loading.active) {
-      EasyLoading.instance
-        ..loadingStyle = EasyLoadingStyle.light
-        ..indicatorColor = lemonChiffonColor
-        ..animationStyle = EasyLoadingAnimationStyle.opacity;
-
       EasyLoading.show(
         dismissOnTap: false,
         maskType: EasyLoadingMaskType.clear,

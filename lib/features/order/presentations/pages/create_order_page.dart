@@ -124,7 +124,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                 ],
               ),
             ),
-            Expanded(flex: 2, child: CartOrderPage()),
+            Expanded(flex: 2, child: CartOrderPage.init()),
           ],
         );
       },

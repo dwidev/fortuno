@@ -42,7 +42,7 @@ class TextFormFieldWidget extends StatelessWidget {
           decoration: InputDecoration(
             enabled: enable,
             filled: true,
-            fillColor: darkLightColor, // Warna background
+            fillColor: darkLightColor,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(kSizeMS),
               borderSide: BorderSide.none,
