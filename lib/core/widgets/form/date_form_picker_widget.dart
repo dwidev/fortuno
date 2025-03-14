@@ -39,8 +39,7 @@ class _DateFormPickerWidgetState extends State<DateFormPickerWidget> {
         );
 
         if (date == null) return;
-        // TODO: change format
-        widget.controller?.text = date.day.toString();
+        widget.controller?.text = formatDate(date);
         widget.onChange?.call(date);
         setState(() => value = date);
       },

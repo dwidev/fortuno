@@ -1,4 +1,5 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app.dart';
@@ -26,5 +27,6 @@ Future<void> mainApp(EnvApp env) async {
     ..indicatorColor = lemonChiffonColor
     ..animationStyle = EasyLoadingAnimationStyle.opacity;
 
+  initializeDateFormatting('id_ID');
   runApp(App(env: env));
 }
