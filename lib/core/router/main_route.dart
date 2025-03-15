@@ -29,13 +29,7 @@ final router = GoRouter(
     ...authRoute,
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => getIt<OrderBloc>()),
-            BlocProvider(create: (context) => getIt<CartBloc>()),
-          ],
-          child: MainPage(navigationShell: navigationShell),
-        );
+        return MainPage(navigationShell: navigationShell);
       },
       branches: [
         // create order route

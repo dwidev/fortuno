@@ -4,6 +4,7 @@ import '../../../../../core/core.dart';
 import '../../../domain/entities/client_order.dart';
 import '../../../domain/entities/order.dart';
 import '../../../domain/entities/order_item.dart';
+import '../../../domain/usecases/create_order.dart';
 
 part 'cart_processing_event.dart';
 part 'cart_processing_state.dart';
@@ -11,6 +12,8 @@ part 'cart_processing_state.dart';
 @injectable
 class CartProcessingBloc
     extends BaseAppBloc<CartProcessingEvent, CartProcessingState> {
+  final CreateOrder createOrder;
+
   late GlobalKey<FormState> formKey;
   late TextEditingController nameController;
   late TextEditingController phoneController;
@@ -27,7 +30,8 @@ class CartProcessingBloc
   ClientOrder get client => state.order.client;
   Order get order => state.order;
 
-  CartProcessingBloc() : super(CartProcessingInitial(order: Order.init())) {
+  CartProcessingBloc({required this.createOrder})
+    : super(CartProcessingInitial(order: Order.init())) {
     formKey = GlobalKey<FormState>();
     nameController = TextEditingController();
     phoneController = TextEditingController();
@@ -41,6 +45,18 @@ class CartProcessingBloc
 
     on<OnAddOrderItemsEvent>(_onAddOrderItems);
     on<OnChangeShippingConstEvent>(_onChangeShippingCost);
+    on<OnCreateOrder>((event, emit) async {
+      final res = await runUsecase(() => createOrder(event.order), emit);
+
+      res.fold(
+        (left) {
+          print("ERROR CREATE ORDER: $left");
+        },
+        (right) {
+          print("SUKSES CREATE ORDER");
+        },
+      );
+    });
   }
 
   void _onAddOrderItems(OnAddOrderItemsEvent event, Emitter emit) {

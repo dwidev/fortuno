@@ -21,3 +21,12 @@ class OnChangeShippingConstEvent extends CartProcessingEvent {
   @override
   List<Object?> get props => [cost];
 }
+
+class OnCreateOrder extends CartProcessingEvent {
+  final Order order;
+
+  const OnCreateOrder({required this.order});
+
+  @override
+  List<Object?> get props => [order];
+}

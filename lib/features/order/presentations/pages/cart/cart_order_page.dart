@@ -72,22 +72,24 @@ class _CartOrderPageState extends State<CartOrderPage>
       return;
     }
 
-    showProcessCartDialog(
-      context: context,
-      onSwipe: () async {
-        context.pop();
-        // TODO: implement to save order
-        await showSuccessDialog(
-          context: context,
-          desc: "Pesanan berhasil dibuat",
-          onOke: () {
-            context.pop();
-            context.go(ProcessOrderPage.path);
-            tabController.index = 0;
-          },
-        );
-      },
-    );
+    cartProcess.add(OnCreateOrder(order: cartProcess.state.order));
+
+    // showProcessCartDialog(
+    //   context: context,
+    //   onSwipe: () async {
+    //     context.pop();
+    //     // TODO: implement to save order
+    //     await showSuccessDialog(
+    //       context: context,
+    //       desc: "Pesanan berhasil dibuat",
+    //       onOke: () {
+    //         context.pop();
+    //         context.go(ProcessOrderPage.path);
+    //         tabController.index = 0;
+    //       },
+    //     );
+    //   },
+    // );
   }
 
   void onBack() {
