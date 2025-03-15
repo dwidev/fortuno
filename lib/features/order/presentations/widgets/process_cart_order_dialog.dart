@@ -33,7 +33,7 @@ class ProcessOrderViewPage extends StatelessWidget {
         children: [
           Stack(
             children: [
-              Container(
+              SizedBox(
                 height: 45,
                 child: Center(
                   child: Text(

@@ -1,9 +1,4 @@
-import 'package:bloc/bloc.dart';
-import 'package:injectable/injectable.dart';
-
-import '../../../../../core/bloc/base_bloc.dart';
 import '../../../../../core/core.dart';
-import '../../../../../core/failures/failure.dart';
 import '../../../../products/domain/entities/category.dart';
 import '../../../../products/domain/entities/package.dart';
 import '../../../../products/domain/entities/product.dart';

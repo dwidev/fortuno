@@ -7,7 +7,7 @@ final createOrderRoute = <RouteBase>[
     parentNavigatorKey: createOrderRouteKey,
     path: CreateOrderPage.path,
     builder: (context, state) {
-      return CreateOrderPage();
+      return CreateOrderPage(key: ValueKey('create-order-page'));
     },
   ),
 ];
