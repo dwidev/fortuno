@@ -1,9 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fortuno/core/dialogs/error_dialog.dart';
 import '../core.dart';
-import '../failures/failure.dart';
 
 import '../usecases/base_usecase.dart';
 

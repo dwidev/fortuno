@@ -1,4 +1,3 @@
-import 'package:fortuno/core/failures/failure.dart';
 import 'package:lottie/lottie.dart';
 
 import '../core.dart';

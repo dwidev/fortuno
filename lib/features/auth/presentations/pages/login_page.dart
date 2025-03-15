@@ -1,5 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../core/constants/images_assets.dart';
 import '../../../../core/core.dart';
 import '../bloc/auth_bloc.dart';
