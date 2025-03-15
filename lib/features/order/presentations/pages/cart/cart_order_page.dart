@@ -1,4 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../../../../core/core.dart';
@@ -7,6 +6,7 @@ import '../../../../products/domain/entities/category.dart';
 import '../../bloc/cart/cart_bloc.dart';
 import '../../bloc/cart/cart_processing_bloc.dart';
 import '../../bloc/order/order_bloc.dart';
+import '../../widgets/process_cart_order_dialog.dart';
 import '../process_order_page.dart';
 import 'cart_create_order_view_page.dart';
 import 'cart_details_views_page.dart';
@@ -64,6 +64,7 @@ class _CartOrderPageState extends State<CartOrderPage>
     if (tabController.index == 0) {
       final orderBloc = context.read<OrderBloc>();
       orderBloc.add(OnFinishSelectedProduct(isFinish: true));
+      cartProcess.add(OnAddOrderItemsEvent(items: cartBloc.state.items));
 
       setState(() {
         tabController.index += 1;
@@ -71,13 +72,20 @@ class _CartOrderPageState extends State<CartOrderPage>
       return;
     }
 
-    showSuccessDialog(
+    showProcessCartDialog(
       context: context,
-      desc: "Pesanan berhasil dibuat",
-      onOke: () {
+      onSwipe: () async {
         context.pop();
-        context.go(ProcessOrderPage.path);
-        tabController.index = 0;
+        // TODO: implement to save order
+        await showSuccessDialog(
+          context: context,
+          desc: "Pesanan berhasil dibuat",
+          onOke: () {
+            context.pop();
+            context.go(ProcessOrderPage.path);
+            tabController.index = 0;
+          },
+        );
       },
     );
   }

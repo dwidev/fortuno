@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fortuno/core/theme/colors.dart';
+import 'package:fortuno/core/theme/default_size.dart';
 
 class ButtonCircleWidget extends StatelessWidget {
-  static const _defaultButtonSize = 55.0;
+  static const _defaultButtonSize = kSizeXL;
 
   const ButtonCircleWidget({
     super.key,

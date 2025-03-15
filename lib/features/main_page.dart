@@ -25,7 +25,7 @@ class MainPage extends StatelessWidget {
           ),
         ],
         onDestinationSelected: (value) {
-          navigationShell.goBranch(value);
+          navigationShell.goBranch(value, initialLocation: true);
         },
         selectedIndex: navigationShell.currentIndex,
       ),

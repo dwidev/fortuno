@@ -1,8 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortuno/features/order/domain/entities/order_item.dart';
-
 import '../../../../../core/core.dart';
+import '../../../../../core/widgets/form/text_form_field_widget.dart';
+import '../../../domain/entities/order_item.dart';
 import '../../bloc/cart/cart_bloc.dart';
+import '../../bloc/cart/cart_processing_bloc.dart';
 
 class CartCreateOrderViewPage extends StatelessWidget {
   const CartCreateOrderViewPage({
@@ -19,6 +19,7 @@ class CartCreateOrderViewPage extends StatelessWidget {
     final totalPriceOrder = context.select<CartBloc, String>(
       (value) => value.state.items.totalPriceString,
     );
+    final cartProcessBloc = context.read<CartProcessingBloc>();
 
     return SingleChildScrollView(
       child: Column(
@@ -112,7 +113,7 @@ class CartCreateOrderViewPage extends StatelessWidget {
               );
             },
           ),
-          SizedBox(height: kSizeM),
+          SizedBox(height: kSizeSS),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -130,7 +131,7 @@ class CartCreateOrderViewPage extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: kSizeS),
+          SizedBox(height: kSizeM),
           if (!viewOnly)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -159,14 +160,19 @@ class CartCreateOrderViewPage extends StatelessWidget {
                 ),
                 Container(
                   width: context.width * 0.1,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(kSizeMS),
-                    color: sunKissedYellowColor,
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: kSizeMS),
-                  child: TextFormField(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: kSizeMS,
+                  ).copyWith(right: 0),
+                  child: TextFormFieldWidget(
+                    title: "",
+                    controller: cartProcessBloc.shippingCostController,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(hintText: "Ongkir: Rp.xxxxx"),
+                    hintText: "Ongkir: Rp.xxxxx",
+                    onEditingComplete: (value) {
+                      cartProcessBloc.add(
+                        OnChangeShippingConstEvent(cost: value),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -181,19 +187,23 @@ class CartCreateOrderViewPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                    "Rp 2.030.000",
-                    style: context.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: darkOliveGreen,
-                    ),
-                  )
-                  .animate(onPlay: (c) => c.repeat())
-                  .shimmer(
-                    color: darkLightColor,
-                    duration: Duration(seconds: 3),
-                    delay: Duration(seconds: 1),
-                  ),
+              BlocBuilder<CartProcessingBloc, CartProcessingState>(
+                builder: (context, state) {
+                  return Text(
+                        state.order.totalPriceString,
+                        style: context.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: darkOliveGreen,
+                        ),
+                      )
+                      .animate(onPlay: (c) => c.repeat())
+                      .shimmer(
+                        color: darkLightColor,
+                        duration: Duration(seconds: 3),
+                        delay: Duration(seconds: 1),
+                      );
+                },
+              ),
             ],
           ),
           SizedBox(height: kDefaultPadding),
@@ -239,17 +249,20 @@ class CartCreateOrderViewPage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text("Fahmi syahputra", style: context.textTheme.bodyMedium),
+                  Text(
+                    cartProcessBloc.client.name,
+                    style: context.textTheme.bodyMedium,
+                  ),
                   SizedBox(height: kDefaultPadding),
                   Text(
-                    "02 Februari 2025 10:00 WIB",
+                    "${formatDate(cartProcessBloc.client.sendDate, pattern: 'EEE, dd MMM yyyy HH:mm')} WIB",
                     style: context.textTheme.bodyMedium,
                   ),
                   SizedBox(height: kDefaultPadding),
                   SizedBox(
                     width: 200,
                     child: Text(
-                      "Gang Mesjid Al barokah Ciputih gugah sari rt 02 rw 03 Dramaga Bogor (Belakang Gadai yang ada rolling door)",
+                      cartProcessBloc.client.addressDisplay,
                       textAlign: TextAlign.right,
                       style: context.textTheme.bodyMedium,
                     ),
@@ -260,63 +273,6 @@ class CartCreateOrderViewPage extends StatelessWidget {
           ),
           if (!context.isKeyboardOpen && !viewOnly)
             SizedBox(height: kSizeXXL * 2),
-        ],
-      ),
-    );
-  }
-}
-
-class DetailOrderItemWidget extends StatelessWidget {
-  const DetailOrderItemWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: kSizeMS),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Paket Berkah 20K",
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: darkOliveGreen,
-                  ),
-                ),
-                Text(
-                  "Nasi, Ayam bakar, Tahu, Tempe",
-                  style: context.textTheme.bodySmall,
-                ),
-                Text(
-                  "Box Kardus + alat makan",
-                  style: context.textTheme.bodySmall,
-                ),
-              ],
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                "Rp 20.000 x 200 pax",
-                style: context.textTheme.bodySmall?.copyWith(
-                  fontStyle: FontStyle.italic,
-                  fontSize: 10,
-                ),
-              ),
-              Text(
-                "Rp 200.000",
-                style: context.textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );
