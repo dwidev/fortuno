@@ -1,4 +1,5 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fortuno/features/order/presentations/widgets/process_cart_order_dialog.dart';
 
 import '../../../../../core/core.dart';
 import '../../../../../core/depedency_injection/injection.dart';
@@ -6,8 +7,6 @@ import '../../../../products/domain/entities/category.dart';
 import '../../bloc/cart/cart_bloc.dart';
 import '../../bloc/cart/cart_processing_bloc.dart';
 import '../../bloc/order/order_bloc.dart';
-import '../../widgets/process_cart_order_dialog.dart';
-import '../process_order_page.dart';
 import 'cart_create_order_view_page.dart';
 import 'cart_details_views_page.dart';
 
@@ -72,24 +71,13 @@ class _CartOrderPageState extends State<CartOrderPage>
       return;
     }
 
-    cartProcess.add(OnCreateOrder(order: cartProcess.state.order));
-
-    // showProcessCartDialog(
-    //   context: context,
-    //   onSwipe: () async {
-    //     context.pop();
-    //     // TODO: implement to save order
-    //     await showSuccessDialog(
-    //       context: context,
-    //       desc: "Pesanan berhasil dibuat",
-    //       onOke: () {
-    //         context.pop();
-    //         context.go(ProcessOrderPage.path);
-    //         tabController.index = 0;
-    //       },
-    //     );
-    //   },
-    // );
+    showProcessCartDialog(
+      context: context,
+      onSwipe: () async {
+        context.pop();
+        cartProcess.add(OnCreateOrder(order: cartProcess.state.order));
+      },
+    );
   }
 
   void onBack() {
@@ -103,10 +91,14 @@ class _CartOrderPageState extends State<CartOrderPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<CartBloc, CartState>(
+    return BaseListenerWidget<CartBloc, CartState>(
       listenWhen: (previous, current) {
-        final ok = previous.items != current.items || current.items.isEmpty;
-        return ok;
+        if (previous is CartState && current is CartState) {
+          final ok = (previous).items != current.items || current.items.isEmpty;
+          return ok;
+        }
+
+        return previous != current;
       },
       listener: (context, state) {
         if (state is AddedToCart && state.newItem != null) {
@@ -114,65 +106,73 @@ class _CartOrderPageState extends State<CartOrderPage>
           final quantity = state.newItem!.quantity;
           context.read<OrderBloc>().add(OnAddQuantity(id, quantity));
         }
+
+        if (state is CartInitial) {
+          tabController.animateTo(0);
+          final orderBloc = context.read<OrderBloc>();
+          orderBloc.add(ResetOrder());
+        }
       },
-      child: Container(
-        height: double.infinity,
-        color: Colors.white,
-        child: Stack(
-          children: [
-            TabBarView(
-              controller: tabController,
-              physics: NeverScrollableScrollPhysics(),
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: kDefaultPadding * 2,
-                    horizontal: kDefaultPadding,
+      builder: (context, bloc, state) {
+        return Container(
+          height: double.infinity,
+          color: Colors.white,
+          child: Stack(
+            children: [
+              TabBarView(
+                controller: tabController,
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: kDefaultPadding * 2,
+                      horizontal: kDefaultPadding,
+                    ),
+                    child: CartDetailsViewPage(),
                   ),
-                  child: CartDetailsViewPage(),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: kDefaultPadding * 2,
-                    horizontal: kDefaultPadding,
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: kDefaultPadding * 2,
+                      horizontal: kDefaultPadding,
+                    ),
+                    child: CartCreateOrderViewPage(onBack: onBack),
                   ),
-                  child: CartCreateOrderViewPage(onBack: onBack),
-                ),
-              ],
-            ),
-            if (!context.isKeyboardOpen)
-              Positioned(
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: kSizeML,
-                    horizontal: kSizeML,
-                  ),
-                  child: GradientButton(
-                    onPressed: onTapOder,
-                    height: kSizeXXL,
-                    child: AnimatedSwitcher(
-                      duration: Duration(milliseconds: 500),
-                      switchInCurve: Curves.easeIn,
-                      switchOutCurve: Curves.easeOut,
-                      child: Text(
-                        tabController.index == 0
-                            ? "Proses Order"
-                            : "Buat Order",
-                        style: context.textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: darkColor,
+                ],
+              ),
+              if (!context.isKeyboardOpen)
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: kSizeML,
+                      horizontal: kSizeML,
+                    ),
+                    child: GradientButton(
+                      onPressed: onTapOder,
+                      height: kSizeXXL,
+                      child: AnimatedSwitcher(
+                        duration: Duration(milliseconds: 500),
+                        switchInCurve: Curves.easeIn,
+                        switchOutCurve: Curves.easeOut,
+                        child: Text(
+                          tabController.index == 0
+                              ? "Proses Order"
+                              : "Buat Order",
+                          style: context.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: darkColor,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

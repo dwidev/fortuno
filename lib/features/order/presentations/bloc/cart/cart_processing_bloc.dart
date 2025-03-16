@@ -45,17 +45,18 @@ class CartProcessingBloc
 
     on<OnAddOrderItemsEvent>(_onAddOrderItems);
     on<OnChangeShippingConstEvent>(_onChangeShippingCost);
-    on<OnCreateOrder>((event, emit) async {
-      final res = await runUsecase(() => createOrder(event.order), emit);
+    on<OnCreateOrder>(_onCreateOrder);
+    on<ResetProcessingOrder>((event, emit) {
+      clearResources();
+      emit(CartProcessingInitial(order: Order.init()));
+    });
+  }
 
-      res.fold(
-        (left) {
-          print("ERROR CREATE ORDER: $left");
-        },
-        (right) {
-          print("SUKSES CREATE ORDER");
-        },
-      );
+  Future<void> _onCreateOrder(OnCreateOrder event, Emitter emit) async {
+    final res = await runUsecase(() => createOrder(event.order), emit);
+
+    res.fold((left) => error(emit, left), (_) {
+      emit(CartDoneCreateOrder(order: state.order));
     });
   }
 

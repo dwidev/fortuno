@@ -35,3 +35,7 @@ class OnFinishSelectedProduct extends OrderEvent {
   final bool isFinish;
   const OnFinishSelectedProduct({required this.isFinish});
 }
+
+class ResetOrder extends OrderEvent {
+  const ResetOrder();
+}

@@ -29,7 +29,7 @@ class ClientOrderModel extends BaseModel<ClientOrder> {
       'ID': id,
       'name': name,
       'phone_number': phoneNumber,
-      'order_send_date': sendDate.millisecondsSinceEpoch,
+      'order_send_date': sendDate.toIso8601String(),
       'address': address,
       'rt': rt,
       'rw': rw,

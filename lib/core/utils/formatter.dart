@@ -1,5 +1,7 @@
 import 'package:intl/intl.dart';
 
+final now = DateTime.now();
+
 String formatDate(DateTime? date, {String? pattern}) {
   if (date == null) return "";
   final formated = DateFormat(

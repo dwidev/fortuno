@@ -14,6 +14,7 @@ class CartBloc extends BaseAppBloc<CartEvent, CartState> {
   CartBloc({required this.cacheOrderFromCart}) : super(CartInitial()) {
     on<AddProductToCartEvent>(_onAddItem);
     on<RemoveProductFromCart>(_onRemoveItem);
+    on<ResetCart>((event, emit) => emit(CartInitial()));
   }
 
   Future<void> _onAddItem(AddProductToCartEvent event, Emitter emit) async {

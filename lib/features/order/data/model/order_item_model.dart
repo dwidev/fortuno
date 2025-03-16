@@ -10,49 +10,63 @@ import 'package:fortuno/features/products/data/model/product_model.dart';
 
 class OrderItemModel extends BaseModel<OrderItem> {
   final String id;
-  final CategoryModel categoryModel;
-  final OrderModel orderModel;
-  final ProductModel productModel;
-  final PackageModel packageModel;
+  final String orderID;
+  final String? productID;
+  final String? packageID;
   final int quantity;
   final double totalPrice;
 
+  // only bulk get data
+  final CategoryModel? categoryModel;
+  final OrderModel? orderModel;
+  final ProductModel? productModel;
+  final PackageModel? packageModel;
+
   OrderItemModel({
     required this.id,
-    required this.categoryModel,
-    required this.orderModel,
-    required this.productModel,
-    required this.packageModel,
+    required this.orderID,
+    required this.productID,
+    required this.packageID,
     required this.quantity,
     required this.totalPrice,
+    this.categoryModel,
+    this.orderModel,
+    this.productModel,
+    this.packageModel,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
-      'order_id': orderModel.id,
-      'product_id': productModel.id,
-      'package_id': packageModel.id,
+      'ID': id,
+      'order_id': orderID,
+      'product_id': productID,
+      'package_id': packageID,
       'quantity': quantity,
       'total_price': totalPrice,
     };
   }
 
   factory OrderItemModel.fromMap(Map<String, dynamic> map) {
+    final order = OrderModel.fromMap(map['orders'] as Map<String, dynamic>);
+    final productModel = ProductModel.fromMap(
+      map['products'] as Map<String, dynamic>,
+    );
+    final packageModel = PackageModel.fromMap(
+      map['packages'] as Map<String, dynamic>,
+    );
     return OrderItemModel(
       id: map['id'] as String,
       totalPrice: map['totalPrice'] as double,
       categoryModel: CategoryModel.fromMap(
-        map['categor'] as Map<String, dynamic>,
+        map['category'] as Map<String, dynamic>,
       ),
-      orderModel: OrderModel.fromMap(map['orders'] as Map<String, dynamic>),
-      productModel: ProductModel.fromMap(
-        map['products'] as Map<String, dynamic>,
-      ),
-      packageModel: PackageModel.fromMap(
-        map['packages'] as Map<String, dynamic>,
-      ),
+      orderModel: order,
+      productModel: productModel,
+      packageModel: packageModel,
       quantity: map['quantity'] as int,
+      orderID: order.id,
+      productID: productModel.id,
+      packageID: packageModel.id,
     );
   }
 
@@ -64,9 +78,9 @@ class OrderItemModel extends BaseModel<OrderItem> {
   @override
   OrderItem toEntity() {
     return OrderItem(
-      category: categoryModel.toEntity(),
-      product: productModel.toEntity(),
-      package: packageModel.toEntity(),
+      category: categoryModel?.toEntity(),
+      product: productModel?.toEntity(),
+      package: packageModel?.toEntity(),
       quantity: quantity,
     );
   }

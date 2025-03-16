@@ -39,6 +39,15 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
     });
     on<OnAddQuantity>(_onAddQuantity);
     on<OnFinishSelectedProduct>(_onFinishSelectProduct);
+    on<ResetOrder>(
+      (event, emit) => emit(
+        OrderInitSuccess(
+          categories: state.categories,
+          productCountCart: {},
+          finishSelected: false,
+        ),
+      ),
+    );
   }
 
   Future<void> _onInit(OnInitOrderPageEvent event, Emitter emit) async {

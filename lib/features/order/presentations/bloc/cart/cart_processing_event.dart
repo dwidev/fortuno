@@ -30,3 +30,10 @@ class OnCreateOrder extends CartProcessingEvent {
   @override
   List<Object?> get props => [order];
 }
+
+class ResetProcessingOrder extends CartProcessingEvent {
+  const ResetProcessingOrder();
+
+  @override
+  List<Object?> get props => [];
+}
