@@ -1,6 +1,14 @@
+import 'package:fortuno/features/order/domain/entities/client_order.dart';
+import 'package:fortuno/features/order/domain/entities/order.dart';
+import 'package:fortuno/features/order/domain/entities/order_item.dart';
+import 'package:fortuno/features/order/presentations/widgets/order_summary_widget.dart';
+import 'package:fortuno/features/products/domain/entities/product.dart';
+
 import '../../../../../core/core.dart';
+import '../../../domain/enums/order_status.dart';
 import '../../widgets/order_action_widget.dart';
 import '../../widgets/order_package_widget.dart';
+import '../../widgets/order_process_item_list_widget.dart';
 import '../../widgets/process_order_dialog.dart';
 import '../create_order/cart/cart_create_order_view_page.dart';
 
@@ -15,6 +23,14 @@ class ProcessOrderPage extends StatefulWidget {
 
 class _ProcessOrderPageState extends State<ProcessOrderPage>
     with TickerProviderStateMixin {
+  final tabHeader = [
+    OrderStatus.all,
+    OrderStatus.waiting,
+    OrderStatus.process,
+    OrderStatus.done,
+    OrderStatus.cancel,
+  ];
+
   late TabController tabController;
   var isDetail = false;
   int? activeIndex;
@@ -86,11 +102,11 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                     controller: tabController,
                     isScrollable: true,
                     tabs:
-                        ["semua", "menunggu (1)", "proses", "selesai", "batal"]
+                        tabHeader
                             .map(
                               (i) => Container(
                                 padding: EdgeInsets.all(kDefaultPadding),
-                                child: Text(i),
+                                child: Text(i.tabValue("0")),
                               ),
                             )
                             .toList(),
@@ -102,84 +118,13 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                         return ListView.builder(
                           padding: EdgeInsets.zero,
                           itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.all(
-                                kDefaultPadding,
-                              ).copyWith(bottom: 0),
-                              child: Material(
-                                borderRadius: BorderRadius.circular(
-                                  kDefaultRadius,
-                                ),
-                                color:
-                                    isDetail && index == activeIndex
-                                        ? lemonChiffonColor
-                                        : whiteColor,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(
-                                    kDefaultRadius,
-                                  ),
-                                  onTap: () {
-                                    onClickDetail(index, true);
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(kDefaultPadding),
-                                    decoration: BoxDecoration(),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "SMK Adi sanggoro",
-                                                  style: context
-                                                      .textTheme
-                                                      .bodyLarge
-                                                      ?.copyWith(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                ),
-                                                SizedBox(height: kSizeS),
-                                                Text(
-                                                  "Dikirim : 20 Februari 2025 10:00 WIB",
-                                                ),
-                                                Text("Total : Rp 200.000"),
-                                              ],
-                                            ),
-                                            SizedBox(width: kSizeXXL),
-                                            if (!isDetail) OrderPackageWidget(),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              "14:03",
-                                              style: context.textTheme.bodyLarge
-                                                  ?.copyWith(
-                                                    color: darkColor,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                            ),
-                                            SizedBox(height: kSizeS),
-                                            if (!isDetail) OrderActionWidget(),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            return OrderProcessItemListWidget(
+                              index: index,
+                              activeIndex: activeIndex ?? 0,
+                              isDetail: isDetail,
+                              onClickDetail: () {
+                                onClickDetail(index, true);
+                              },
                             );
                           },
                         );
@@ -238,9 +183,20 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              CartCreateOrderViewPage(
-                                                onBack: () {},
-                                                viewOnly: true,
+                                              OrderSummaryWidget(
+                                                order: Order.init(),
+                                                items: [
+                                                  OrderItem(
+                                                    product: Product(
+                                                      id: "id",
+                                                      name: "name",
+                                                      code: "code",
+                                                      price: 1000,
+                                                      createAt: "createAt",
+                                                    ),
+                                                  ),
+                                                ],
+                                                client: ClientOrder.init(),
                                               ),
                                               SizedBox(height: kSizeXL),
                                               Row(

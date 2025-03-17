@@ -1,4 +1,25 @@
-enum OrderStatus { waiting, process, done, cancel }
+enum OrderStatus {
+  all,
+  waiting,
+  process,
+  done,
+  cancel;
+
+  String tabValue(String count) {
+    switch (this) {
+      case OrderStatus.all:
+        return "Semua";
+      case OrderStatus.waiting:
+        return "Menunggu ($count)";
+      case OrderStatus.process:
+        return "Proses";
+      case OrderStatus.done:
+        return "Selesai";
+      case OrderStatus.cancel:
+        return "Batal";
+    }
+  }
+}
 
 OrderStatus orderStatusfromString(String value) {
   switch (value) {
@@ -11,6 +32,6 @@ OrderStatus orderStatusfromString(String value) {
     case 'cancel':
       return OrderStatus.cancel;
     default:
-      throw ArgumentError("not value for OrderStatus enums");
+      throw ArgumentError("$value not values for OrderStatus enums");
   }
 }
