@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:fortuno/features/order/domain/entities/client_order.dart';
 import 'package:fortuno/features/order/domain/entities/order.dart';
 import 'package:fortuno/features/order/domain/entities/order_item.dart';
+import 'package:fortuno/features/order/presentations/bloc/order_process/order_process_bloc.dart';
 import 'package:fortuno/features/order/presentations/widgets/order_summary_widget.dart';
 import 'package:fortuno/features/products/domain/entities/product.dart';
 
@@ -42,6 +45,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
 
   @override
   void initState() {
+    context.read<OrderProcessBloc>().add(OnGetOrders());
     super.initState();
     tabController = TabController(length: 5, vsync: this);
     animationController = AnimationController(

@@ -83,4 +83,12 @@ class OrderRepositoryImpl extends OrderRepository {
   void dispose() {
     _cacheOrders.clear();
   }
+
+  @override
+  Future<List<Order>> getOrdersByCompanyID({required String companyID}) async {
+    final response = await orderDatasource.getOrdersByCompanyID(
+      companyID: companyID,
+    );
+    return [];
+  }
 }

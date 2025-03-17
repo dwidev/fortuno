@@ -18,7 +18,6 @@ class OrderItemModel extends BaseModel<OrderItem> {
 
   // only bulk get data
   final CategoryModel? categoryModel;
-  final OrderModel? orderModel;
   final ProductModel? productModel;
   final PackageModel? packageModel;
 
@@ -30,7 +29,6 @@ class OrderItemModel extends BaseModel<OrderItem> {
     required this.quantity,
     required this.totalPrice,
     this.categoryModel,
-    this.orderModel,
     this.productModel,
     this.packageModel,
   });
@@ -60,7 +58,6 @@ class OrderItemModel extends BaseModel<OrderItem> {
       categoryModel: CategoryModel.fromMap(
         map['category'] as Map<String, dynamic>,
       ),
-      orderModel: order,
       productModel: productModel,
       packageModel: packageModel,
       quantity: map['quantity'] as int,

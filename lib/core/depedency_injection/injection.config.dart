@@ -37,12 +37,16 @@ import 'package:fortuno/features/order/domain/usecases/cache_order_from_cart.dar
     as _i258;
 import 'package:fortuno/features/order/domain/usecases/create_order.dart'
     as _i242;
+import 'package:fortuno/features/order/domain/usecases/get_orders_by_company_id.dart'
+    as _i1028;
 import 'package:fortuno/features/order/presentations/bloc/cart/cart_bloc.dart'
     as _i184;
 import 'package:fortuno/features/order/presentations/bloc/cart/cart_processing_bloc.dart'
     as _i617;
 import 'package:fortuno/features/order/presentations/bloc/order/order_bloc.dart'
     as _i886;
+import 'package:fortuno/features/order/presentations/bloc/order_process/order_process_bloc.dart'
+    as _i955;
 import 'package:fortuno/features/products/data/datasources/product_nosql_datasource.dart'
     as _i294;
 import 'package:fortuno/features/products/data/datasources/products_datasource.dart'
@@ -96,6 +100,11 @@ extension GetItInjectableX on _i174.GetIt {
         orderRepository: gh<_i996.OrderRepository>(),
       ),
     );
+    gh.lazySingleton<_i1028.GetOrdersByCompanyId>(
+      () => _i1028.GetOrdersByCompanyId(
+        orderRepository: gh<_i996.OrderRepository>(),
+      ),
+    );
     gh.lazySingleton<_i1028.ProductsRepository>(
       () => _i587.ProductsRepositoryImpl(
         productsDatasource: gh<_i79.ProductsDatasource>(),
@@ -134,6 +143,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i184.CartBloc>(
       () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
+    );
+    gh.factory<_i955.OrderProcessBloc>(
+      () => _i955.OrderProcessBloc(
+        getOrdersByCompanyId: gh<_i1028.GetOrdersByCompanyId>(),
+      ),
     );
     gh.lazySingleton<_i870.SignWithGoogle>(
       () => _i870.SignWithGoogle(authRepository: gh<_i948.AuthRepository>()),

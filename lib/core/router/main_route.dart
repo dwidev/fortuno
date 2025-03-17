@@ -1,9 +1,6 @@
 import '../../features/main_page.dart';
-import '../../features/order/presentations/bloc/cart/cart_bloc.dart';
-import '../../features/order/presentations/bloc/order/order_bloc.dart';
 import '../../features/order/presentations/pages/create_order/create_order_page.dart';
 import '../core.dart';
-import '../depedency_injection/injection.dart';
 import 'auth_route.dart';
 import 'create_order_route.dart';
 import 'process_order_route.dart';

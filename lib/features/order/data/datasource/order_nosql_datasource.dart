@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/core.dart';
@@ -18,5 +21,16 @@ class OrderNosqlDatasource extends OrderDatasource {
 
     final params = {'client': mapClient, 'orders': mapOrder, 'items': mapItems};
     await client.rpc('insert_order', params: params);
+  }
+
+  @override
+  Future<List<OrderModel>> getOrdersByCompanyID({
+    required String companyID,
+  }) async {
+    final params = <String, String>{"company_uuid": companyID};
+    final response =
+        await client.rpc('get_order_by_company', params: params).select();
+    log(jsonEncode(response));
+    return [];
   }
 }
