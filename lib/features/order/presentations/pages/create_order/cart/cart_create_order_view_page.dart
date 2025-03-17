@@ -1,10 +1,10 @@
-import 'package:fortuno/features/order/presentations/pages/process_order_page.dart';
+import 'package:fortuno/features/order/presentations/pages/process_order/process_order_page.dart';
 
-import '../../../../../core/core.dart';
-import '../../../../../core/widgets/form/text_form_field_widget.dart';
-import '../../../domain/entities/order_item.dart';
-import '../../bloc/cart/cart_bloc.dart';
-import '../../bloc/cart/cart_processing_bloc.dart';
+import '../../../../../../core/core.dart';
+import '../../../../../../core/widgets/form/text_form_field_widget.dart';
+import '../../../../domain/entities/order_item.dart';
+import '../../../bloc/cart/cart_bloc.dart';
+import '../../../bloc/cart/cart_processing_bloc.dart';
 
 class CartCreateOrderViewPage extends StatelessWidget {
   const CartCreateOrderViewPage({

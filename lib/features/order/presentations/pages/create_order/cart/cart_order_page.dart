@@ -3,12 +3,12 @@ import 'dart:developer';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fortuno/features/order/presentations/widgets/process_cart_order_dialog.dart';
 
-import '../../../../../core/core.dart';
-import '../../../../../core/depedency_injection/injection.dart';
-import '../../../../products/domain/entities/category.dart';
-import '../../bloc/cart/cart_bloc.dart';
-import '../../bloc/cart/cart_processing_bloc.dart';
-import '../../bloc/order/order_bloc.dart';
+import '../../../../../../core/core.dart';
+import '../../../../../../core/depedency_injection/injection.dart';
+import '../../../../../products/domain/entities/category.dart';
+import '../../../bloc/cart/cart_bloc.dart';
+import '../../../bloc/cart/cart_processing_bloc.dart';
+import '../../../bloc/order/order_bloc.dart';
 import 'cart_create_order_view_page.dart';
 import 'cart_details_views_page.dart';
 
