@@ -5,7 +5,7 @@ class BaseListenerWidget<P extends BaseAppBloc, S extends BaseState>
   const BaseListenerWidget({
     super.key,
     this.listenWhen,
-    required this.listener,
+    this.listener,
     required this.builder,
   });
 

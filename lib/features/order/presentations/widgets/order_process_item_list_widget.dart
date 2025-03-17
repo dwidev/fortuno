@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:fortuno/core/core.dart';
+import 'package:fortuno/features/order/domain/entities/order.dart';
 
 import 'order_action_widget.dart';
 import 'order_package_widget.dart';
@@ -7,15 +8,17 @@ import 'order_package_widget.dart';
 class OrderProcessItemListWidget extends StatelessWidget {
   const OrderProcessItemListWidget({
     super.key,
-    required this.index,
+    required this.order,
+    required this.isDetail,
     required this.activeIndex,
     required this.onClickDetail,
-    required this.isDetail,
+    required this.index,
   });
 
   final bool isDetail;
   final int index, activeIndex;
-  final Function() onClickDetail;
+  final Order order;
+  final Function(Order order) onClickDetail;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ class OrderProcessItemListWidget extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(kDefaultRadius),
           onTap: () {
-            onClickDetail();
+            onClickDetail(order);
           },
           child: Container(
             padding: EdgeInsets.all(kDefaultPadding),
@@ -44,14 +47,14 @@ class OrderProcessItemListWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "SMK Adi sanggoro",
+                          order.client.name,
                           style: context.textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(height: kSizeS),
-                        Text("Dikirim : 20 Februari 2025 10:00 WIB"),
-                        Text("Total : Rp 200.000"),
+                        Text("Dikirim : ${order.client.sendDateDisplay}"),
+                        Text("Total : ${order.totalPriceString}"),
                       ],
                     ),
                     SizedBox(width: kSizeXXL),
@@ -62,7 +65,7 @@ class OrderProcessItemListWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      "14:03",
+                      formatDate(order.createdAt),
                       style: context.textTheme.bodyLarge?.copyWith(
                         color: darkColor,
                         fontWeight: FontWeight.bold,

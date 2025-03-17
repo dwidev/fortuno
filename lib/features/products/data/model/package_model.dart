@@ -14,7 +14,6 @@ class PackageModel extends BaseModel<Package> {
   final double price;
   final bool isActive;
   final String createAt;
-  final CategoryModel categoryModel;
   final List<ProductModel> productModel;
 
   PackageModel({
@@ -24,7 +23,6 @@ class PackageModel extends BaseModel<Package> {
     required this.price,
     required this.isActive,
     required this.createAt,
-    required this.categoryModel,
     required this.productModel,
   });
 
@@ -37,7 +35,6 @@ class PackageModel extends BaseModel<Package> {
       price: price,
       isActive: isActive,
       createAt: createAt,
-      category: categoryModel.toEntity(),
       items: productModel.map((e) => e.toEntity()).toList(),
     );
   }
@@ -50,22 +47,20 @@ class PackageModel extends BaseModel<Package> {
       'price': price,
       'is_active': isActive,
       'created_at': createAt,
-      'category': categoryModel.toMap(),
       'products': productModel.map((x) => x.toMap()).toList(),
     };
   }
 
   factory PackageModel.fromMap(Map<String, dynamic> map) {
-    final price = BaseModel.parsePriceToDouble(map);
+    final price = BaseModel.parseToDouble(map['price']);
 
     return PackageModel(
-      id: map['package_id'] as String,
+      id: map['ID'] as String,
       name: map['package_name'] as String,
       code: map['package_code'] as String,
       price: price,
-      isActive: map['is_active'] as bool,
-      createAt: map['created_at'] as String,
-      categoryModel: CategoryModel.fromMap(map['category']),
+      isActive: map['is_active'] as bool? ?? false,
+      createAt: map['created_at'] as String? ?? "",
       productModel: List.from(
         (map['products']).map(
           (x) => ProductModel.fromMap(x as Map<String, dynamic>),

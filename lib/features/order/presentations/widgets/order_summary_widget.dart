@@ -178,7 +178,7 @@ class OrderSummaryWidget extends StatelessWidget {
                 Text(client.name, style: context.textTheme.bodyMedium),
                 SizedBox(height: kDefaultPadding),
                 Text(
-                  "${formatDate(client.sendDate, pattern: 'EEE, dd MMM yyyy HH:mm')} WIB",
+                  client.sendDateDisplay,
                   style: context.textTheme.bodyMedium,
                 ),
                 SizedBox(height: kDefaultPadding),

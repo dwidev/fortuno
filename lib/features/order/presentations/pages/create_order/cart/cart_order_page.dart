@@ -35,7 +35,7 @@ class _CartOrderPageState extends State<CartOrderPage>
   @override
   void initState() {
     super.initState();
-    tabController = TabController(initialIndex: 1, length: 2, vsync: this);
+    tabController = TabController(length: 2, vsync: this);
   }
 
   @override

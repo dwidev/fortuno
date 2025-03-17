@@ -10,3 +10,9 @@ sealed class OrderProcessEvent extends BaseEvent {
 final class OnGetOrders extends OrderProcessEvent {
   const OnGetOrders();
 }
+
+final class GoToOrderDetails extends OrderProcessEvent {
+  final Order order;
+
+  const GoToOrderDetails({required this.order});
+}

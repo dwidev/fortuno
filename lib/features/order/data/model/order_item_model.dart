@@ -45,25 +45,24 @@ class OrderItemModel extends BaseModel<OrderItem> {
   }
 
   factory OrderItemModel.fromMap(Map<String, dynamic> map) {
-    final order = OrderModel.fromMap(map['orders'] as Map<String, dynamic>);
-    final productModel = ProductModel.fromMap(
-      map['products'] as Map<String, dynamic>,
-    );
-    final packageModel = PackageModel.fromMap(
-      map['packages'] as Map<String, dynamic>,
-    );
+    final productModel =
+        map['product'] != null
+            ? ProductModel.fromMap(map['product'] as Map<String, dynamic>)
+            : null;
+
+    final packageModel =
+        map['package'] != null
+            ? PackageModel.fromMap(map['package'] as Map<String, dynamic>)
+            : null;
     return OrderItemModel(
-      id: map['id'] as String,
-      totalPrice: map['totalPrice'] as double,
-      categoryModel: CategoryModel.fromMap(
-        map['category'] as Map<String, dynamic>,
-      ),
+      id: map['ID']?.toString() ?? "",
+      totalPrice: BaseModel.parseToDouble(map['total_price']),
       productModel: productModel,
       packageModel: packageModel,
       quantity: map['quantity'] as int,
-      orderID: order.id,
-      productID: productModel.id,
-      packageID: packageModel.id,
+      orderID: "",
+      productID: productModel?.id,
+      packageID: packageModel?.id,
     );
   }
 

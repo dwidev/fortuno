@@ -29,7 +29,7 @@ class ProductModel extends BaseModel<Product> {
   }
 
   factory ProductModel.fromMap(Map<String, dynamic> map) {
-    final price = BaseModel.parsePriceToDouble(map);
+    final price = BaseModel.parseToDouble(map['price']);
 
     return ProductModel(
       id: map["ID"] as String? ?? "",

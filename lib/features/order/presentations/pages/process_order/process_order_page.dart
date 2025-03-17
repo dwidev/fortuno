@@ -78,12 +78,13 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
     tabController.dispose();
   }
 
-  void onClickDetail(int index, bool isOpen) {
+  void onClickDetail(Order? order, int index, bool isOpen) {
     setState(() {
       activeIndex = index;
     });
 
-    if (isOpen) {
+    if (isOpen && order != null) {
+      context.read<OrderProcessBloc>().add(GoToOrderDetails(order: order));
       animationController.forward();
     } else {
       animationController.reverse();
@@ -92,167 +93,192 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: darkLightColor,
-      body: Padding(
-        padding: EdgeInsets.only(top: context.padTop),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  TabBar(
-                    indicatorWeight: 10,
-                    controller: tabController,
-                    isScrollable: true,
-                    tabs:
-                        tabHeader
-                            .map(
-                              (i) => Container(
-                                padding: EdgeInsets.all(kDefaultPadding),
-                                child: Text(i.tabValue("0")),
-                              ),
-                            )
-                            .toList(),
-                  ),
-                  Expanded(
-                    child: TabBarView(
-                      controller: tabController,
-                      children: List.generate(5, (index) {
-                        return ListView.builder(
-                          padding: EdgeInsets.zero,
-                          itemBuilder: (context, index) {
-                            return OrderProcessItemListWidget(
-                              index: index,
-                              activeIndex: activeIndex ?? 0,
-                              isDetail: isDetail,
-                              onClickDetail: () {
-                                onClickDetail(index, true);
+    return BaseListenerWidget<OrderProcessBloc, OrderProcessState>(
+      builder: (context, bloc, state) {
+        return Scaffold(
+          backgroundColor: darkLightColor,
+          body: Padding(
+            padding: EdgeInsets.only(top: context.padTop),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      TabBar(
+                        indicatorWeight: 10,
+                        controller: tabController,
+                        isScrollable: true,
+                        tabs:
+                            tabHeader
+                                .map(
+                                  (i) => Container(
+                                    padding: EdgeInsets.all(kDefaultPadding),
+                                    child: Text(i.tabValue("0")),
+                                  ),
+                                )
+                                .toList(),
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          controller: tabController,
+                          children: List.generate(5, (index) {
+                            return BlocBuilder<
+                              OrderProcessBloc,
+                              OrderProcessState
+                            >(
+                              builder: (context, state) {
+                                return ListView.builder(
+                                  itemCount: state.orders.length,
+                                  padding: EdgeInsets.zero,
+                                  itemBuilder: (context, index) {
+                                    return OrderProcessItemListWidget(
+                                      order: state.orders[index],
+                                      index: index,
+                                      activeIndex: activeIndex ?? 0,
+                                      isDetail: isDetail,
+                                      onClickDetail: (order) {
+                                        onClickDetail(order, index, true);
+                                      },
+                                    );
+                                  },
+                                );
                               },
                             );
-                          },
-                        );
-                      }),
-                    ),
+                          }),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            if (widthAnimation != null)
-              AnimatedBuilder(
-                animation: widthAnimation!,
-                builder: (context, _) {
-                  final wAnimation = widthAnimation;
-                  if (wAnimation == null) {
-                    return Offstage();
-                  }
+                ),
+                if (widthAnimation != null)
+                  AnimatedBuilder(
+                    animation: widthAnimation!,
+                    builder: (context, _) {
+                      final wAnimation = widthAnimation;
+                      if (wAnimation == null) {
+                        return Offstage();
+                      }
 
-                  return SizedBox(
-                    height: context.height,
-                    width: wAnimation.value,
-                    child: Container(
-                      padding: EdgeInsets.all(kDefaultPadding),
-                      color: whiteColor,
-                      child:
-                          wAnimation.value >= maxWidthDetail
-                              ? Stack(
-                                children: [
-                                  Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                      return SizedBox(
+                        height: context.height,
+                        width: wAnimation.value,
+                        child: Container(
+                          padding: EdgeInsets.all(kDefaultPadding),
+                          color: whiteColor,
+                          child:
+                              wAnimation.value >= maxWidthDetail
+                                  ? BlocBuilder<
+                                    OrderProcessBloc,
+                                    OrderProcessState
+                                  >(
+                                    builder: (context, state) {
+                                      final order = state.order;
+                                      final client = state.order.client;
+                                      final orderItems = state.order.items;
+                                      return Stack(
                                         children: [
-                                          Text(
-                                            "SMK Adi sanggoro",
-                                            style: context.textTheme.titleLarge
-                                                ?.copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                          ),
-                                          IconButton(
-                                            onPressed: () {
-                                              onClickDetail(-1, false);
-                                            },
-                                            icon: Icon(
-                                              CupertinoIcons.clear,
-                                              size: kSizeL,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Expanded(
-                                        child: SingleChildScrollView(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                          Column(
                                             children: [
-                                              OrderSummaryWidget(
-                                                order: Order.init(),
-                                                items: [
-                                                  OrderItem(
-                                                    product: Product(
-                                                      id: "id",
-                                                      name: "name",
-                                                      code: "code",
-                                                      price: 1000,
-                                                      createAt: "createAt",
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    client.name,
+                                                    style: context
+                                                        .textTheme
+                                                        .titleLarge
+                                                        ?.copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                  ),
+                                                  IconButton(
+                                                    onPressed: () {
+                                                      onClickDetail(
+                                                        null,
+                                                        -1,
+                                                        false,
+                                                      );
+                                                    },
+                                                    icon: Icon(
+                                                      CupertinoIcons.clear,
+                                                      size: kSizeL,
                                                     ),
                                                   ),
                                                 ],
-                                                client: ClientOrder.init(),
                                               ),
-                                              SizedBox(height: kSizeXL),
-                                              Row(
-                                                children: [
-                                                  ImagePreviewWidget(
-                                                    title: "Bukti Dp",
+                                              Expanded(
+                                                child: SingleChildScrollView(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      OrderSummaryWidget(
+                                                        order: order,
+                                                        items: orderItems,
+                                                        client: client,
+                                                      ),
+                                                      SizedBox(height: kSizeXL),
+                                                      Row(
+                                                        children: [
+                                                          ImagePreviewWidget(
+                                                            title: "Bukti Dp",
+                                                          ),
+                                                          SizedBox(
+                                                            width: kSizeM,
+                                                          ),
+                                                          ImagePreviewWidget(
+                                                            title:
+                                                                "Bukti Pelunasan",
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
                                                   ),
-                                                  SizedBox(width: kSizeM),
-                                                  ImagePreviewWidget(
-                                                    title: "Bukti Pelunasan",
-                                                  ),
-                                                ],
+                                                ),
                                               ),
                                             ],
                                           ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: Row(
-                                      children: [
-                                        GradientButton(
-                                          height: 35,
-                                          width: 130,
-                                          onPressed: () {
-                                            showProcessDialog(
-                                              context: context,
-                                              onSwipe: () {
-                                                context.pop();
-                                              },
-                                            );
-                                          },
-                                          child: Text("Proses"),
-                                        ),
-                                        SizedBox(width: kSizeS),
-                                        OrderActionWidget(),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )
-                              : Offstage(),
-                    ),
-                  );
-                },
-              ),
-          ],
-        ),
-      ),
+                                          Positioned(
+                                            bottom: 0,
+                                            right: 0,
+                                            child: Row(
+                                              children: [
+                                                GradientButton(
+                                                  height: 35,
+                                                  width: 130,
+                                                  onPressed: () {
+                                                    showProcessDialog(
+                                                      context: context,
+                                                      onSwipe: () {
+                                                        context.pop();
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Text("Proses"),
+                                                ),
+                                                SizedBox(width: kSizeS),
+                                                OrderActionWidget(),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  )
+                                  : Offstage(),
+                        ),
+                      );
+                    },
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

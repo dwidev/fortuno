@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/core.dart';
@@ -30,7 +27,7 @@ class OrderNosqlDatasource extends OrderDatasource {
     final params = <String, String>{"company_uuid": companyID};
     final response =
         await client.rpc('get_order_by_company', params: params).select();
-    log(jsonEncode(response));
-    return [];
+    final result = response.map((e) => OrderModel.fromMap(e)).toList();
+    return result;
   }
 }

@@ -11,24 +11,29 @@ String formatDate(DateTime? date, {String? pattern}) {
   return formated;
 }
 
-DateTime formatToDate(String date, {String? pattern}) {
-  final formated = DateFormat(
+DateTime parseToDate(String date, {String? pattern}) {
+  final parsed = DateFormat(
     pattern ?? DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY,
     'id_ID',
   ).parse(date);
-  return formated;
+  return parsed;
 }
 
-DateTime formatToTime(String time) {
-  final formated = DateFormat(DateFormat.HOUR24_MINUTE).parse(time);
-  return formated;
+DateTime parseToTime(String time) {
+  final parsed = DateFormat(DateFormat.HOUR24_MINUTE).parse(time);
+  return parsed;
+}
+
+String formatToDateTime(DateTime dateTime) {
+  final formated = DateFormat('EEE, dd MMM yyyy HH:mm').format(dateTime);
+  return "$formated WIB";
 }
 
 /// the format [date] is DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY
 /// and the format [time] is xx:xx, example : 10:00
 DateTime mergeDateAndTime(String date, String time) {
-  final d = formatToDate(date);
-  final t = formatToTime(time);
+  final d = parseToDate(date);
+  final t = parseToTime(time);
   final dateTime = DateTime(d.year, d.month, d.day, t.hour, t.minute, t.second);
   return dateTime;
 }

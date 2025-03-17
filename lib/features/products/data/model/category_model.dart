@@ -41,7 +41,7 @@ class CategoryModel extends BaseModel<CategoryProduct> {
   }
 
   factory CategoryModel.fromMap(Map<String, dynamic> map) {
-    final price = BaseModel.parsePriceToDouble(map);
+    final price = BaseModel.parseToDouble(map['price']);
 
     return CategoryModel(
       id: map["ID"] as String? ?? "",

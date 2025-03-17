@@ -12,7 +12,9 @@ class GetOrdersByCompanyId extends BaseUsecase<List<Order>, String> {
 
   @override
   FutureReturn<List<Order>> calling(String params) async {
-    await orderRepository.getOrdersByCompanyID(companyID: params);
-    return Right([]);
+    final result = await orderRepository.getOrdersByCompanyID(
+      companyID: params,
+    );
+    return Right(result);
   }
 }

@@ -89,6 +89,6 @@ class OrderRepositoryImpl extends OrderRepository {
     final response = await orderDatasource.getOrdersByCompanyID(
       companyID: companyID,
     );
-    return [];
+    return response.map((e) => e.toEntity()).toList();
   }
 }

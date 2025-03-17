@@ -11,8 +11,11 @@ class OrderProcessBloc
   final GetOrdersByCompanyId getOrdersByCompanyId;
 
   OrderProcessBloc({required this.getOrdersByCompanyId})
-    : super(OrderProcessInitial()) {
+    : super(OrderProcessInitial(order: Order.init())) {
     on<OnGetOrders>(_onGetOrders);
+    on<GoToOrderDetails>((event, emit) {
+      emit(state.copyWith(order: event.order));
+    });
   }
 
   Future<void> _onGetOrders(OnGetOrders event, Emitter emit) async {
@@ -23,7 +26,7 @@ class OrderProcessBloc
 
     response.fold(
       (err) => error(emit, err),
-      (right) => state.copyWith(orders: right),
+      (right) => emit(state.copyWith(orders: right)),
     );
   }
 }

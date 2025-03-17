@@ -1,4 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:fortuno/core/core.dart';
+
+import '../../../../core/utils/formatter.dart';
 
 class ClientOrder extends Equatable {
   final String id;
@@ -9,6 +12,8 @@ class ClientOrder extends Equatable {
   final String rt;
   final String rw;
   final String detailAddress;
+
+  String get sendDateDisplay => formatToDateTime(sendDate);
 
   const ClientOrder({
     required this.id,

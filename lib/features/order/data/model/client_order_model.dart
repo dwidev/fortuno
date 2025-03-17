@@ -42,10 +42,10 @@ class ClientOrderModel extends BaseModel<ClientOrder> {
       id: map['ID'] as String,
       name: map['name'] as String,
       phoneNumber: map['phone_number'] as String,
-      sendDate: DateTime.parse(map['send_date']),
+      sendDate: DateTime.parse(map['order_send_date']),
       address: map['address'] as String,
-      rt: map['rt'] as String,
-      rw: map['rw'] as String,
+      rt: map['rt'] as String? ?? "",
+      rw: map['rw'] as String? ?? "",
       detailAddress: map['detail_address'] as String,
     );
   }

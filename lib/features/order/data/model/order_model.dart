@@ -72,12 +72,12 @@ class OrderModel extends BaseModel<Order> {
 
   factory OrderModel.fromMap(Map<String, dynamic> map) {
     return OrderModel(
-      id: map['ID'] as String,
+      id: map['order_id'] as String,
       companyId: map['company_id'] as String,
       clientId: map['client_id'] as String,
-      totalPrice: map['total_price'] as double,
-      shippingCost: map['shipping_cost'] as double,
-      discount: map['discount'] as double,
+      totalPrice: BaseModel.parseToDouble(map['total_price']),
+      shippingCost: BaseModel.parseToDouble(map['shipping_cost']),
+      discount: BaseModel.parseToDouble(map['discount']),
       paymentOption: map['payment_option'] as String,
       orderStatus: map['order_status'] as String,
       createdAt: map['created_at'] as String,
