@@ -14,7 +14,7 @@ class OrderState extends BaseState {
   });
 
   @override
-  List<Object?> get props => [categories, ...super.props];
+  List<Object?> get props => [categories, finishSelected, ...super.props];
 
   @override
   OrderState copyWith({
@@ -22,17 +22,21 @@ class OrderState extends BaseState {
     LoadingOpts? loading,
     ValueGetter<Failure?>? error,
     Map<String, int>? productCountCart,
+    bool? finishSelected,
   }) {
     return OrderState(
       categories: categories ?? this.categories,
       loading: loading ?? this.loading,
       error: error != null ? error.call() : this.error,
       productCountCart: productCountCart ?? this.productCountCart,
+      finishSelected: finishSelected ?? this.finishSelected,
     );
   }
 }
 
-final class OrderInitial extends OrderState {}
+final class OrderInitial extends OrderState {
+  const OrderInitial({super.categories = const []});
+}
 
 final class OrderInitSuccess extends OrderState {
   const OrderInitSuccess({

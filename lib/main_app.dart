@@ -25,7 +25,8 @@ Future<void> mainApp(EnvApp env) async {
   EasyLoading.instance
     ..loadingStyle = EasyLoadingStyle.light
     ..indicatorColor = lemonChiffonColor
-    ..animationStyle = EasyLoadingAnimationStyle.opacity;
+    ..animationStyle = EasyLoadingAnimationStyle.opacity
+    ..toastPosition = EasyLoadingToastPosition.bottom;
 
   initializeDateFormatting('id_ID');
   runApp(App(env: env));

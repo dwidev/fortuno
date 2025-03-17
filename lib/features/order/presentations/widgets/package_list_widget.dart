@@ -1,4 +1,5 @@
-import 'package:fortuno/features/order/presentations/bloc/order/order_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import '../bloc/order/order_bloc.dart';
 
 import '../../../../core/core.dart';
 import '../bloc/cart/cart_bloc.dart';
@@ -62,7 +63,12 @@ class PackageListWidget extends StatelessWidget {
                 return InkWell(
                   borderRadius: BorderRadius.circular(kDefaultRadius),
                   onTap: () {
-                    if (state.finishSelected) return;
+                    if (state.finishSelected) {
+                      EasyLoading.showToast(
+                        "Silahkan kembali kemenu Rincian pesanan",
+                      );
+                      return;
+                    }
 
                     context.read<CartBloc>().add(
                       AddProductToCartEvent(
@@ -75,7 +81,12 @@ class PackageListWidget extends StatelessWidget {
                   child: Ink(
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: quantity != 0 ? lemonChiffonColor : whiteColor,
+                      color:
+                          state.finishSelected
+                              ? darkLightColor
+                              : quantity != 0
+                              ? lemonChiffonColor
+                              : whiteColor,
                       borderRadius: BorderRadius.circular(kDefaultRadius),
                     ),
                     child: Row(

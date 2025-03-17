@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fortuno/features/order/presentations/widgets/process_cart_order_dialog.dart';
 
@@ -45,10 +47,6 @@ class _CartOrderPageState extends State<CartOrderPage>
   void onTapOder() {
     final cartBloc = context.read<CartBloc>();
     if (cartBloc.state.items.isEmpty) {
-      EasyLoading.instance
-        ..maskColor = Colors.amber
-        ..backgroundColor = Colors.red
-        ..toastPosition = EasyLoadingToastPosition.bottom;
       EasyLoading.showToast(
         "Silahkan pilih salah satu produk/package!!!",
         dismissOnTap: true,
@@ -108,6 +106,7 @@ class _CartOrderPageState extends State<CartOrderPage>
         }
 
         if (state is CartInitial) {
+          log("RESET ORDER");
           tabController.animateTo(0);
           final orderBloc = context.read<OrderBloc>();
           orderBloc.add(ResetOrder());

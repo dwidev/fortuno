@@ -40,13 +40,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
     on<OnAddQuantity>(_onAddQuantity);
     on<OnFinishSelectedProduct>(_onFinishSelectProduct);
     on<ResetOrder>(
-      (event, emit) => emit(
-        OrderInitSuccess(
-          categories: state.categories,
-          productCountCart: {},
-          finishSelected: false,
-        ),
-      ),
+      (event, emit) => emit(OrderInitial(categories: state.categories)),
     );
   }
 
@@ -122,9 +116,6 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
   }
 
   void _onFinishSelectProduct(OnFinishSelectedProduct event, Emitter emit) {
-    if (state is! AtProductPage) return;
-    final s = (state as AtProductPage);
-
-    emit(s.copyWith(finishSelected: event.isFinish));
+    emit(state.copyWith(finishSelected: event.isFinish));
   }
 }

@@ -23,7 +23,6 @@ class CreateOrderPage extends StatefulWidget {
 class _CreateOrderPageState extends State<CreateOrderPage> {
   @override
   void initState() {
-    print("INIT LAGI GA");
     super.initState();
     context.read<OrderBloc>().add(
       OnInitOrderPageEvent(companyId: "898a70b4-0758-4eda-bf73-b469db14eb50"),
