@@ -26,10 +26,12 @@ class OrderProcessBloc
   }
 
   Future<void> _onGetOrders(OnGetOrders event, Emitter emit) async {
-    final response = await runUsecase(
-      () => getOrdersByCompanyId("898a70b4-0758-4eda-bf73-b469db14eb50"),
-      emit,
-    );
+    emit(OrderProcessInitial(order: Order.init()));
+
+    final response = await runUsecase(() {
+      final params = GetOrdersParams(status: event.status);
+      return getOrdersByCompanyId(params);
+    }, emit);
 
     response.fold(
       (err) => error(emit, err),

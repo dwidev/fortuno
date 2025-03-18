@@ -81,9 +81,12 @@ class OrderRepositoryImpl extends OrderRepository {
   }
 
   @override
-  Future<List<Order>> getOrdersByCompanyID({required String companyID}) async {
+  Future<List<Order>> getOrdersByStatus({required OrderStatus status}) async {
+    // TODO change company id
+    final companyID = "898a70b4-0758-4eda-bf73-b469db14eb50";
     final response = await orderDatasource.getOrdersByCompanyID(
       companyID: companyID,
+      status: status,
     );
     return response.map((e) => e.toEntity()).toList();
   }

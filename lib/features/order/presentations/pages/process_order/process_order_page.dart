@@ -1,12 +1,9 @@
-import 'dart:math';
-
-import '../../../domain/entities/order.dart';
-import '../../bloc/order_process/order_process_bloc.dart';
-import 'detail_process_order_page.dart';
-
 import '../../../../../core/core.dart';
+import '../../../domain/entities/order.dart';
 import '../../../domain/enums/order_status.dart';
+import '../../bloc/order_process/order_process_bloc.dart';
 import '../../widgets/order_process_item_list_widget.dart';
+import 'detail_process_order_page.dart';
 
 class ProcessOrderPage extends StatefulWidget {
   static String path = '/process-order';
@@ -37,9 +34,11 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
 
   @override
   void initState() {
-    context.read<OrderProcessBloc>().add(OnGetOrders());
+    context.read<OrderProcessBloc>().add(
+      OnGetOrders(status: OrderStatus.waiting),
+    );
     super.initState();
-    tabController = TabController(length: 5, vsync: this);
+    tabController = TabController(length: tabHeader.length, vsync: this);
     animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 200),
@@ -83,6 +82,29 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
     }
   }
 
+  void onChangeTab(int index) {
+    final bloc = context.read<OrderProcessBloc>();
+    if (index == 0) {
+      bloc.add(OnGetOrders(status: OrderStatus.waiting));
+      return;
+    }
+
+    if (index == 1) {
+      bloc.add(OnGetOrders(status: OrderStatus.process));
+      return;
+    }
+
+    if (index == 2) {
+      bloc.add(OnGetOrders(status: OrderStatus.done));
+      return;
+    }
+
+    if (index == 3) {
+      bloc.add(OnGetOrders(status: OrderStatus.cancel));
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BaseListenerWidget<OrderProcessBloc, OrderProcessState>(
@@ -110,11 +132,12 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                                   ),
                                 )
                                 .toList(),
+                        onTap: onChangeTab,
                       ),
                       Expanded(
                         child: TabBarView(
                           controller: tabController,
-                          children: List.generate(5, (index) {
+                          children: List.generate(tabHeader.length, (index) {
                             return BlocBuilder<
                               OrderProcessBloc,
                               OrderProcessState

@@ -25,8 +25,12 @@ class OrderNosqlDatasource extends OrderDatasource {
   @override
   Future<List<OrderModel>> getOrdersByCompanyID({
     required String companyID,
+    required OrderStatus status,
   }) async {
-    final params = <String, String>{"company_uuid": companyID};
+    final params = <String, String>{
+      "company_uuid": companyID,
+      "status": status.name,
+    };
     final response =
         await client.rpc('get_order_by_company', params: params).select();
     final result = response.map((e) => OrderModel.fromMap(e)).toList();

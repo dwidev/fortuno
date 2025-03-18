@@ -8,7 +8,9 @@ sealed class OrderProcessEvent extends BaseEvent {
 }
 
 final class OnGetOrders extends OrderProcessEvent {
-  const OnGetOrders();
+  final OrderStatus status;
+
+  const OnGetOrders({required this.status});
 }
 
 final class GoToOrderDetails extends OrderProcessEvent {

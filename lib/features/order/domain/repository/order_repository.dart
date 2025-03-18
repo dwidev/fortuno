@@ -15,7 +15,7 @@ abstract class OrderRepository {
   // insert order
   Future<void> onCrateOrder({required Order order});
 
-  Future<List<Order>> getOrdersByCompanyID({required String companyID});
+  Future<List<Order>> getOrdersByStatus({required OrderStatus status});
 
   Future<void> updateOrderStatus({
     required OrderStatus newStatus,
