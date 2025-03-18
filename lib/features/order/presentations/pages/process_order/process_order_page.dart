@@ -32,16 +32,21 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
 
   double get maxWidthDetail => context.width / 1.7;
 
+  final detailShowDuration = Duration(milliseconds: 200);
+
   @override
   void initState() {
+    super.initState();
+
     context.read<OrderProcessBloc>().add(
       OnGetOrders(status: OrderStatus.waiting),
     );
-    super.initState();
+
     tabController = TabController(length: tabHeader.length, vsync: this);
+
     animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 200),
+      duration: detailShowDuration,
     )..addListener(() {
       final wAnimation = widthAnimation;
       if (wAnimation == null) return;
@@ -54,6 +59,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
         }
       });
     });
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final curve = CurvedAnimation(
         parent: animationController,
@@ -136,6 +142,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                       ),
                       Expanded(
                         child: TabBarView(
+                          physics: NeverScrollableScrollPhysics(),
                           controller: tabController,
                           children: List.generate(tabHeader.length, (index) {
                             return BlocBuilder<
@@ -150,7 +157,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                                     return OrderProcessItemListWidget(
                                       order: state.orders[index],
                                       index: index,
-                                      activeIndex: activeIndex ?? 0,
+                                      activeIndex: activeIndex ?? -1,
                                       isDetail: isDetail,
                                       onClickDetail: (order) {
                                         onClickDetail(order, index, true);
@@ -166,7 +173,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                     ],
                   ),
                 ),
-                if (widthAnimation != null)
+                if (widthAnimation != null && activeIndex != -1)
                   DetailProcessOrderPage(
                     widthAnimation: widthAnimation,
                     maxWidthDetail: maxWidthDetail,

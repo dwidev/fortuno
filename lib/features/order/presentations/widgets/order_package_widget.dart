@@ -1,34 +1,41 @@
-import 'package:fortuno/core/core.dart';
+import '../../../../core/core.dart';
+import '../../domain/entities/order.dart';
 
 class OrderPackageWidget extends StatelessWidget {
-  const OrderPackageWidget({super.key});
+  final Order order;
+
+  const OrderPackageWidget({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: context.width / 7,
-      padding: EdgeInsets.symmetric(vertical: kSizeS, horizontal: kSizeS),
-      decoration: BoxDecoration(
-        color: lemonChiffonColor,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Paket berkah 20k",
-            style: context.textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+    if (order.items.firstOrNull?.package != null) {
+      return Container(
+        width: context.width / 4,
+        padding: EdgeInsets.symmetric(vertical: kSizeS, horizontal: kSizeS),
+        decoration: BoxDecoration(
+          color: lemonChiffonColor,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              order.items.firstOrNull?.package?.name ?? "",
+              style: context.textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          Text(
-            "Nasi, Ayam bakar, Tahu, Tempe, Box Kardus coklat + alat makan",
-            style: context.textTheme.bodySmall?.copyWith(
-              fontStyle: FontStyle.italic,
+            Text(
+              order.items.firstOrNull?.package?.contents ?? "",
+              style: context.textTheme.labelSmall?.copyWith(
+                fontStyle: FontStyle.italic,
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    }
+
+    return Offstage();
   }
 }

@@ -48,32 +48,28 @@ class OrderProcessItemListWidget extends StatelessWidget {
                       children: [
                         Text(
                           order.client.name,
-                          style: context.textTheme.bodyLarge?.copyWith(
+                          style: context.textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(height: kSizeS),
-                        Text("Dikirim : ${order.client.sendDateDisplay}"),
-                        Text("Total : ${order.totalPriceString}"),
+                        Text(
+                          "Dikirim : ${order.client.sendDateDisplay}",
+                          style: context.textTheme.bodySmall,
+                        ),
+                        Text(
+                          "Total : ${order.totalPriceString}",
+                          style: context.textTheme.bodySmall,
+                        ),
                       ],
                     ),
                     SizedBox(width: kSizeXXL),
-                    if (!isDetail) OrderPackageWidget(),
+                    if (!isDetail) OrderPackageWidget(order: order),
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      formatDate(order.createdAt),
-                      style: context.textTheme.bodyLarge?.copyWith(
-                        color: darkColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: kSizeS),
-                    if (!isDetail) OrderActionWidget(),
-                  ],
+                  children: [if (!isDetail) OrderActionWidget()],
                 ),
               ],
             ),
