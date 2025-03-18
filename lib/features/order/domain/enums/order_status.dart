@@ -1,5 +1,4 @@
 enum OrderStatus {
-  all,
   waiting,
   process,
   done,
@@ -7,8 +6,6 @@ enum OrderStatus {
 
   String tabValue(String count) {
     switch (this) {
-      case OrderStatus.all:
-        return "Semua";
       case OrderStatus.waiting:
         return "Menunggu ($count)";
       case OrderStatus.process:
@@ -17,6 +14,28 @@ enum OrderStatus {
         return "Selesai";
       case OrderStatus.cancel:
         return "Batal";
+    }
+  }
+
+  String get valueAction {
+    switch (this) {
+      case OrderStatus.waiting:
+        return "Proses";
+      case OrderStatus.process:
+        return "Done";
+      default:
+        throw ArgumentError("$this not available for value action");
+    }
+  }
+
+  OrderStatus get moveStatus {
+    switch (this) {
+      case OrderStatus.waiting:
+        return OrderStatus.process;
+      case OrderStatus.process:
+        return OrderStatus.done;
+      default:
+        throw ArgumentError("$this not available for moveStatus");
     }
   }
 }

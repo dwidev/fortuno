@@ -1,3 +1,5 @@
+import 'package:fortuno/features/order/domain/enums/order_status.dart';
+import 'package:fortuno/features/order/domain/enums/payment_option.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/core.dart';
@@ -29,5 +31,19 @@ class OrderNosqlDatasource extends OrderDatasource {
         await client.rpc('get_order_by_company', params: params).select();
     final result = response.map((e) => OrderModel.fromMap(e)).toList();
     return result;
+  }
+
+  @override
+  Future<void> updateOrderStatus({
+    required String orderID,
+    required OrderStatus newStatus,
+    required PaymentOption option,
+  }) async {
+    final params = <String, dynamic>{
+      'order_status': newStatus.name,
+      'payment_option': option.name,
+    };
+
+    await client.from('orders').update(params).eq('ID', orderID);
   }
 }

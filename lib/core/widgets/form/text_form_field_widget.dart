@@ -63,9 +63,9 @@ class TextFormFieldWidget extends StatelessWidget {
           ),
           style: TextStyle(color: darkColor),
           validator: (value) {
-            if (optional) {
-              return validator?.call(value);
-            }
+            if (optional) return null;
+
+            validator?.call(value);
 
             if (value != null && value.isEmpty) {
               return '$title wajib di isi!';

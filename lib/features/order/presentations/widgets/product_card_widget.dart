@@ -1,12 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import '../bloc/order/order_bloc.dart';
-import '../../../products/domain/entities/category.dart';
-
 import '../../../../core/core.dart';
+import '../../../products/domain/entities/category.dart';
 import '../../../products/domain/entities/product.dart';
+import '../bloc/order/order_bloc.dart';
 
 class ProductCardWidget extends StatelessWidget {
   const ProductCardWidget({

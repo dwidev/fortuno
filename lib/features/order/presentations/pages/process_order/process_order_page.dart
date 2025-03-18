@@ -1,19 +1,12 @@
-import 'dart:developer';
+import 'dart:math';
 
-import 'package:fortuno/features/order/domain/entities/client_order.dart';
-import 'package:fortuno/features/order/domain/entities/order.dart';
-import 'package:fortuno/features/order/domain/entities/order_item.dart';
-import 'package:fortuno/features/order/presentations/bloc/order_process/order_process_bloc.dart';
-import 'package:fortuno/features/order/presentations/widgets/order_summary_widget.dart';
-import 'package:fortuno/features/products/domain/entities/product.dart';
+import '../../../domain/entities/order.dart';
+import '../../bloc/order_process/order_process_bloc.dart';
+import 'detail_process_order_page.dart';
 
 import '../../../../../core/core.dart';
 import '../../../domain/enums/order_status.dart';
-import '../../widgets/order_action_widget.dart';
-import '../../widgets/order_package_widget.dart';
 import '../../widgets/order_process_item_list_widget.dart';
-import '../../widgets/process_order_dialog.dart';
-import '../create_order/cart/cart_create_order_view_page.dart';
 
 class ProcessOrderPage extends StatefulWidget {
   static String path = '/process-order';
@@ -27,7 +20,6 @@ class ProcessOrderPage extends StatefulWidget {
 class _ProcessOrderPageState extends State<ProcessOrderPage>
     with TickerProviderStateMixin {
   final tabHeader = [
-    OrderStatus.all,
     OrderStatus.waiting,
     OrderStatus.process,
     OrderStatus.done,
@@ -95,6 +87,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
   Widget build(BuildContext context) {
     return BaseListenerWidget<OrderProcessBloc, OrderProcessState>(
       builder: (context, bloc, state) {
+        final total = (state as OrderProcessState).orders.length;
         return Scaffold(
           backgroundColor: darkLightColor,
           body: Padding(
@@ -113,7 +106,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                                 .map(
                                   (i) => Container(
                                     padding: EdgeInsets.all(kDefaultPadding),
-                                    child: Text(i.tabValue("0")),
+                                    child: Text(i.tabValue(total.toString())),
                                   ),
                                 )
                                 .toList(),
@@ -151,127 +144,11 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                   ),
                 ),
                 if (widthAnimation != null)
-                  AnimatedBuilder(
-                    animation: widthAnimation!,
-                    builder: (context, _) {
-                      final wAnimation = widthAnimation;
-                      if (wAnimation == null) {
-                        return Offstage();
-                      }
-
-                      return SizedBox(
-                        height: context.height,
-                        width: wAnimation.value,
-                        child: Container(
-                          padding: EdgeInsets.all(kDefaultPadding),
-                          color: whiteColor,
-                          child:
-                              wAnimation.value >= maxWidthDetail
-                                  ? BlocBuilder<
-                                    OrderProcessBloc,
-                                    OrderProcessState
-                                  >(
-                                    builder: (context, state) {
-                                      final order = state.order;
-                                      final client = state.order.client;
-                                      final orderItems = state.order.items;
-                                      return Stack(
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    client.name,
-                                                    style: context
-                                                        .textTheme
-                                                        .titleLarge
-                                                        ?.copyWith(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                  ),
-                                                  IconButton(
-                                                    onPressed: () {
-                                                      onClickDetail(
-                                                        null,
-                                                        -1,
-                                                        false,
-                                                      );
-                                                    },
-                                                    icon: Icon(
-                                                      CupertinoIcons.clear,
-                                                      size: kSizeL,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Expanded(
-                                                child: SingleChildScrollView(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      OrderSummaryWidget(
-                                                        order: order,
-                                                        items: orderItems,
-                                                        client: client,
-                                                      ),
-                                                      SizedBox(height: kSizeXL),
-                                                      Row(
-                                                        children: [
-                                                          ImagePreviewWidget(
-                                                            title: "Bukti Dp",
-                                                          ),
-                                                          SizedBox(
-                                                            width: kSizeM,
-                                                          ),
-                                                          ImagePreviewWidget(
-                                                            title:
-                                                                "Bukti Pelunasan",
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Positioned(
-                                            bottom: 0,
-                                            right: 0,
-                                            child: Row(
-                                              children: [
-                                                GradientButton(
-                                                  height: 35,
-                                                  width: 130,
-                                                  onPressed: () {
-                                                    showProcessDialog(
-                                                      context: context,
-                                                      onSwipe: () {
-                                                        context.pop();
-                                                      },
-                                                    );
-                                                  },
-                                                  child: Text("Proses"),
-                                                ),
-                                                SizedBox(width: kSizeS),
-                                                OrderActionWidget(),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  )
-                                  : Offstage(),
-                        ),
-                      );
+                  DetailProcessOrderPage(
+                    widthAnimation: widthAnimation,
+                    maxWidthDetail: maxWidthDetail,
+                    onClosePage: () {
+                      onClickDetail(null, -1, false);
                     },
                   ),
               ],

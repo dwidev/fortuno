@@ -1,9 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:fortuno/core/models/base_model.dart';
-import 'package:fortuno/features/products/data/model/category_model.dart';
-import 'package:fortuno/features/products/data/model/product_model.dart';
+import '../../../../core/models/base_model.dart';
+import 'product_model.dart';
 
 import '../../domain/entities/package.dart';
 

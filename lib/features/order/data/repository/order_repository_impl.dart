@@ -1,3 +1,5 @@
+import '../../domain/enums/order_status.dart';
+import '../../domain/enums/payment_option.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/core.dart';
@@ -79,16 +81,29 @@ class OrderRepositoryImpl extends OrderRepository {
   }
 
   @override
-  @disposeMethod
-  void dispose() {
-    _cacheOrders.clear();
-  }
-
-  @override
   Future<List<Order>> getOrdersByCompanyID({required String companyID}) async {
     final response = await orderDatasource.getOrdersByCompanyID(
       companyID: companyID,
     );
     return response.map((e) => e.toEntity()).toList();
+  }
+
+  @override
+  Future<void> updateOrderStatus({
+    required OrderStatus newStatus,
+    required PaymentOption option,
+    required String orderID,
+  }) {
+    return orderDatasource.updateOrderStatus(
+      orderID: orderID,
+      newStatus: newStatus,
+      option: option,
+    );
+  }
+
+  @override
+  @disposeMethod
+  void dispose() {
+    _cacheOrders.clear();
   }
 }
