@@ -1,3 +1,5 @@
+import 'package:fortuno/features/order/domain/enums/order_status.dart';
+
 import '../../../../../core/core.dart';
 import '../../../domain/entities/order.dart';
 import '../../bloc/order_process/order_process_bloc.dart';
@@ -122,12 +124,17 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
                               right: 0,
                               child: Row(
                                 children: [
-                                  GradientButton(
-                                    height: 35,
-                                    width: 130,
-                                    onPressed: () => onTap(order),
-                                    child: Text(order.orderStatus.valueAction),
-                                  ),
+                                  if (order.orderStatus ==
+                                          OrderStatus.waiting ||
+                                      order.orderStatus == OrderStatus.process)
+                                    GradientButton(
+                                      height: 35,
+                                      width: 130,
+                                      onPressed: () => onTap(order),
+                                      child: Text(
+                                        order.orderStatus.valueAction,
+                                      ),
+                                    ),
                                   SizedBox(width: kSizeS),
                                   OrderActionWidget(),
                                 ],

@@ -33,10 +33,9 @@ class OrderProcessBloc
       return getOrdersByCompanyId(params);
     }, emit);
 
-    response.fold(
-      (err) => error(emit, err),
-      (right) => emit(state.copyWith(orders: right)),
-    );
+    response.fold((err) => error(emit, err), (right) {
+      emit(state.copyWith(orders: right));
+    });
   }
 
   Future<void> _onUpdateStatus(OnUpdateStatusOrder event, Emitter emit) async {

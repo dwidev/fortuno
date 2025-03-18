@@ -42,7 +42,11 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
       OnGetOrders(status: OrderStatus.waiting),
     );
 
-    tabController = TabController(length: tabHeader.length, vsync: this);
+    tabController = TabController(
+      length: tabHeader.length,
+      vsync: this,
+      animationDuration: detailShowDuration,
+    );
 
     animationController = AnimationController(
       vsync: this,
@@ -73,6 +77,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
   void dispose() {
     super.dispose();
     tabController.dispose();
+    animationController.dispose();
   }
 
   void onClickDetail(Order? order, int index, bool isOpen) {
@@ -114,6 +119,14 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
   @override
   Widget build(BuildContext context) {
     return BaseListenerWidget<OrderProcessBloc, OrderProcessState>(
+      listener: (context, state) {
+        if (isDetail) {
+          Future.delayed(
+            detailShowDuration,
+            () => animationController.reverse(),
+          );
+        }
+      },
       builder: (context, bloc, state) {
         final total = (state as OrderProcessState).orders.length;
         return Scaffold(
