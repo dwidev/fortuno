@@ -1,8 +1,11 @@
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'local_storage.dart';
 
-class SharedPrefStorage implements LocalStorage {
+@sharedPref
+@LazySingleton(as: ILocalStorage)
+class SharedPrefStorage implements ILocalStorage {
   final SharedPreferences preferences;
 
   SharedPrefStorage({required this.preferences});
@@ -17,6 +20,7 @@ class SharedPrefStorage implements LocalStorage {
   Future<void> storeData(String key, Object data) async {
     if (data is String) {
       await preferences.setString(key, data);
+      return;
     }
 
     throw UnimplementedError(

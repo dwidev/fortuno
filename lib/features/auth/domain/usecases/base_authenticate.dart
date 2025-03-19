@@ -1,22 +1,30 @@
 import '../../../../core/local_storage/local_storage.dart';
 import '../../../../core/usecases/base_usecase.dart';
-import '../entities/auth_token.dart';
+import '../entities/user_authenticated.dart';
 import '../repository/auth_repository.dart';
 
 abstract class BaseAuthenticateUsecase<R, P> extends BaseUsecase<R, P> {
   final AuthRepository authRepository;
-  final LocalStorage secStorage;
+  final ILocalStorage secStorage;
+  final ILocalStorage? preference;
 
   BaseAuthenticateUsecase({
     required this.authRepository,
     required this.secStorage,
+    this.preference,
   });
 
-  Future<void> storeToken(AuthToken token) async {
-    await token.storeToStorage(secStorage);
+  Future<void> storeAuthenticatedData(UserAuthenticated data) async {
+    final p = preference;
+    if (p == null) return;
+
+    await data.storeToStorage(secStorage, p);
   }
 
-  Future<void> clearToken() async {
-    await AuthToken.clearToken(secStorage);
+  Future<void> clearData() async {
+    final p = preference;
+    if (p == null) return;
+
+    await UserAuthenticated.clearData(secStorage, p);
   }
 }

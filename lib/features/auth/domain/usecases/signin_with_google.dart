@@ -10,6 +10,7 @@ class SignWithGoogle extends BaseAuthenticateUsecase<bool, void> {
   SignWithGoogle({
     required super.authRepository,
     @secureStorage required super.secStorage,
+    @sharedPref required super.preference,
   });
 
   @override
@@ -27,7 +28,7 @@ class SignWithGoogle extends BaseAuthenticateUsecase<bool, void> {
       return Right(false);
     }
 
-    await storeToken(requestToken);
+    await super.storeAuthenticatedData(requestToken);
     return Right(true);
   }
 }

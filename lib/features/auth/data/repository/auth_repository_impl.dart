@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/firebase/firebase.dart';
-import '../../domain/entities/auth_token.dart';
+import '../../domain/entities/user_authenticated.dart';
 import '../../domain/repository/auth_repository.dart';
 import '../datasource/auth_remote_datasource.dart';
 
@@ -23,7 +23,9 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<AuthToken> authenticateWitEmail({required String email}) async {
+  Future<UserAuthenticated> authenticateWitEmail({
+    required String email,
+  }) async {
     return await authRemoteDataource.signWithEmail(email: email);
   }
 

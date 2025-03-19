@@ -10,13 +10,14 @@ class SignOut extends BaseAuthenticateUsecase<bool, void> {
   SignOut({
     required super.authRepository,
     @secureStorage required super.secStorage,
+    @sharedPref required super.preference,
   });
 
   @override
   Future<Either<Failure, bool>> calling(void params) async {
     await authRepository.signOut();
 
-    await clearToken();
+    await clearData();
     return Right(true);
   }
 }

@@ -66,7 +66,6 @@ class BaseListenerWidget<P extends BaseAppBloc, S extends BaseState>
 
   static void handlerError(BuildContext context, BaseState state) {
     if (state.error != null) {
-      debugPrint("${state.error}");
       showErrorDialog(
         context: context,
         failure: state.error!,

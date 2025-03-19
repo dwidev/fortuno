@@ -36,7 +36,11 @@ Future<void> showErrorDialog({
                 height: context.width / 7,
               ),
               SizedBox(height: kSizeM),
-              Text(failure.message, style: context.textTheme.bodyLarge),
+              Text(
+                failure.message,
+                textAlign: TextAlign.center,
+                style: context.textTheme.bodyLarge,
+              ),
               SizedBox(height: kSizeM),
               Align(
                 alignment: Alignment.center,

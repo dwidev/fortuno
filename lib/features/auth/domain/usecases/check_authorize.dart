@@ -2,7 +2,7 @@ import 'package:either_dart/either.dart';
 
 import '../../../../core/core.dart';
 import '../../../../core/local_storage/local_storage.dart';
-import '../entities/auth_token.dart';
+import '../entities/user_authenticated.dart';
 import 'base_authenticate.dart';
 
 @lazySingleton
