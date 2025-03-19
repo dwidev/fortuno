@@ -1,5 +1,5 @@
+import '../../features/auth/presentations/pages/login_page.dart';
 import '../../features/main_page.dart';
-import '../../features/order/presentations/pages/create_order/create_order_page.dart';
 import '../core.dart';
 import 'auth_route.dart';
 import 'create_order_route.dart';
@@ -19,8 +19,7 @@ final profilRouteKey = GlobalKey<NavigatorState>(debugLabel: "profile-route");
 
 final router = GoRouter(
   navigatorKey: rootNavigatorKey,
-  // initialLocation: LoginPage.path,
-  initialLocation: CreateOrderPage.path,
+  initialLocation: LoginPage.path,
   routes: [
     // auth route
     ...authRoute,

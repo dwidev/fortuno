@@ -2,14 +2,15 @@ import 'package:either_dart/either.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/failures/failure.dart';
-import '../../../../core/usecases/base_usecase.dart';
-import '../repository/auth_repository.dart';
+import '../../../../core/local_storage/local_storage.dart';
+import 'base_authenticate.dart';
 
 @lazySingleton
-class SignWithGoogle extends BaseUsecase<bool, void> {
-  final AuthRepository authRepository;
-
-  SignWithGoogle({required this.authRepository});
+class SignWithGoogle extends BaseAuthenticateUsecase<bool, void> {
+  SignWithGoogle({
+    required super.authRepository,
+    @secureStorage required super.secStorage,
+  });
 
   @override
   Future<Either<Failure, bool>> calling(void params) async {
@@ -26,6 +27,7 @@ class SignWithGoogle extends BaseUsecase<bool, void> {
       return Right(false);
     }
 
+    await storeToken(requestToken);
     return Right(true);
   }
 }

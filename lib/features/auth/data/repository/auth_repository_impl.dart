@@ -1,7 +1,7 @@
-import '../../../../core/firebase/firebase.dart';
-import '../../domain/entities/auth_token.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/firebase/firebase.dart';
+import '../../domain/entities/auth_token.dart';
 import '../../domain/repository/auth_repository.dart';
 import '../datasource/auth_remote_datasource.dart';
 

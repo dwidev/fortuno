@@ -12,6 +12,7 @@
 import 'package:fortuno/core/depedency_injection/register_module.dart' as _i852;
 import 'package:fortuno/core/firebase/auth_service.dart' as _i592;
 import 'package:fortuno/core/firebase/firebase.dart' as _i512;
+import 'package:fortuno/core/local_storage/local_storage.dart' as _i968;
 import 'package:fortuno/features/auth/data/datasource/auth_nosql_datasource.dart'
     as _i787;
 import 'package:fortuno/features/auth/data/datasource/auth_remote_datasource.dart'
@@ -69,10 +70,10 @@ import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
-  _i174.GetIt init({
+  Future<_i174.GetIt> init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
-  }) {
+  }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModule = _$RegisterModule();
     gh.lazySingleton<_i454.SupabaseClient>(() => registerModule.supabaseClient);
@@ -81,6 +82,10 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i252.OrderDatasource>(
       () => _i781.OrderNosqlDatasource(client: gh<_i454.SupabaseClient>()),
+    );
+    gh.factory<_i968.LocalStorage>(
+      () => registerModule.secStorage,
+      instanceName: 'secure-storage',
     );
     gh.lazySingleton<_i79.ProductsDatasource>(
       () => _i294.ProductNosqlDatasource(client: gh<_i454.SupabaseClient>()),
@@ -94,6 +99,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i720.AuthRemoteDataource>(
       () => _i787.AuthNosqlDatasource(client: gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i211.UpdateStatusOrder>(
+      () =>
+          _i211.UpdateStatusOrder(orderRepository: gh<_i996.OrderRepository>()),
+    );
+    gh.lazySingleton<_i1028.GetOrdersByCompanyId>(
+      () => _i1028.GetOrdersByCompanyId(
+        orderRepository: gh<_i996.OrderRepository>(),
+      ),
+    );
     gh.lazySingleton<_i242.CreateOrder>(
       () => _i242.CreateOrder(orderRepository: gh<_i996.OrderRepository>()),
     );
@@ -102,14 +116,10 @@ extension GetItInjectableX on _i174.GetIt {
         orderRepository: gh<_i996.OrderRepository>(),
       ),
     );
-    gh.lazySingleton<_i1028.GetOrdersByCompanyId>(
-      () => _i1028.GetOrdersByCompanyId(
-        orderRepository: gh<_i996.OrderRepository>(),
-      ),
-    );
-    gh.lazySingleton<_i211.UpdateStatusOrder>(
-      () =>
-          _i211.UpdateStatusOrder(orderRepository: gh<_i996.OrderRepository>()),
+    await gh.factoryAsync<_i968.LocalStorage>(
+      () => registerModule.pref,
+      instanceName: 'shared-pref',
+      preResolve: true,
     );
     gh.lazySingleton<_i1028.ProductsRepository>(
       () => _i587.ProductsRepositoryImpl(
@@ -153,14 +163,20 @@ extension GetItInjectableX on _i174.GetIt {
         getPackageByCategoryid: gh<_i359.GetPackageByCategoryid>(),
       ),
     );
-    gh.factory<_i184.CartBloc>(
-      () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
-    );
     gh.lazySingleton<_i870.SignWithGoogle>(
-      () => _i870.SignWithGoogle(authRepository: gh<_i948.AuthRepository>()),
+      () => _i870.SignWithGoogle(
+        authRepository: gh<_i948.AuthRepository>(),
+        secStorage: gh<_i968.LocalStorage>(instanceName: 'secure-storage'),
+      ),
     );
     gh.lazySingleton<_i101.SignOut>(
-      () => _i101.SignOut(authRepository: gh<_i948.AuthRepository>()),
+      () => _i101.SignOut(
+        authRepository: gh<_i948.AuthRepository>(),
+        secStorage: gh<_i968.LocalStorage>(instanceName: 'secure-storage'),
+      ),
+    );
+    gh.factory<_i184.CartBloc>(
+      () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
     );
     gh.factory<_i279.AuthBloc>(
       () => _i279.AuthBloc(
