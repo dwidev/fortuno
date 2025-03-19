@@ -6,7 +6,7 @@ import '../../domain/repository/auth_repository.dart';
 import '../datasource/auth_remote_datasource.dart';
 
 @LazySingleton(as: AuthRepository)
-class AuthRepositoryImpl extends AuthRepository {
+class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuthService firebaseAuthService;
   final AuthRemoteDataource authRemoteDataource;
 

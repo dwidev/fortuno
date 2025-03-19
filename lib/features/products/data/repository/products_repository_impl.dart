@@ -7,7 +7,7 @@ import '../../domain/repository/products_repository.dart';
 import '../datasources/products_datasource.dart';
 
 @LazySingleton(as: ProductsRepository)
-class ProductsRepositoryImpl extends ProductsRepository {
+class ProductsRepositoryImpl implements ProductsRepository {
   final ProductsDatasource productsDatasource;
 
   ProductsRepositoryImpl({required this.productsDatasource});

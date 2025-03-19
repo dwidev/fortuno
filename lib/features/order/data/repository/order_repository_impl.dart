@@ -12,7 +12,7 @@ import '../model/order_item_model.dart';
 import '../model/order_model.dart';
 
 @LazySingleton(as: OrderRepository)
-class OrderRepositoryImpl extends OrderRepository {
+class OrderRepositoryImpl implements OrderRepository {
   final OrderDatasource orderDatasource;
   OrderRepositoryImpl({required this.orderDatasource});
 
