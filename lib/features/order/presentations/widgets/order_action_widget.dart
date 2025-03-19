@@ -1,7 +1,12 @@
-import 'package:fortuno/core/core.dart';
+import 'package:fortuno/features/order/domain/enums/order_status.dart';
+
+import '../../../../core/core.dart';
+import '../../domain/entities/order.dart';
 
 class OrderActionWidget extends StatelessWidget {
-  const OrderActionWidget({super.key});
+  final Order order;
+
+  const OrderActionWidget({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {
@@ -13,20 +18,22 @@ class OrderActionWidget extends StatelessWidget {
           icon: CupertinoIcons.printer,
           onPressed: () {},
         ),
-        SizedBox(width: kSizeS),
-        ButtonCircleWidget.gradient(
-          buttonSize: 35,
-          gradiendBackgroundColor: [darkColor, Colors.blueAccent],
-          icon: CupertinoIcons.pencil,
-          onPressed: () {},
-        ),
-        SizedBox(width: kSizeS),
-        ButtonCircleWidget.gradient(
-          buttonSize: 35,
-          gradiendBackgroundColor: [darkColor, Colors.redAccent],
-          icon: CupertinoIcons.trash,
-          onPressed: () {},
-        ),
+        if (order.orderStatus == OrderStatus.waiting) ...[
+          SizedBox(width: kSizeS),
+          ButtonCircleWidget.gradient(
+            buttonSize: 35,
+            gradiendBackgroundColor: [darkColor, Colors.blueAccent],
+            icon: CupertinoIcons.pencil,
+            onPressed: () {},
+          ),
+          SizedBox(width: kSizeS),
+          ButtonCircleWidget.gradient(
+            buttonSize: 35,
+            gradiendBackgroundColor: [darkColor, Colors.redAccent],
+            icon: CupertinoIcons.trash,
+            onPressed: () {},
+          ),
+        ],
       ],
     );
   }

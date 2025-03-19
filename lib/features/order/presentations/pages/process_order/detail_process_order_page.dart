@@ -136,7 +136,7 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
                                       ),
                                     ),
                                   SizedBox(width: kSizeS),
-                                  OrderActionWidget(),
+                                  OrderActionWidget(order: order),
                                 ],
                               ),
                             ),

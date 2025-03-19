@@ -69,7 +69,7 @@ class OrderProcessItemListWidget extends StatelessWidget {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [if (!isDetail) OrderActionWidget()],
+                  children: [if (!isDetail) OrderActionWidget(order: order)],
                 ),
               ],
             ),

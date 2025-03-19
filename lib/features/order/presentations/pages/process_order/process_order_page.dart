@@ -120,7 +120,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
   Widget build(BuildContext context) {
     return BaseListenerWidget<OrderProcessBloc, OrderProcessState>(
       listener: (context, state) {
-        if (isDetail) {
+        if (isDetail && tabController.indexIsChanging && state.loading.active) {
           Future.delayed(
             detailShowDuration,
             () => animationController.reverse(),
