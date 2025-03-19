@@ -1,10 +1,11 @@
-import '../../domain/enums/order_status.dart';
-import '../../domain/enums/payment_option.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/core.dart';
+import '../../../profile/data/datasource/company_datasource.dart';
 import '../../domain/entities/order.dart';
 import '../../domain/entities/order_item.dart';
+import '../../domain/enums/order_status.dart';
+import '../../domain/enums/payment_option.dart';
 import '../../domain/repository/order_repository.dart';
 import '../datasource/order_datasource.dart';
 import '../model/client_order_model.dart';
@@ -13,8 +14,13 @@ import '../model/order_model.dart';
 
 @LazySingleton(as: OrderRepository)
 class OrderRepositoryImpl implements OrderRepository {
+  final CompanyDatasource companyDatasource;
   final OrderDatasource orderDatasource;
-  OrderRepositoryImpl({required this.orderDatasource});
+
+  OrderRepositoryImpl({
+    required this.companyDatasource,
+    required this.orderDatasource,
+  });
 
   final List<OrderItem> _cacheOrders = [];
 
@@ -36,6 +42,8 @@ class OrderRepositoryImpl implements OrderRepository {
 
   @override
   Future<void> onCrateOrder({required Order order}) async {
+    final companyID = await companyDatasource.getCompanyID();
+
     final client = ClientOrderModel(
       id: Uuid().v4(),
       name: order.client.name,
@@ -51,8 +59,7 @@ class OrderRepositoryImpl implements OrderRepository {
 
     final model = OrderModel(
       id: orderId,
-      // TODO change company id
-      companyId: "898a70b4-0758-4eda-bf73-b469db14eb50",
+      companyId: companyID,
       clientId: client.id,
       totalPrice: order.totalPrice,
       shippingCost: order.discount,
@@ -82,8 +89,7 @@ class OrderRepositoryImpl implements OrderRepository {
 
   @override
   Future<List<Order>> getOrdersByStatus({required OrderStatus status}) async {
-    // TODO change company id
-    final companyID = "898a70b4-0758-4eda-bf73-b469db14eb50";
+    final companyID = await companyDatasource.getCompanyID();
     final response = await orderDatasource.getOrdersByCompanyID(
       companyID: companyID,
       status: status,

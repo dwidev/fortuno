@@ -69,6 +69,12 @@ import 'package:fortuno/features/products/domain/usecases/get_package_by_categor
     as _i359;
 import 'package:fortuno/features/products/domain/usecases/get_products_by_categoryid.dart'
     as _i852;
+import 'package:fortuno/features/profile/data/datasource/company_datasource.dart'
+    as _i536;
+import 'package:fortuno/features/profile/data/datasource/company_local_datasource.dart'
+    as _i479;
+import 'package:fortuno/features/profile/data/repo/company_repository_impl.dart'
+    as _i743;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
@@ -99,31 +105,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i79.ProductsDatasource>(
       () => _i294.ProductNosqlDatasource(client: gh<_i454.SupabaseClient>()),
     );
-    gh.lazySingleton<_i996.OrderRepository>(
-      () => _i562.OrderRepositoryImpl(
-        orderDatasource: gh<_i252.OrderDatasource>(),
-      ),
-      dispose: (i) => i.dispose(),
-    );
     gh.lazySingleton<_i720.AuthRemoteDataource>(
       () => _i787.AuthNosqlDatasource(client: gh<_i454.SupabaseClient>()),
-    );
-    gh.lazySingleton<_i211.UpdateStatusOrder>(
-      () =>
-          _i211.UpdateStatusOrder(orderRepository: gh<_i996.OrderRepository>()),
-    );
-    gh.lazySingleton<_i1028.GetOrdersByCompanyId>(
-      () => _i1028.GetOrdersByCompanyId(
-        orderRepository: gh<_i996.OrderRepository>(),
-      ),
-    );
-    gh.lazySingleton<_i242.CreateOrder>(
-      () => _i242.CreateOrder(orderRepository: gh<_i996.OrderRepository>()),
-    );
-    gh.lazySingleton<_i258.CacheOrderFromCart>(
-      () => _i258.CacheOrderFromCart(
-        orderRepository: gh<_i996.OrderRepository>(),
-      ),
     );
     gh.lazySingleton<_i1028.ProductsRepository>(
       () => _i587.ProductsRepositoryImpl(
@@ -135,9 +118,6 @@ extension GetItInjectableX on _i174.GetIt {
         firebaseAuthService: gh<_i512.FirebaseAuthService>(),
         authRemoteDataource: gh<_i720.AuthRemoteDataource>(),
       ),
-    );
-    gh.factory<_i617.CartProcessingBloc>(
-      () => _i617.CartProcessingBloc(createOrder: gh<_i242.CreateOrder>()),
     );
     gh.lazySingleton<_i968.ILocalStorage>(
       () =>
@@ -156,12 +136,6 @@ extension GetItInjectableX on _i174.GetIt {
         authRepository: gh<_i948.AuthRepository>(),
         secStorage: gh<_i968.ILocalStorage>(instanceName: 'secure-storage'),
         preference: gh<_i968.ILocalStorage>(instanceName: 'shared-pref'),
-      ),
-    );
-    gh.factory<_i955.OrderProcessBloc>(
-      () => _i955.OrderProcessBloc(
-        getOrdersByCompanyId: gh<_i1028.GetOrdersByCompanyId>(),
-        updateStatusOrder: gh<_i211.UpdateStatusOrder>(),
       ),
     );
     gh.lazySingleton<_i436.GetCategoryByCompanyId>(
@@ -190,8 +164,10 @@ extension GetItInjectableX on _i174.GetIt {
         getPackageByCategoryid: gh<_i359.GetPackageByCategoryid>(),
       ),
     );
-    gh.factory<_i184.CartBloc>(
-      () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
+    gh.lazySingleton<_i536.CompanyDatasource>(
+      () => _i479.CompanyLocalDatasource(
+        preference: gh<_i968.ILocalStorage>(instanceName: 'shared-pref'),
+      ),
     );
     gh.lazySingleton<_i605.CheckAuthorize>(
       () => _i605.CheckAuthorize(
@@ -199,12 +175,53 @@ extension GetItInjectableX on _i174.GetIt {
         secStorage: gh<_i968.ILocalStorage>(instanceName: 'secure-storage'),
       ),
     );
+    gh.lazySingleton<_i743.CompanyRepositoryImpl>(
+      () => _i743.CompanyRepositoryImpl(
+        datasource: gh<_i536.CompanyDatasource>(),
+      ),
+    );
+    gh.lazySingleton<_i996.OrderRepository>(
+      () => _i562.OrderRepositoryImpl(
+        companyDatasource: gh<_i536.CompanyDatasource>(),
+        orderDatasource: gh<_i252.OrderDatasource>(),
+      ),
+      dispose: (i) => i.dispose(),
+    );
     gh.factory<_i279.AuthBloc>(
       () => _i279.AuthBloc(
         signWithGoogle: gh<_i870.SignWithGoogle>(),
         signOut: gh<_i101.SignOut>(),
         checkAuthorize: gh<_i605.CheckAuthorize>(),
       ),
+    );
+    gh.lazySingleton<_i211.UpdateStatusOrder>(
+      () =>
+          _i211.UpdateStatusOrder(orderRepository: gh<_i996.OrderRepository>()),
+    );
+    gh.lazySingleton<_i1028.GetOrdersByCompanyId>(
+      () => _i1028.GetOrdersByCompanyId(
+        orderRepository: gh<_i996.OrderRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i242.CreateOrder>(
+      () => _i242.CreateOrder(orderRepository: gh<_i996.OrderRepository>()),
+    );
+    gh.lazySingleton<_i258.CacheOrderFromCart>(
+      () => _i258.CacheOrderFromCart(
+        orderRepository: gh<_i996.OrderRepository>(),
+      ),
+    );
+    gh.factory<_i617.CartProcessingBloc>(
+      () => _i617.CartProcessingBloc(createOrder: gh<_i242.CreateOrder>()),
+    );
+    gh.factory<_i955.OrderProcessBloc>(
+      () => _i955.OrderProcessBloc(
+        getOrdersByCompanyId: gh<_i1028.GetOrdersByCompanyId>(),
+        updateStatusOrder: gh<_i211.UpdateStatusOrder>(),
+      ),
+    );
+    gh.factory<_i184.CartBloc>(
+      () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
     );
     return this;
   }
