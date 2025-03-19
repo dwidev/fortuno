@@ -21,6 +21,8 @@ import 'package:fortuno/features/auth/data/repository/auth_repository_impl.dart'
     as _i319;
 import 'package:fortuno/features/auth/domain/repository/auth_repository.dart'
     as _i948;
+import 'package:fortuno/features/auth/domain/usecases/check_authorize.dart'
+    as _i605;
 import 'package:fortuno/features/auth/domain/usecases/sign_out.dart' as _i101;
 import 'package:fortuno/features/auth/domain/usecases/signin_with_google.dart'
     as _i870;
@@ -175,6 +177,12 @@ extension GetItInjectableX on _i174.GetIt {
         secStorage: gh<_i968.LocalStorage>(instanceName: 'secure-storage'),
       ),
     );
+    gh.lazySingleton<_i605.CheckAuthorize>(
+      () => _i605.CheckAuthorize(
+        authRepository: gh<_i948.AuthRepository>(),
+        secStorage: gh<_i968.LocalStorage>(instanceName: 'secure-storage'),
+      ),
+    );
     gh.factory<_i184.CartBloc>(
       () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
     );
@@ -182,6 +190,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i279.AuthBloc(
         signWithGoogle: gh<_i870.SignWithGoogle>(),
         signOut: gh<_i101.SignOut>(),
+        checkAuthorize: gh<_i605.CheckAuthorize>(),
       ),
     );
     return this;

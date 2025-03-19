@@ -1,4 +1,4 @@
-import '../../features/auth/presentations/pages/login_page.dart';
+import '../../features/auth/presentations/pages/splash_page.dart';
 import '../../features/main_page.dart';
 import '../core.dart';
 import 'auth_route.dart';
@@ -19,7 +19,7 @@ final profilRouteKey = GlobalKey<NavigatorState>(debugLabel: "profile-route");
 
 final router = GoRouter(
   navigatorKey: rootNavigatorKey,
-  initialLocation: LoginPage.path,
+  initialLocation: SplashPage.path,
   routes: [
     // auth route
     ...authRoute,

@@ -5,6 +5,8 @@ class AuthEvent extends BaseEvent {
   List<Object> get props => [];
 }
 
+final class OnCheckAuthorize extends AuthEvent {}
+
 final class OnSignWithGoogleEvent extends AuthEvent {}
 
 final class OnSignOutEvent extends AuthEvent {}
