@@ -1,3 +1,5 @@
+import 'package:fortuno/features/order/presentations/pages/create_order/create_order_page.dart';
+
 import '../../features/auth/presentations/pages/splash_page.dart';
 import '../../features/main_page.dart';
 import '../core.dart';

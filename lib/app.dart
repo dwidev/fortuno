@@ -14,7 +14,15 @@ class App extends StatelessWidget {
       theme: lightTheme,
       locale: Locale('id', 'ID'),
       routerConfig: router,
-      builder: EasyLoading.init(),
+      builder: EasyLoading.init(
+        builder:
+            (context, child) => GestureDetector(
+              onTap: () {
+                print("TAP GA");
+              },
+              child: child,
+            ),
+      ),
     );
   }
 }
