@@ -90,7 +90,7 @@ class CartDetailsViewPage extends StatelessWidget {
                       child: DateFormPickerWidget(
                         controller: bloc.dateController,
                         title: "Tanggal kirim",
-                        firstDate: now.add(1.days),
+                        firstDate: DateTime.now().add(1.days),
                       ),
                     ),
                     SizedBox(width: kSizeMS),

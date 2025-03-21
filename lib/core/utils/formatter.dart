@@ -1,7 +1,5 @@
 import 'package:intl/intl.dart';
 
-final now = DateTime.now().toUtc();
-
 String formatDate(DateTime? date, {String? pattern}) {
   if (date == null) return "";
   final formated = DateFormat(

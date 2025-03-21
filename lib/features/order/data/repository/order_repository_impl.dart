@@ -56,6 +56,7 @@ class OrderRepositoryImpl implements OrderRepository {
     );
 
     final orderId = Uuid().v4();
+    final now = DateTime.now().toUtc();
 
     final model = OrderModel(
       id: orderId,
