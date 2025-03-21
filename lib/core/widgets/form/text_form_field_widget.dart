@@ -11,6 +11,9 @@ class TextFormFieldWidget extends StatelessWidget {
     this.validator,
     this.optional = false,
     this.enable = true,
+    this.keyboardType,
+    this.onChanged,
+    this.onEditingComplete,
   });
 
   final TextEditingController? controller;
@@ -18,9 +21,12 @@ class TextFormFieldWidget extends StatelessWidget {
   final String hintText;
   final String? initialValue;
   final int maxLines;
-  final String? Function(String? value)? validator;
+  final String? Function(String value)? validator;
   final bool optional;
   final bool enable;
+  final TextInputType? keyboardType;
+  final Function(String value)? onChanged;
+  final Function(String value)? onEditingComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +42,7 @@ class TextFormFieldWidget extends StatelessWidget {
           ),
         if (title.isNotEmpty) SizedBox(height: kSizeMS),
         TextFormField(
+          keyboardType: keyboardType,
           controller: controller,
           initialValue: initialValue,
           maxLines: maxLines,
@@ -52,17 +59,24 @@ class TextFormFieldWidget extends StatelessWidget {
               borderSide: BorderSide(color: lemonChiffonColor),
             ),
             hintText: hintText.isEmpty ? "Masukan $title" : hintText,
+            hintStyle: TextStyle(color: darkColor.withAlpha(100)),
           ),
+          style: TextStyle(color: darkColor),
           validator: (value) {
-            if (optional) {
-              return validator?.call(value);
-            }
+            if (optional) return null;
 
             if (value != null && value.isEmpty) {
               return '$title wajib di isi!';
             }
 
-            return null;
+            return validator?.call(value!);
+          },
+          onChanged: (value) {
+            onChanged?.call(value);
+          },
+          onEditingComplete: () {
+            onEditingComplete?.call(controller?.text ?? '');
+            FocusScope.of(context).unfocus();
           },
         ),
       ],

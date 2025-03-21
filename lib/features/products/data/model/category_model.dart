@@ -20,6 +20,15 @@ class CategoryModel extends BaseModel<CategoryProduct> {
     required this.createAt,
   });
 
+  CategoryModel.submitOrder({
+    required this.id,
+    this.name = '',
+    this.code = '',
+    this.haveProduct = false,
+    this.price = 0.0,
+    this.createAt = '',
+  });
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'ID': id,
@@ -32,7 +41,7 @@ class CategoryModel extends BaseModel<CategoryProduct> {
   }
 
   factory CategoryModel.fromMap(Map<String, dynamic> map) {
-    final price = BaseModel.parsePriceToDouble(map);
+    final price = BaseModel.parseToDouble(map['price']);
 
     return CategoryModel(
       id: map["ID"] as String? ?? "",

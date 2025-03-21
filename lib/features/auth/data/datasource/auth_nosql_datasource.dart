@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../domain/entities/auth_token.dart';
+import '../../domain/entities/user_authenticated.dart';
 import 'auth_remote_datasource.dart';
 
 @LazySingleton(as: AuthRemoteDataource)
@@ -11,25 +11,24 @@ class AuthNosqlDatasource extends AuthRemoteDataource {
   AuthNosqlDatasource({required this.client});
 
   @override
-  Future<AuthToken> signWithEmail({required String email}) async {
-    try {
-      final response =
-          await client.from('account').select().eq('email', email).count();
+  Future<UserAuthenticated> signWithEmail({required String email}) async {
+    final response = await client
+        .from('account')
+        .select('*, company(ID)')
+        .eq('email', email);
 
-      if (response.count == 1) {
-        return AuthToken(
-          accessToken: "accessToken",
-          refreshToken: "refreshToken",
-        );
-      } else {
-        return AuthToken.unAuthorize();
-      }
-    } catch (e) {
-      if (e is PostgrestException) {
-        return AuthToken.unAuthorize();
-      }
+    final account = response.firstOrNull;
 
-      rethrow;
+    if (account != null) {
+      final company = account["company"];
+
+      return UserAuthenticated(
+        accessToken: "accessToken",
+        refreshToken: "refreshToken",
+        companyID: company["ID"],
+      );
+    } else {
+      return UserAuthenticated.unAuthorize();
     }
   }
 }

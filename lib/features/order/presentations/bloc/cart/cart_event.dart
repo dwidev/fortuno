@@ -29,3 +29,7 @@ final class RemoveProductFromCart extends AddProductToCartEvent {
     super.quantity = 0,
   });
 }
+
+final class ResetCart extends CartEvent {
+  const ResetCart();
+}

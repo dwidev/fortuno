@@ -11,6 +11,7 @@ class DateFormPickerWidget extends StatefulWidget {
     this.controller,
     this.hintText = "",
     this.initialValue,
+    this.firstDate,
   });
 
   final TextEditingController? controller;
@@ -20,6 +21,7 @@ class DateFormPickerWidget extends StatefulWidget {
   final String? Function(String? value)? validator;
   final bool optional;
   final Function(DateTime date)? onChange;
+  final DateTime? firstDate;
 
   @override
   State<DateFormPickerWidget> createState() => _DateFormPickerWidgetState();
@@ -34,13 +36,12 @@ class _DateFormPickerWidgetState extends State<DateFormPickerWidget> {
       onTap: () async {
         final date = await showDatePicker(
           context: context,
-          firstDate: DateTime.now(),
+          firstDate: widget.firstDate ?? DateTime.now(),
           lastDate: DateTime(2050),
         );
 
         if (date == null) return;
-        // TODO: change format
-        widget.controller?.text = date.day.toString();
+        widget.controller?.text = formatDate(date);
         widget.onChange?.call(date);
         setState(() => value = date);
       },

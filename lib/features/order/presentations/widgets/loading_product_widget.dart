@@ -1,5 +1,5 @@
 import '../../../../core/core.dart';
-import '../pages/create_order_page.dart';
+import '../pages/create_order/create_order_page.dart';
 
 class LoadingProductWidget extends StatelessWidget {
   const LoadingProductWidget({super.key});

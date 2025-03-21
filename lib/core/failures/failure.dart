@@ -23,3 +23,8 @@ class NoMessageFailure extends Failure {
 class UnknownFailure extends Failure {
   UnknownFailure(super.message);
 }
+
+class ServerErrorFailure extends Failure {
+  ServerErrorFailure()
+    : super('Terjadi kesalahan pada server, silahkan coba beberapa saat lagi');
+}

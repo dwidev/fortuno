@@ -1,12 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortuno/features/order/domain/entities/order_item.dart';
 import 'package:fortuno/features/order/presentations/bloc/cart/cart_bloc.dart';
 
 import '../../../../core/core.dart';
 
-class CartProcessingItemWidget extends StatelessWidget {
-  const CartProcessingItemWidget({super.key, required this.item});
+class CartOrderItem extends StatelessWidget {
+  const CartOrderItem({super.key, required this.item});
 
   final OrderItem item;
 
@@ -49,7 +48,7 @@ class CartProcessingItemWidget extends StatelessWidget {
                       SizedBox(
                         width: 200,
                         child: Text(
-                          item.content,
+                          item.contents,
                           style: context.textTheme.bodySmall,
                         ),
                       ),

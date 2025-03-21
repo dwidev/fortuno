@@ -4,7 +4,8 @@ class BaseListenerWidget<P extends BaseAppBloc, S extends BaseState>
     extends StatelessWidget {
   const BaseListenerWidget({
     super.key,
-    required this.listener,
+    this.listenWhen,
+    this.listener,
     required this.builder,
   });
 
@@ -14,6 +15,7 @@ class BaseListenerWidget<P extends BaseAppBloc, S extends BaseState>
   /// if [overrideLoading] true the loading listener do not running
   bool get overrideLoading => false;
 
+  final BlocListenerCondition<BaseState>? listenWhen;
   final Function(BuildContext context, BaseState state)? listener;
   final Function(BuildContext context, P bloc, BaseState state) builder;
 
@@ -23,6 +25,7 @@ class BaseListenerWidget<P extends BaseAppBloc, S extends BaseState>
     final state = context.watch<P>().state;
 
     return BlocListener<P, BaseState>(
+      listenWhen: listenWhen,
       listener: (context, state) {
         // adding overiding listener for some children class
         // and ignore the base listener (or the code below)
@@ -63,7 +66,6 @@ class BaseListenerWidget<P extends BaseAppBloc, S extends BaseState>
 
   static void handlerError(BuildContext context, BaseState state) {
     if (state.error != null) {
-      debugPrint("${state.error}");
       showErrorDialog(
         context: context,
         failure: state.error!,

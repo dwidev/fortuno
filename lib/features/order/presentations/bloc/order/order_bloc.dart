@@ -33,10 +33,15 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
         OrderInitSuccess(
           categories: state.categories,
           productCountCart: state.productCountCart,
+          finishSelected: state.finishSelected,
         ),
       );
     });
     on<OnAddQuantity>(_onAddQuantity);
+    on<OnFinishSelectedProduct>(_onFinishSelectProduct);
+    on<ResetOrder>(
+      (event, emit) => emit(OrderInitial(categories: state.categories)),
+    );
   }
 
   Future<void> _onInit(OnInitOrderPageEvent event, Emitter emit) async {
@@ -55,6 +60,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
           OrderInitSuccess(
             categories: right,
             productCountCart: state.productCountCart,
+            finishSelected: state.finishSelected,
           ),
         );
       },
@@ -75,6 +81,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
       categoryProduct: event.categoryProduct,
       categories: state.categories,
       productCountCart: state.productCountCart,
+      finishSelected: state.finishSelected,
     );
 
     resCat.fold((err) => failure ??= err, (data) {
@@ -106,5 +113,9 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
     }
 
     emit(s.copyWith(productCountCart: newMap));
+  }
+
+  void _onFinishSelectProduct(OnFinishSelectedProduct event, Emitter emit) {
+    emit(state.copyWith(finishSelected: event.isFinish));
   }
 }

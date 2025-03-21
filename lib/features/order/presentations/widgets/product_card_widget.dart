@@ -1,7 +1,9 @@
-import 'package:fortuno/features/products/domain/entities/category.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../../../core/core.dart';
+import '../../../products/domain/entities/category.dart';
 import '../../../products/domain/entities/product.dart';
+import '../bloc/order/order_bloc.dart';
 
 class ProductCardWidget extends StatelessWidget {
   const ProductCardWidget({
@@ -17,8 +19,19 @@ class ProductCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isFinish = context.select<OrderBloc, bool>((value) {
+      return value.state.finishSelected;
+    });
+
     return GestureDetector(
-      onTap: onTap,
+      onTap:
+          !isFinish
+              ? onTap
+              : () {
+                EasyLoading.showToast(
+                  "Silahkan kembali kemenu Rincian pesanan",
+                );
+              },
       child: Card(
         color: darkLightColor,
         child: LayoutBuilder(
@@ -27,7 +40,8 @@ class ProductCardWidget extends StatelessWidget {
               children: [
                 Stack(
                   children: [
-                    Container(
+                    AnimatedContainer(
+                      duration: 1.seconds,
                       width: ct.maxWidth,
                       height: ct.maxHeight,
                       decoration: BoxDecoration(
@@ -36,9 +50,11 @@ class ProductCardWidget extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(kDefaultRadius - 2),
                         child: ColorFiltered(
-                          colorFilter: const ColorFilter.mode(
-                            Colors.transparent,
-                            BlendMode.dst, // Menurunkan saturasi warna
+                          colorFilter: ColorFilter.mode(
+                            isFinish ? Colors.grey : Colors.transparent,
+                            isFinish
+                                ? BlendMode.saturation
+                                : BlendMode.dst, // Menurunkan saturasi warna
                           ),
                           child: Image.network(
                             "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",

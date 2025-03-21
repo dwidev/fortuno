@@ -1,15 +1,10 @@
 abstract class BaseModel<E> {
   E toEntity();
 
-  static double parsePriceToDouble(Map<String, dynamic> map) {
-    var price = map["price"] ?? 0.0;
+  static double parseToDouble(num? value) {
+    if (value == null) return 0.0;
+    if (value is double) return value;
 
-    if (price is! double && price != null) {
-      price = price.toDouble();
-    } else {
-      price = price;
-    }
-
-    return price;
+    return double.tryParse("$value") ?? 0.0;
   }
 }

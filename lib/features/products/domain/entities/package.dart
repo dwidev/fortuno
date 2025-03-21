@@ -9,7 +9,6 @@ class Package extends Equatable {
   final double price;
   final bool isActive;
   final String createAt;
-  final CategoryProduct category;
   final List<Product> items;
 
   String get contents => items.map((e) => e.name).join(", ");
@@ -21,7 +20,6 @@ class Package extends Equatable {
     required this.price,
     required this.isActive,
     required this.createAt,
-    required this.category,
     required this.items,
   });
 
@@ -42,14 +40,13 @@ class Package extends Equatable {
       price: price ?? this.price,
       isActive: isActive ?? this.isActive,
       createAt: createAt ?? this.createAt,
-      category: category ?? this.category,
       items: items ?? this.items,
     );
   }
 
   @override
   List<Object> get props {
-    return [id, name, code, price, isActive, createAt, category, items];
+    return [id, name, code, price, isActive, createAt, items];
   }
 
   @override

@@ -30,3 +30,12 @@ class OnAddQuantity extends OrderEvent {
 
   const OnAddQuantity(this.id, this.quantity);
 }
+
+class OnFinishSelectedProduct extends OrderEvent {
+  final bool isFinish;
+  const OnFinishSelectedProduct({required this.isFinish});
+}
+
+class ResetOrder extends OrderEvent {
+  const ResetOrder();
+}

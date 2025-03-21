@@ -1,5 +1,5 @@
-import '../../domain/entities/auth_token.dart';
+import '../../domain/entities/user_authenticated.dart';
 
 abstract class AuthRemoteDataource {
-  Future<AuthToken> signWithEmail({required String email});
+  Future<UserAuthenticated> signWithEmail({required String email});
 }

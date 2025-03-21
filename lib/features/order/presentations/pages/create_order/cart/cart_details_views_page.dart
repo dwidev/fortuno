@@ -1,13 +1,11 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../../core/constants/images_assets.dart' show noOrderPng;
-import '../../../../../core/core.dart';
-import '../../../../../core/widgets/form/date_form_picker_widget.dart';
-import '../../../../../core/widgets/form/text_form_field_widget.dart';
-import '../../../../../core/widgets/form/time_form_picker_widget.dart';
-import '../../bloc/cart/cart_bloc.dart';
-import '../../bloc/cart/cart_processing_bloc.dart';
-import '../../widgets/order_item_widget.dart';
+import '../../../../../../core/constants/images_assets.dart' show noOrderPng;
+import '../../../../../../core/core.dart';
+import '../../../../../../core/widgets/form/date_form_picker_widget.dart';
+import '../../../../../../core/widgets/form/text_form_field_widget.dart';
+import '../../../../../../core/widgets/form/time_form_picker_widget.dart';
+import '../../../bloc/cart/cart_bloc.dart';
+import '../../../bloc/cart/cart_processing_bloc.dart';
+import '../../../widgets/order_item_widget.dart';
 
 class CartDetailsViewPage extends StatelessWidget {
   const CartDetailsViewPage({super.key});
@@ -60,7 +58,7 @@ class CartDetailsViewPage extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   final item = state.items[index];
-                  return CartProcessingItemWidget(item: item);
+                  return CartOrderItem(item: item);
                 },
               );
             },
@@ -92,6 +90,7 @@ class CartDetailsViewPage extends StatelessWidget {
                       child: DateFormPickerWidget(
                         controller: bloc.dateController,
                         title: "Tanggal kirim",
+                        firstDate: DateTime.now().add(1.days),
                       ),
                     ),
                     SizedBox(width: kSizeMS),

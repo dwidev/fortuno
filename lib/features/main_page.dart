@@ -1,3 +1,5 @@
+import 'package:fortuno/features/order/presentations/pages/process_order/process_order_page.dart';
+
 import '../core/core.dart';
 
 class MainPage extends StatelessWidget {
@@ -24,8 +26,12 @@ class MainPage extends StatelessWidget {
             label: 'Profil',
           ),
         ],
-        onDestinationSelected: (value) {
-          navigationShell.goBranch(value);
+        onDestinationSelected: (index) {
+          if (index == 1) {
+            context.go(ProcessOrderPage.path, extra: UniqueKey());
+          } else {
+            navigationShell.goBranch(index, initialLocation: true);
+          }
         },
         selectedIndex: navigationShell.currentIndex,
       ),
