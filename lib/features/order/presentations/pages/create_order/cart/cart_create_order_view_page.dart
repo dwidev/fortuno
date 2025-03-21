@@ -95,7 +95,7 @@ class CartCreateOrderViewPage extends StatelessWidget {
                           ).copyWith(right: 0),
                           child: TextFormFieldWidget(
                             title: "",
-                            controller: bloc.shippingCostController,
+                            controller: cartProcess.shippingCostController,
                             keyboardType: TextInputType.number,
                             hintText: "Ongkir: Rp.xxxxx",
                             onEditingComplete: (value) {

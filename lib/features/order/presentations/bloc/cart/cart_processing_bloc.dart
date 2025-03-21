@@ -96,7 +96,7 @@ class CartProcessingBloc
   }
 
   void _onChangeShippingCost(OnChangeShippingConstEvent event, Emitter emit) {
-    final shippingCost = double.tryParse(shippingCostController.text) ?? 0;
+    final shippingCost = double.tryParse(event.cost) ?? 0;
     final newTotal = firstTotalPrice + shippingCost;
 
     final newShipping = state.order.copyWith(

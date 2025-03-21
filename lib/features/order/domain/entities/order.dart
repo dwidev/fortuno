@@ -27,7 +27,7 @@ class Order extends Equatable {
 
   double get downPayment {
     if (orderStatus == OrderStatus.waiting) {
-      return totalPrice * 10 / 100;
+      return totalPrice * 30 / 100;
     }
 
     return totalPrice;
