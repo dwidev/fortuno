@@ -21,7 +21,7 @@ class TextFormFieldWidget extends StatelessWidget {
   final String hintText;
   final String? initialValue;
   final int maxLines;
-  final String? Function(String? value)? validator;
+  final String? Function(String value)? validator;
   final bool optional;
   final bool enable;
   final TextInputType? keyboardType;
@@ -65,13 +65,11 @@ class TextFormFieldWidget extends StatelessWidget {
           validator: (value) {
             if (optional) return null;
 
-            validator?.call(value);
-
             if (value != null && value.isEmpty) {
               return '$title wajib di isi!';
             }
 
-            return null;
+            return validator?.call(value!);
           },
           onChanged: (value) {
             onChanged?.call(value);

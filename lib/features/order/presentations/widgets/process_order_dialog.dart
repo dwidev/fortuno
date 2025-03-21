@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_swipe_button/flutter_swipe_button.dart';
+import 'package:fortuno/features/order/domain/enums/order_status.dart';
 
 import '../../../../core/core.dart';
 import '../../../../core/widgets/form/text_form_field_widget.dart';
@@ -8,8 +9,9 @@ import '../../domain/enums/payment_option.dart';
 
 class ProcessOrderDialogResult {
   final PaymentOption option;
+  final bool paylatter;
 
-  ProcessOrderDialogResult({required this.option});
+  ProcessOrderDialogResult({required this.option, required this.paylatter});
 }
 
 Future<T?> showProcessDialog<T>({
@@ -44,25 +46,33 @@ class ProcessOrderViewPage extends StatefulWidget {
 class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
   late TextEditingController controller;
   final formKey = GlobalKey<FormState>();
+  bool paylatter = false;
 
   final optionProcess = [PaymentOption.cash, PaymentOption.transfer];
   PaymentOption value = PaymentOption.cash;
 
+  bool get isPaylatter =>
+      value.isCash && widget.order.orderStatus == OrderStatus.waiting;
+
   @override
   void initState() {
-    controller = TextEditingController();
+    controller = TextEditingController(
+      text: widget.order.downPayment.toString(),
+    );
     super.initState();
   }
 
   void onSwipe() {
-    if (value == PaymentOption.transfer &&
-        formKey.currentState?.validate() == false) {
+    if (!paylatter && formKey.currentState?.validate() == false) {
       return;
     }
 
     context.pop(); // pop this dialog
 
-    final result = ProcessOrderDialogResult(option: value);
+    final result = ProcessOrderDialogResult(
+      option: value,
+      paylatter: paylatter,
+    );
     widget.onSwipe(result);
   }
 
@@ -76,6 +86,7 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
@@ -104,6 +115,9 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
 
                         setState(() {
                           this.value = value;
+                          if (value.isTransfer) {
+                            paylatter = false;
+                          }
                         });
                       },
                       title: Text(e.title),
@@ -111,14 +125,14 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
                   );
                 }).toList(),
           ),
-          SizedBox(height: kSizeM),
-          if (value == PaymentOption.transfer)
-            Form(
-              key: formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+          if (!paylatter) SizedBox(height: kSizeM),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (!paylatter) ...[
+                Form(
+                  key: formKey,
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
@@ -127,8 +141,13 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
                           title: "",
                           hintText: "Masukan Nomial bayar",
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
+                            if (value.isEmpty) {
                               return "Masukan nilai bayar";
+                            }
+
+                            final data = double.tryParse(value) ?? 0;
+                            if (data < widget.order.downPayment) {
+                              return "Kurang dari nilai DP 10%";
                             }
 
                             return null;
@@ -136,26 +155,37 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
                         ),
                       ),
                       SizedBox(width: kSizeS),
-                      GradientButton(
-                        width: 80,
-                        onPressed: () {},
-                        child: Icon(CupertinoIcons.photo),
-                      ),
+                      if (value == PaymentOption.transfer)
+                        GradientButton(
+                          width: 80,
+                          onPressed: () {},
+                          child: Icon(CupertinoIcons.photo),
+                        ),
                     ],
                   ),
-                  SizedBox(height: kSizeM),
-                  Text(
-                    "*Masukan nilai yang ingin dibayarkan & bukti transfer",
-                    style: context.textTheme.bodySmall?.copyWith(
-                      fontStyle: FontStyle.italic,
+                ),
+                SizedBox(height: kSizeM),
+              ],
+              if (isPaylatter) ...[
+                Row(
+                  children: [
+                    Switch.adaptive(
+                      value: paylatter,
+                      onChanged: (value) {
+                        setState(() {
+                          paylatter = !paylatter;
+                        });
+                      },
                     ),
-                  ),
-                  SizedBox(height: kSizeM),
-                  // ImagePreviewWidget(title: "", size: 100),
-                  // SizedBox(height: kSizeM),
-                ],
-              ),
-            ),
+                    Text("Bayar nanti", style: context.textTheme.bodySmall),
+                  ],
+                ),
+                SizedBox(height: kSizeM),
+              ],
+              // ImagePreviewWidget(title: "", size: 100),
+              // SizedBox(height: kSizeM),
+            ],
+          ),
           Align(
             alignment: Alignment.center,
             child: SwipeButton.expand(
@@ -177,6 +207,19 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
                   delay: Duration(seconds: 2),
                   color: darkLightColor,
                 ),
+          ),
+          SizedBox(height: kSizeM),
+          Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              (isPaylatter && value.isCash)
+                  ? "Bayar nanti setelah pesanan diproses"
+                  : "Minimal down payment adalah 10%",
+              style: context.textTheme.bodySmall?.copyWith(
+                fontStyle: FontStyle.italic,
+                color: bronzeYellow,
+              ),
+            ),
           ),
         ],
       ),

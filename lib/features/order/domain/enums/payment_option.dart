@@ -2,6 +2,9 @@ enum PaymentOption {
   transfer,
   cash;
 
+  bool get isCash => this == PaymentOption.cash;
+  bool get isTransfer => this == PaymentOption.transfer;
+
   String get title {
     return switch (this) {
       PaymentOption.transfer => "Transfer",
