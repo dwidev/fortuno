@@ -32,8 +32,8 @@ class InvoiceModel extends BaseModel<Invoice> {
       id: id,
       orderID: orderID,
       number: number,
-      issueDate: parseToDate(issueDate),
-      dueDate: parseToDate(dueDate),
+      issueDate: parseDateRawToDateTime(issueDate),
+      dueDate: parseDateRawToDateTime(dueDate),
       totalAmount: totalAmount,
       status: invoiceStatusFromString(status),
     );

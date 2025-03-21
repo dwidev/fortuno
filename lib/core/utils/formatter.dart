@@ -10,13 +10,21 @@ String formatDate(DateTime? date, {String? pattern}) {
   return formated;
 }
 
-DateTime parseToDate(String date) {
+DateTime parseDateRawToDateTime(String date) {
   final parsed = DateTime.tryParse(date);
   if (parsed == null) {
-    throw UnknownFailure("error parseToDate with $date ");
+    throw UnknownFailure("error parseDateRawToDateTime with $date ");
   }
 
   return parsed.toLocal();
+}
+
+DateTime parseToDate(String date, {String? pattern}) {
+  final parsed = DateFormat(
+    pattern ?? DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY,
+    'id_ID',
+  ).parse(date);
+  return parsed;
 }
 
 DateTime parseToTime(String time) {
