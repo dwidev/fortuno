@@ -76,7 +76,7 @@ class CartProcessingBloc
     // create price
     final itemTotalPrice = event.items.totalPrice;
     final shippingCost = double.tryParse(shippingCostController.text) ?? 0;
-    final discount = 0.0; // currencty cannot setup for this
+    final discount = 0.0; // cuurently cannot setup for this
     final totalPrice = itemTotalPrice + shippingCost + discount;
 
     // set total price
