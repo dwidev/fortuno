@@ -85,7 +85,7 @@ class _TotalDialogPageState extends State<_TotalDialogPage> {
                       controller: controller,
                       title: "Total",
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (value.isEmpty) {
                           return "Nilai tidak boleh kosong";
                         }
 

@@ -15,13 +15,7 @@ class App extends StatelessWidget {
       locale: Locale('id', 'ID'),
       routerConfig: router,
       builder: EasyLoading.init(
-        builder:
-            (context, child) => GestureDetector(
-              onTap: () {
-                print("TAP GA");
-              },
-              child: child,
-            ),
+        builder: (context, child) => child ?? Offstage(),
       ),
     );
   }

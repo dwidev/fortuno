@@ -4,8 +4,8 @@ import 'package:fortuno/features/order/domain/enums/order_status.dart';
 
 import '../../../../core/core.dart';
 import '../../../../core/widgets/form/text_form_field_widget.dart';
-import '../../domain/entities/order.dart';
-import '../../domain/enums/payment_option.dart';
+import '../../../order/domain/entities/order.dart';
+import '../../../order/domain/enums/payment_option.dart';
 
 class ProcessOrderDialogResult {
   final PaymentOption option;
