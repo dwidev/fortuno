@@ -1,7 +1,7 @@
 import '../../../../core/core.dart';
-import '../../../payments/invoice.dart';
 import '../../domain/entities/order.dart';
 import '../../domain/enums/order_status.dart';
+import '../bloc/order_process/order_process_bloc.dart';
 
 class OrderActionWidget extends StatelessWidget {
   final Order order;
@@ -17,7 +17,9 @@ class OrderActionWidget extends StatelessWidget {
           buttonSize: 35,
           icon: CupertinoIcons.printer,
           onPressed: () {
-            InvoiceService.showPdf(order);
+            context.read<OrderProcessBloc>().add(
+              ShowInvoiceOrder(order: order),
+            );
           },
         ),
         if (order.orderStatus == OrderStatus.waiting) ...[

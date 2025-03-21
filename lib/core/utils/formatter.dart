@@ -1,3 +1,4 @@
+import 'package:fortuno/core/failures/failure.dart';
 import 'package:intl/intl.dart';
 
 String formatDate(DateTime? date, {String? pattern}) {
@@ -9,12 +10,13 @@ String formatDate(DateTime? date, {String? pattern}) {
   return formated;
 }
 
-DateTime parseToDate(String date, {String? pattern}) {
-  final parsed = DateFormat(
-    pattern ?? DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY,
-    'id_ID',
-  ).parse(date);
-  return parsed;
+DateTime parseToDate(String date) {
+  final parsed = DateTime.tryParse(date);
+  if (parsed == null) {
+    throw UnknownFailure("error parseToDate with $date ");
+  }
+
+  return parsed.toLocal();
 }
 
 DateTime parseToTime(String time) {

@@ -21,6 +21,8 @@ class Order extends Equatable {
 
   String get totalPriceString => moneyFormatter(totalPrice);
 
+  String get subTotalString => items.totalPriceString;
+
   double get downPayment => totalPrice * 10 / 100;
 
   const Order({

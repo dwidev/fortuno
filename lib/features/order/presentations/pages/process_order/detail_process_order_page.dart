@@ -5,7 +5,7 @@ import '../../../domain/entities/order.dart';
 import '../../bloc/order_process/order_process_bloc.dart';
 import '../../widgets/order_action_widget.dart';
 import '../../widgets/order_summary_widget.dart';
-import '../../widgets/process_order_dialog.dart';
+import '../../../../payments/presentation/widgets/process_order_dialog.dart';
 
 class DetailProcessOrderPage extends StatefulWidget {
   final Animation<double>? widthAnimation;

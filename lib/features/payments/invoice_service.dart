@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:fortuno/core/utils/formatter.dart';
+import 'package:fortuno/features/payments/domain/entities/inovice.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -9,22 +11,22 @@ import '../../core/theme/default_size.dart';
 import '../order/domain/entities/order.dart';
 
 class InvoiceService {
-  static Future<void> showPdf(Order order) async {
+  static Future<void> showPdf(Order order, Invoice invoice) async {
     final pdf = pw.Document();
 
     pdf.addPage(
       pw.MultiPage(
         build:
             (context) => [
-              _buildHeader(),
+              _buildHeader(order, invoice),
               pw.SizedBox(height: PdfPageFormat.cm * 3),
-              _buildTitle(),
+              _buildTitle(order, invoice),
               pw.SizedBox(height: PdfPageFormat.cm * 0.2),
-              _buildInvoice(order),
+              _buildInvoice(order, invoice),
               pw.SizedBox(height: PdfPageFormat.cm * 0.2),
               pw.Divider(color: PdfColors.grey100, height: 0.5),
               pw.SizedBox(height: PdfPageFormat.cm * 0.3),
-              _buildTotal(order),
+              _buildTotal(order, invoice),
             ],
         footer:
             (context) => pw.Column(
@@ -60,7 +62,7 @@ class InvoiceService {
     return file;
   }
 
-  static pw.Widget _buildHeader() {
+  static pw.Widget _buildHeader(Order order, Invoice invoice) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -76,12 +78,13 @@ class InvoiceService {
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
                 pw.Text(
-                  "RMB/INV/0001/21/02/2025",
+                  invoice.number,
                   style: pw.TextStyle(fontWeight: pw.FontWeight.normal),
                 ),
                 pw.SizedBox(height: 1 * PdfPageFormat.mm),
               ],
             ),
+            // TODO: implement company data at invoice
             pw.Container(
               width: 150,
               child: pw.Column(
@@ -121,7 +124,7 @@ class InvoiceService {
     );
   }
 
-  static pw.Widget _buildTitle() {
+  static pw.Widget _buildTitle(Order order, Invoice invoice) {
     return pw.Container(
       color: PdfColors.grey100,
       padding: pw.EdgeInsets.symmetric(vertical: kSizeSS, horizontal: kSizeSS),
@@ -140,6 +143,7 @@ class InvoiceService {
                 ),
               ),
               pw.SizedBox(height: 0.2 * PdfPageFormat.cm),
+              // TODO: client data invoice
               pw.Text(
                 "Pesanan Nasi Box - SMK Adi sanggoro",
                 style: pw.TextStyle(fontSize: 8),
@@ -151,12 +155,12 @@ class InvoiceService {
             crossAxisAlignment: pw.CrossAxisAlignment.end,
             children: [
               pw.Text(
-                "Invoice date : Mar, 20 2025",
+                "Invoice date : ${formatDate(invoice.issueDate)}",
                 style: pw.TextStyle(fontSize: 8),
               ),
               pw.SizedBox(height: 0.2 * PdfPageFormat.cm),
               pw.Text(
-                "Due Date: Mar, 201 2025",
+                "Due Date: ${formatDate(invoice.dueDate)}",
                 style: pw.TextStyle(fontSize: 8),
               ),
             ],
@@ -166,17 +170,15 @@ class InvoiceService {
     );
   }
 
-  static pw.Table _buildInvoice(Order order) {
+  static pw.Table _buildInvoice(Order order, Invoice invoice) {
     final headers = ['Product', 'Quantity', 'Price', 'Amount'];
     final data =
         order.items.map((item) {
-          final total = 10 * item.quantity;
-
           return [
-            "item.description",
-            '${item.quantity}',
-            '\$ ${1000}',
-            '\$ ${total.toStringAsFixed(2)}',
+            item.title,
+            item.quantity,
+            item.priceString,
+            item.totalPriceString,
           ];
         }).toList();
 
@@ -201,7 +203,7 @@ class InvoiceService {
     );
   }
 
-  static pw.Widget _buildTotal(Order order) {
+  static pw.Widget _buildTotal(Order order, Invoice invoice) {
     // final netTotal = order.items
     //     .map((item) => 10 * item.quantity)
     //     .reduce((item1, item2) => item1 + item2);
@@ -307,19 +309,19 @@ class InvoiceService {
                           crossAxisAlignment: pw.CrossAxisAlignment.end,
                           children: [
                             pw.Text(
-                              "Rp. 1.000.000",
+                              order.subTotalString,
                               textAlign: pw.TextAlign.right,
                               style: pw.TextStyle(fontSize: 8),
                             ),
                             pw.SizedBox(height: PdfPageFormat.cm * 0.3),
                             pw.Text(
-                              "Rp. 30.000",
+                              moneyFormatter(order.shippingCost),
                               textAlign: pw.TextAlign.right,
                               style: pw.TextStyle(fontSize: 8),
                             ),
                             pw.SizedBox(height: PdfPageFormat.cm * 0.3),
                             pw.Text(
-                              "Rp. 1.030.000",
+                              order.totalPriceString,
                               textAlign: pw.TextAlign.right,
                               style: pw.TextStyle(fontSize: 8),
                             ),

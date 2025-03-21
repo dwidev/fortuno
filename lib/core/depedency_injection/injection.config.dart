@@ -55,6 +55,16 @@ import 'package:fortuno/features/order/presentations/bloc/order/order_bloc.dart'
     as _i886;
 import 'package:fortuno/features/order/presentations/bloc/order_process/order_process_bloc.dart'
     as _i955;
+import 'package:fortuno/features/payments/data/datasource/payment_datasource.dart'
+    as _i401;
+import 'package:fortuno/features/payments/data/datasource/payment_nosql_datasource.dart'
+    as _i233;
+import 'package:fortuno/features/payments/data/repository/payment_repository_impl.dart'
+    as _i1063;
+import 'package:fortuno/features/payments/domain/repository/payment_repository.dart'
+    as _i721;
+import 'package:fortuno/features/payments/domain/usecase/show_invoice.dart'
+    as _i888;
 import 'package:fortuno/features/products/data/datasources/product_nosql_datasource.dart'
     as _i294;
 import 'package:fortuno/features/products/data/datasources/products_datasource.dart'
@@ -75,6 +85,8 @@ import 'package:fortuno/features/profile/data/datasource/company_local_datasourc
     as _i479;
 import 'package:fortuno/features/profile/data/repo/company_repository_impl.dart'
     as _i743;
+import 'package:fortuno/features/profile/domain/repo/company_repository.dart'
+    as _i1060;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
@@ -107,6 +119,14 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i720.AuthRemoteDataource>(
       () => _i787.AuthNosqlDatasource(client: gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i401.PaymentDatasource>(
+      () => _i233.PaymentNosqlDatasource(client: gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i721.PaymentRepostiroy>(
+      () => _i1063.PaymentRepostiroyImpl(
+        paymentDatasource: gh<_i401.PaymentDatasource>(),
+      ),
     );
     gh.lazySingleton<_i1028.ProductsRepository>(
       () => _i587.ProductsRepositoryImpl(
@@ -153,6 +173,9 @@ extension GetItInjectableX on _i174.GetIt {
         productsRepository: gh<_i1028.ProductsRepository>(),
       ),
     );
+    gh.lazySingleton<_i888.ShowInvoice>(
+      () => _i888.ShowInvoice(paymentRepostiroy: gh<_i721.PaymentRepostiroy>()),
+    );
     gh.lazySingleton<_i968.ILocalStorage>(
       () => _i13.SharedPrefStorage(preferences: gh<_i460.SharedPreferences>()),
       instanceName: 'shared-pref',
@@ -175,17 +198,17 @@ extension GetItInjectableX on _i174.GetIt {
         secStorage: gh<_i968.ILocalStorage>(instanceName: 'secure-storage'),
       ),
     );
-    gh.lazySingleton<_i743.CompanyRepositoryImpl>(
-      () => _i743.CompanyRepositoryImpl(
-        datasource: gh<_i536.CompanyDatasource>(),
-      ),
-    );
     gh.lazySingleton<_i996.OrderRepository>(
       () => _i562.OrderRepositoryImpl(
         companyDatasource: gh<_i536.CompanyDatasource>(),
         orderDatasource: gh<_i252.OrderDatasource>(),
       ),
       dispose: (i) => i.dispose(),
+    );
+    gh.lazySingleton<_i1060.CompanyRepository>(
+      () => _i743.CompanyRepositoryImpl(
+        datasource: gh<_i536.CompanyDatasource>(),
+      ),
     );
     gh.factory<_i279.AuthBloc>(
       () => _i279.AuthBloc(
@@ -214,14 +237,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i617.CartProcessingBloc>(
       () => _i617.CartProcessingBloc(createOrder: gh<_i242.CreateOrder>()),
     );
+    gh.factory<_i184.CartBloc>(
+      () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
+    );
     gh.factory<_i955.OrderProcessBloc>(
       () => _i955.OrderProcessBloc(
         getOrdersByCompanyId: gh<_i1028.GetOrdersByCompanyId>(),
         updateStatusOrder: gh<_i211.UpdateStatusOrder>(),
+        showInvoice: gh<_i888.ShowInvoice>(),
       ),
-    );
-    gh.factory<_i184.CartBloc>(
-      () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
     );
     return this;
   }

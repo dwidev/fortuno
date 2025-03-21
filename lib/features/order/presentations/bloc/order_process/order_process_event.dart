@@ -34,3 +34,9 @@ final class OnUpdateStatusOrder extends OrderProcessEvent
     required this.paymentOption,
   });
 }
+
+final class ShowInvoiceOrder extends OrderProcessEvent {
+  final Order order;
+
+  const ShowInvoiceOrder({required this.order});
+}

@@ -1,3 +1,5 @@
+import 'package:fortuno/features/payments/domain/usecase/show_invoice.dart';
+
 import '../../../../../core/core.dart';
 import '../../../domain/entities/order.dart';
 import '../../../domain/enums/order_status.dart';
@@ -13,16 +15,19 @@ class OrderProcessBloc
     extends BaseAppBloc<OrderProcessEvent, OrderProcessState> {
   final GetOrdersByCompanyId getOrdersByCompanyId;
   final UpdateStatusOrder updateStatusOrder;
+  final ShowInvoice showInvoice;
 
   OrderProcessBloc({
     required this.getOrdersByCompanyId,
     required this.updateStatusOrder,
+    required this.showInvoice,
   }) : super(OrderProcessInitial(order: Order.init())) {
     on<OnGetOrders>(_onGetOrders);
     on<GoToOrderDetails>((event, emit) {
       emit(state.copyWith(order: event.order));
     });
     on<OnUpdateStatusOrder>(_onUpdateStatus);
+    on<ShowInvoiceOrder>(_onShowInvoice);
   }
 
   Future<void> _onGetOrders(OnGetOrders event, Emitter emit) async {
@@ -55,5 +60,9 @@ class OrderProcessBloc
 
       emit(state.copyWith(order: newOrder, orders: newOrders));
     });
+  }
+
+  Future<void> _onShowInvoice(ShowInvoiceOrder event, Emitter emit) async {
+    await runUsecase(() => showInvoice(event.order), emit);
   }
 }
