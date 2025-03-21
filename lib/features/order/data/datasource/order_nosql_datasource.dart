@@ -12,11 +12,30 @@ class OrderNosqlDatasource extends OrderDatasource {
 
   OrderNosqlDatasource({required this.client});
 
+  String generateInvoiceNumber(String orderId, DateTime orderDate) {
+    String shortOrderId =
+        orderId
+            .substring(0, 5)
+            .replaceAll("-", "")
+            .replaceAll(" ", "")
+            .toUpperCase();
+
+    String orderDateStr = DateFormat('ddMMyyyy').format(orderDate);
+    String nowDateStr = DateFormat('ddMMyyyy').format(DateTime.now());
+
+    return 'INV/$orderDateStr/$shortOrderId/$nowDateStr';
+  }
+
   @override
   Future<void> createOrder({required OrderModel orderModel}) async {
     final mapOrder = orderModel.toMap();
     final mapClient = orderModel.clientOrderModel.toMap();
     final mapItems = orderModel.items.map((e) => e.toMap()).toList();
+    final invNumber = generateInvoiceNumber(
+      orderModel.id,
+      orderModel.clientOrderModel.sendDate,
+    );
+    mapOrder['invoice_number'] = invNumber;
 
     final params = {'client': mapClient, 'orders': mapOrder, 'items': mapItems};
     await client.rpc('insert_order', params: params);

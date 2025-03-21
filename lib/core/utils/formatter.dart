@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-final now = DateTime.now();
+final now = DateTime.now().toUtc();
 
 String formatDate(DateTime? date, {String? pattern}) {
   if (date == null) return "";
@@ -34,7 +34,8 @@ String formatToDateTime(DateTime dateTime) {
 DateTime mergeDateAndTime(String date, String time) {
   final d = parseToDate(date);
   final t = parseToTime(time);
-  final dateTime = DateTime(d.year, d.month, d.day, t.hour, t.minute, t.second);
+  final dateTime =
+      DateTime(d.year, d.month, d.day, t.hour, t.minute, t.second).toUtc();
   return dateTime;
 }
 
