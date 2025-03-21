@@ -49,8 +49,8 @@ class OrderItemModel extends BaseModel<OrderItem> {
             : null;
 
     final packageModel =
-        map['package'] != null
-            ? PackageModel.fromMap(map['package'] as Map<String, dynamic>)
+        map['packages'] != null
+            ? PackageModel.fromMap(map['packages'] as Map<String, dynamic>)
             : null;
     return OrderItemModel(
       id: map['ID']?.toString() ?? "",

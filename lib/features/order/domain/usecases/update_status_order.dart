@@ -2,8 +2,8 @@ import 'package:either_dart/either.dart';
 
 import '../../../../core/core.dart';
 import '../../../../core/usecases/base_usecase.dart';
+import '../../../payments/presentation/widgets/process_order_dialog.dart';
 import '../enums/order_status.dart';
-import '../enums/payment_option.dart';
 import '../repository/order_repository.dart';
 
 @lazySingleton
@@ -15,7 +15,7 @@ class UpdateStatusOrder extends BaseUsecase<void, UpdateStatusOrderParams> {
   FutureReturn<void> calling(UpdateStatusOrderParams params) async {
     await orderRepository.updateOrderStatus(
       newStatus: params.newStatus,
-      option: params.paymentOption,
+      option: params.result.option,
       orderID: params.orderID,
     );
     return Right(null);
@@ -25,11 +25,11 @@ class UpdateStatusOrder extends BaseUsecase<void, UpdateStatusOrderParams> {
 class UpdateStatusOrderParams {
   final OrderStatus newStatus;
   final String orderID;
-  final PaymentOption paymentOption;
+  final ProcessOrderDialogResult result;
 
   UpdateStatusOrderParams({
     required this.newStatus,
     required this.orderID,
-    required this.paymentOption,
+    required this.result,
   });
 }

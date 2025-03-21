@@ -35,8 +35,9 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
         bloc.add(
           OnUpdateStatusOrder(
             orderID: order.id,
+            invoiceId: order.invoice.id,
             newStatus: order.orderStatus.moveStatus,
-            paymentOption: result.option,
+            result: result,
           ),
         );
       },

@@ -1,16 +1,17 @@
 import 'dart:convert';
 
 import '../../../../core/models/base_model.dart';
+import '../../../payments/domain/entities/inovice.dart';
+import '../../domain/entities/order.dart';
+import '../../domain/enums/order_status.dart';
 import 'client_order_model.dart';
 import 'order_item_model.dart';
-import '../../domain/enums/order_status.dart';
-
-import '../../domain/entities/order.dart';
 
 class OrderModel extends BaseModel<Order> {
   final String id;
   final String companyId;
   final String clientId;
+  final String invoiceId;
   final double totalPrice;
   final double shippingCost;
   final double discount;
@@ -26,6 +27,7 @@ class OrderModel extends BaseModel<Order> {
     required this.id,
     required this.companyId,
     required this.clientId,
+    this.invoiceId = '',
     required this.totalPrice,
     required this.shippingCost,
     required this.discount,
@@ -52,6 +54,7 @@ class OrderModel extends BaseModel<Order> {
       updatedAt: DateTime.parse(updatedAt),
       client: clientOrderModel.toEntity(),
       items: items.map((e) => e.toEntity()).toList(),
+      invoice: Invoice.init().copyWith(id: invoiceId),
     );
   }
 
@@ -75,6 +78,7 @@ class OrderModel extends BaseModel<Order> {
       id: map['order_id'] as String,
       companyId: map['company_id'] as String,
       clientId: map['client_id'] as String,
+      invoiceId: map['invoice_id'] as String,
       totalPrice: BaseModel.parseToDouble(map['total_price']),
       shippingCost: BaseModel.parseToDouble(map['shipping_cost']),
       discount: BaseModel.parseToDouble(map['discount']),

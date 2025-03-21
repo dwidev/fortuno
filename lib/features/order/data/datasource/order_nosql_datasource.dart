@@ -48,7 +48,7 @@ class OrderNosqlDatasource extends OrderDatasource {
   }) async {
     final params = <String, String>{
       "company_uuid": companyID,
-      "status": status.name,
+      "order_status_params": status.name,
     };
     final response =
         await client.rpc('get_order_by_company', params: params).select();

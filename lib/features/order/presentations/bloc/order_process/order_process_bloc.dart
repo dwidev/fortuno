@@ -1,6 +1,11 @@
+import 'package:fortuno/core/usecases/base_usecase.dart';
+import 'package:fortuno/features/payments/domain/entities/payment.dart';
 import 'package:fortuno/features/payments/domain/usecase/show_invoice.dart';
 
 import '../../../../../core/core.dart';
+import '../../../../payments/domain/usecase/get_invoice_number.dart';
+import '../../../../payments/domain/usecase/save_payment.dart';
+import '../../../../payments/presentation/widgets/process_order_dialog.dart';
 import '../../../domain/entities/order.dart';
 import '../../../domain/enums/order_status.dart';
 import '../../../domain/enums/payment_option.dart';
@@ -16,11 +21,13 @@ class OrderProcessBloc
   final GetOrdersByCompanyId getOrdersByCompanyId;
   final UpdateStatusOrder updateStatusOrder;
   final ShowInvoice showInvoice;
+  final SavePayment savePayment;
 
   OrderProcessBloc({
     required this.getOrdersByCompanyId,
     required this.updateStatusOrder,
     required this.showInvoice,
+    required this.savePayment,
   }) : super(OrderProcessInitial(order: Order.init())) {
     on<OnGetOrders>(_onGetOrders);
     on<GoToOrderDetails>((event, emit) {
@@ -44,22 +51,45 @@ class OrderProcessBloc
   }
 
   Future<void> _onUpdateStatus(OnUpdateStatusOrder event, Emitter emit) async {
-    final response = await runUsecase(() {
-      final params = UpdateStatusOrderParams(
-        newStatus: event.newStatus,
-        orderID: event.orderID,
-        paymentOption: event.paymentOption,
-      );
-      return updateStatusOrder(params);
-    }, emit);
+    final response = await runUsecases([
+      () {
+        final params = UpdateStatusOrderParams(
+          newStatus: event.newStatus,
+          orderID: event.orderID,
+          result: event.result,
+        );
+        return updateStatusOrder(params);
+      },
 
-    response.fold((err) => error(emit, err), (right) {
+      () {
+        final params = Payment(
+          invoiceId: event.invoiceId,
+          amount: event.result.amount,
+          paymentMethod: event.result.option,
+          paymentDate: DateTime.now(),
+        );
+        return savePayment(params);
+      },
+    ], emit);
+
+    final updated = response[0];
+    final createdPayment = response[0];
+
+    Failure? failure;
+
+    createdPayment.fold((err) => failure = err, (right) {});
+
+    updated.fold((err) => failure = err, (right) {
       final newOrder = state.order.copyWith(orderStatus: event.newStatus);
       final newOrders = state.orders.toList();
       newOrders.removeWhere((e) => e.id == event.orderID);
 
       emit(state.copyWith(order: newOrder, orders: newOrders));
     });
+
+    if (failure != null) {
+      error(emit, failure!);
+    }
   }
 
   Future<void> _onShowInvoice(ShowInvoiceOrder event, Emitter emit) async {

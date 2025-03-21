@@ -13,7 +13,7 @@ enum PaymentOption {
   }
 }
 
-PaymentOption orderStatusfromString(String value) {
+PaymentOption paymentOptionfromString(String value) {
   switch (value) {
     case 'transfer':
       return PaymentOption.transfer;

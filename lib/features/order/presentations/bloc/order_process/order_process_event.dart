@@ -23,15 +23,17 @@ final class OnUpdateStatusOrder extends OrderProcessEvent
     implements UpdateStatusOrderParams {
   @override
   final String orderID;
+  final String invoiceId;
   @override
   final OrderStatus newStatus;
   @override
-  final PaymentOption paymentOption;
+  final ProcessOrderDialogResult result;
 
   const OnUpdateStatusOrder({
     required this.orderID,
+    required this.invoiceId,
     required this.newStatus,
-    required this.paymentOption,
+    required this.result,
   });
 }
 

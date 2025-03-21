@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:fortuno/core/core.dart';
+import '../../../../core/core.dart';
+import '../../../payments/domain/entities/inovice.dart';
 
 import '../enums/order_status.dart';
 import 'client_order.dart';
@@ -17,6 +18,7 @@ class Order extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
   final ClientOrder client;
+  final Invoice invoice;
   final List<OrderItem> items;
 
   String get totalPriceString => moneyFormatter(totalPrice);
@@ -37,6 +39,7 @@ class Order extends Equatable {
     required this.createdAt,
     required this.updatedAt,
     required this.client,
+    required this.invoice,
     required this.items,
   });
 
@@ -53,6 +56,7 @@ class Order extends Equatable {
     updatedAt: DateTime.now(),
     items: [],
     client: ClientOrder.init(),
+    invoice: Invoice.init(),
   );
 
   Order copyWith({
@@ -67,6 +71,7 @@ class Order extends Equatable {
     DateTime? createdAt,
     DateTime? updatedAt,
     ClientOrder? client,
+    Invoice? invoice,
     List<OrderItem>? items,
   }) {
     return Order(
@@ -81,6 +86,7 @@ class Order extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       client: client ?? this.client,
+      invoice: invoice ?? this.invoice,
       items: items ?? this.items,
     );
   }

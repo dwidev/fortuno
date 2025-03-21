@@ -21,6 +21,16 @@ class Invoice extends Equatable {
     required this.status,
   });
 
+  factory Invoice.init() => Invoice(
+    id: '',
+    orderID: 'orderID',
+    number: '',
+    issueDate: DateTime.now(),
+    dueDate: DateTime.now(),
+    totalAmount: 0,
+    status: InvoiceStatus.unpaid,
+  );
+
   @override
   List<Object> get props {
     return [id, orderID, number, issueDate, dueDate, totalAmount, status];

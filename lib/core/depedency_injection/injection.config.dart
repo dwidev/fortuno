@@ -63,8 +63,12 @@ import 'package:fortuno/features/payments/data/repository/payment_repository_imp
     as _i1063;
 import 'package:fortuno/features/payments/domain/repository/payment_repository.dart'
     as _i721;
+import 'package:fortuno/features/payments/domain/usecase/get_invoice_number.dart'
+    as _i922;
+import 'package:fortuno/features/payments/domain/usecase/save_payment.dart'
+    as _i931;
 import 'package:fortuno/features/payments/domain/usecase/show_invoice.dart'
-    as _i888;
+    as _i837;
 import 'package:fortuno/features/products/data/datasources/product_nosql_datasource.dart'
     as _i294;
 import 'package:fortuno/features/products/data/datasources/products_datasource.dart'
@@ -173,8 +177,16 @@ extension GetItInjectableX on _i174.GetIt {
         productsRepository: gh<_i1028.ProductsRepository>(),
       ),
     );
-    gh.lazySingleton<_i888.ShowInvoice>(
-      () => _i888.ShowInvoice(paymentRepostiroy: gh<_i721.PaymentRepostiroy>()),
+    gh.lazySingleton<_i837.ShowInvoice>(
+      () => _i837.ShowInvoice(paymentRepostiroy: gh<_i721.PaymentRepostiroy>()),
+    );
+    gh.lazySingleton<_i922.GetInvoiceNumber>(
+      () => _i922.GetInvoiceNumber(
+        paymentRepostiroy: gh<_i721.PaymentRepostiroy>(),
+      ),
+    );
+    gh.lazySingleton<_i931.SavePayment>(
+      () => _i931.SavePayment(paymentRepostiroy: gh<_i721.PaymentRepostiroy>()),
     );
     gh.lazySingleton<_i968.ILocalStorage>(
       () => _i13.SharedPrefStorage(preferences: gh<_i460.SharedPreferences>()),
@@ -234,18 +246,19 @@ extension GetItInjectableX on _i174.GetIt {
         orderRepository: gh<_i996.OrderRepository>(),
       ),
     );
+    gh.factory<_i955.OrderProcessBloc>(
+      () => _i955.OrderProcessBloc(
+        getOrdersByCompanyId: gh<_i1028.GetOrdersByCompanyId>(),
+        updateStatusOrder: gh<_i211.UpdateStatusOrder>(),
+        showInvoice: gh<_i837.ShowInvoice>(),
+        savePayment: gh<_i931.SavePayment>(),
+      ),
+    );
     gh.factory<_i617.CartProcessingBloc>(
       () => _i617.CartProcessingBloc(createOrder: gh<_i242.CreateOrder>()),
     );
     gh.factory<_i184.CartBloc>(
       () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
-    );
-    gh.factory<_i955.OrderProcessBloc>(
-      () => _i955.OrderProcessBloc(
-        getOrdersByCompanyId: gh<_i1028.GetOrdersByCompanyId>(),
-        updateStatusOrder: gh<_i211.UpdateStatusOrder>(),
-        showInvoice: gh<_i888.ShowInvoice>(),
-      ),
     );
     return this;
   }

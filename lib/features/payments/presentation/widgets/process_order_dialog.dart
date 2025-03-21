@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_swipe_button/flutter_swipe_button.dart';
+import 'package:fortuno/core/models/base_model.dart';
+
 import 'package:fortuno/features/order/domain/enums/order_status.dart';
 
 import '../../../../core/core.dart';
@@ -10,8 +12,13 @@ import '../../../order/domain/enums/payment_option.dart';
 class ProcessOrderDialogResult {
   final PaymentOption option;
   final bool paylatter;
+  final double amount;
 
-  ProcessOrderDialogResult({required this.option, required this.paylatter});
+  ProcessOrderDialogResult({
+    required this.option,
+    required this.paylatter,
+    required this.amount,
+  });
 }
 
 Future<T?> showProcessDialog<T>({
@@ -69,9 +76,11 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
 
     context.pop(); // pop this dialog
 
+    final amount = double.tryParse(controller.text) ?? 0;
     final result = ProcessOrderDialogResult(
       option: value,
       paylatter: paylatter,
+      amount: amount,
     );
     widget.onSwipe(result);
   }
