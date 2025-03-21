@@ -21,13 +21,11 @@ class OrderProcessBloc
   final GetOrdersByCompanyId getOrdersByCompanyId;
   final UpdateStatusOrder updateStatusOrder;
   final ShowInvoice showInvoice;
-  final SavePayment savePayment;
 
   OrderProcessBloc({
     required this.getOrdersByCompanyId,
     required this.updateStatusOrder,
     required this.showInvoice,
-    required this.savePayment,
   }) : super(OrderProcessInitial(order: Order.init())) {
     on<OnGetOrders>(_onGetOrders);
     on<GoToOrderDetails>((event, emit) {
@@ -51,45 +49,31 @@ class OrderProcessBloc
   }
 
   Future<void> _onUpdateStatus(OnUpdateStatusOrder event, Emitter emit) async {
-    final response = await runUsecases([
-      () {
-        final params = UpdateStatusOrderParams(
-          newStatus: event.newStatus,
-          orderID: event.orderID,
-          result: event.result,
-        );
-        return updateStatusOrder(params);
-      },
+    final response = await runUsecase(() {
+      final payment = Payment(
+        id: "",
+        invoiceId: event.invoiceId,
+        amount: event.result.amount,
+        paymentMethod: event.result.option,
+        paymentDate: DateTime.now(),
+      );
 
-      () {
-        final params = Payment(
-          invoiceId: event.invoiceId,
-          amount: event.result.amount,
-          paymentMethod: event.result.option,
-          paymentDate: DateTime.now(),
-        );
-        return savePayment(params);
-      },
-    ], emit);
+      final params = UpdateStatusOrderParams(
+        newStatus: event.newStatus,
+        orderID: event.orderID,
+        result: event.result,
+        payment: payment,
+      );
+      return updateStatusOrder(params);
+    }, emit);
 
-    final updated = response[0];
-    final createdPayment = response[0];
-
-    Failure? failure;
-
-    createdPayment.fold((err) => failure = err, (right) {});
-
-    updated.fold((err) => failure = err, (right) {
+    response.fold((err) => error(emit, err), (right) {
       final newOrder = state.order.copyWith(orderStatus: event.newStatus);
       final newOrders = state.orders.toList();
       newOrders.removeWhere((e) => e.id == event.orderID);
 
       emit(state.copyWith(order: newOrder, orders: newOrders));
     });
-
-    if (failure != null) {
-      error(emit, failure!);
-    }
   }
 
   Future<void> _onShowInvoice(ShowInvoiceOrder event, Emitter emit) async {

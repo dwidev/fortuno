@@ -1,4 +1,5 @@
 import 'package:fortuno/features/order/domain/entities/order.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../core/core.dart';
 import '../model/payment_model.dart';
@@ -8,11 +9,11 @@ import '../../domain/entities/inovice.dart';
 import '../../domain/repository/payment_repository.dart';
 import '../datasource/payment_datasource.dart';
 
-@LazySingleton(as: PaymentRepostiroy)
-class PaymentRepostiroyImpl extends PaymentRepostiroy {
+@LazySingleton(as: PaymentRepository)
+class PaymentRepositoryImpl extends PaymentRepository {
   final PaymentDatasource paymentDatasource;
 
-  PaymentRepostiroyImpl({required this.paymentDatasource});
+  PaymentRepositoryImpl({required this.paymentDatasource});
 
   @override
   Future<Invoice> getInvoice({required String orderID}) async {
@@ -23,7 +24,7 @@ class PaymentRepostiroyImpl extends PaymentRepostiroy {
   @override
   Future<void> savePayment({required Payment payment}) {
     final model = PaymentModel(
-      id: payment.id,
+      id: Uuid().v4(),
       invoiceId: payment.invoiceId,
       amount: payment.amount,
       paymentMethod: payment.paymentMethod.name,

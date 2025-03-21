@@ -25,7 +25,13 @@ class Order extends Equatable {
 
   String get subTotalString => items.totalPriceString;
 
-  double get downPayment => totalPrice * 10 / 100;
+  double get downPayment {
+    if (orderStatus == OrderStatus.waiting) {
+      return totalPrice * 10 / 100;
+    }
+
+    return totalPrice;
+  }
 
   const Order({
     required this.id,

@@ -34,7 +34,7 @@ class PaymentModel extends BaseModel<Payment> {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'ID': null,
+      'ID': id,
       'invoice_id': invoiceId,
       'amount': amount,
       'payment_method': paymentMethod,

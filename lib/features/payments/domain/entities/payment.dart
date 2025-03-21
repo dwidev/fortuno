@@ -10,7 +10,7 @@ class Payment extends Equatable {
   final DateTime paymentDate;
 
   const Payment({
-    this.id = '',
+    required this.id,
     required this.invoiceId,
     required this.amount,
     required this.paymentMethod,

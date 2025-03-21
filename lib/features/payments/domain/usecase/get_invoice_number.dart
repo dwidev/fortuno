@@ -7,13 +7,13 @@ import '../repository/payment_repository.dart';
 
 @lazySingleton
 class GetInvoiceNumber extends BaseUsecase<String, Order> {
-  final PaymentRepostiroy paymentRepostiroy;
+  final PaymentRepository paymentRepository;
 
-  GetInvoiceNumber({required this.paymentRepostiroy});
+  GetInvoiceNumber({required this.paymentRepository});
 
   @override
   FutureReturn<String> calling(Order params) async {
-    final invNumber = await paymentRepostiroy.getInvoiceNumber(order: params);
+    final invNumber = await paymentRepository.getInvoiceNumber(order: params);
     return Right(invNumber);
   }
 }

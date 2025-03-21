@@ -7,13 +7,13 @@ import '../repository/payment_repository.dart';
 
 @lazySingleton
 class SavePayment extends BaseUsecase<void, Payment> {
-  final PaymentRepostiroy paymentRepostiroy;
+  final PaymentRepository paymentRepository;
 
-  SavePayment({required this.paymentRepostiroy});
+  SavePayment({required this.paymentRepository});
 
   @override
   FutureReturn<void> calling(Payment params) async {
-    await paymentRepostiroy.savePayment(payment: params);
+    await paymentRepository.savePayment(payment: params);
     return Right(null);
   }
 }
