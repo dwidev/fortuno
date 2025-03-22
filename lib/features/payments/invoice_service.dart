@@ -355,11 +355,13 @@ class InvoiceService {
                           ),
                         );
                       }),
-                    pw.SizedBox(height: PdfPageFormat.cm * 0.3),
-                    pw.Divider(
-                      height: PdfPageFormat.cm * 0.5,
-                      color: PdfColors.grey200,
-                    ),
+                    if (invoice.payments.isNotEmpty) ...[
+                      pw.SizedBox(height: PdfPageFormat.cm * 0.3),
+                      pw.Divider(
+                        height: PdfPageFormat.cm * 0.5,
+                        color: PdfColors.grey200,
+                      ),
+                    ],
                   ],
                 ),
               ),
