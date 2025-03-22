@@ -44,7 +44,7 @@ class PaymentModel extends BaseModel<Payment> {
 
   factory PaymentModel.fromMap(Map<String, dynamic> map) {
     return PaymentModel(
-      id: map['id'] as String,
+      id: map['ID'] as String,
       invoiceId: map['invoice_id'] as String,
       amount: map['amount'] as double,
       paymentMethod: map['payment_method'] as String,

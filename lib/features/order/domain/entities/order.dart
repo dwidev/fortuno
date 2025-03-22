@@ -1,7 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
+
 import '../../../../core/core.dart';
 import '../../../payments/domain/entities/inovice.dart';
-
 import '../enums/order_status.dart';
 import 'client_order.dart';
 import 'order_item.dart';
@@ -13,6 +14,8 @@ class Order extends Equatable {
   final double totalPrice;
   final double shippingCost;
   final double discount;
+  final double totalPaid;
+  final double remainingPayment;
   final String paymentOption;
   final OrderStatus orderStatus;
   final DateTime createdAt;
@@ -25,12 +28,12 @@ class Order extends Equatable {
 
   String get subTotalString => items.totalPriceString;
 
-  double get downPayment {
+  double get pay {
     if (orderStatus == OrderStatus.waiting) {
       return totalPrice * 30 / 100;
     }
 
-    return totalPrice;
+    return remainingPayment;
   }
 
   const Order({
@@ -40,6 +43,8 @@ class Order extends Equatable {
     required this.totalPrice,
     required this.shippingCost,
     required this.discount,
+    required this.totalPaid,
+    required this.remainingPayment,
     required this.paymentOption,
     required this.orderStatus,
     required this.createdAt,
@@ -56,6 +61,8 @@ class Order extends Equatable {
     totalPrice: 0,
     shippingCost: 0,
     discount: 0,
+    totalPaid: 0,
+    remainingPayment: 0,
     paymentOption: '',
     orderStatus: OrderStatus.waiting,
     createdAt: DateTime.now(),
@@ -72,6 +79,8 @@ class Order extends Equatable {
     double? totalPrice,
     double? shippingCost,
     double? discount,
+    double? totalPaid,
+    double? remainingPayment,
     String? paymentOption,
     OrderStatus? orderStatus,
     DateTime? createdAt,
@@ -87,6 +96,8 @@ class Order extends Equatable {
       totalPrice: totalPrice ?? this.totalPrice,
       shippingCost: shippingCost ?? this.shippingCost,
       discount: discount ?? this.discount,
+      totalPaid: totalPaid ?? this.totalPaid,
+      remainingPayment: remainingPayment ?? this.remainingPayment,
       paymentOption: paymentOption ?? this.paymentOption,
       orderStatus: orderStatus ?? this.orderStatus,
       createdAt: createdAt ?? this.createdAt,
@@ -106,11 +117,14 @@ class Order extends Equatable {
       totalPrice,
       shippingCost,
       discount,
+      totalPaid,
+      remainingPayment,
       paymentOption,
       orderStatus,
       createdAt,
       updatedAt,
       client,
+      invoice,
       items,
     ];
   }

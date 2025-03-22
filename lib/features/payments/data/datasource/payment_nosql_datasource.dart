@@ -24,6 +24,28 @@ class PaymentNosqlDatasource extends PaymentDatasource {
       throw InvoiceNotFound();
     }
 
+    final resPayment = await client
+        .from('payments')
+        .select()
+        .eq('invoice_id', invoice['ID']);
+
+    final clientId =
+        await client
+            .from('orders')
+            .select('client_id')
+            .eq('ID', invoice['order_id'])
+            .single();
+
+    final clientOrder =
+        await client
+            .from('client')
+            .select()
+            .eq('ID', clientId['client_id'])
+            .single();
+
+    invoice['payments'] = resPayment;
+    invoice['client'] = clientOrder;
+
     final result = InvoiceModel.fromMap(invoice);
     return result;
   }

@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:fortuno/core/core.dart';
 import 'package:fortuno/core/models/base_model.dart';
+import 'package:fortuno/features/order/data/model/client_order_model.dart';
+import 'package:fortuno/features/payments/data/model/payment_model.dart';
 
 import '../../domain/entities/inovice.dart';
 import '../../domain/enums/invoice_status_enum.dart';
@@ -15,6 +17,8 @@ class InvoiceModel extends BaseModel<Invoice> {
   final String dueDate;
   final double totalAmount;
   final String status;
+  final ClientOrderModel clientOrderModel;
+  final List<PaymentModel> paymentsModel;
 
   InvoiceModel({
     required this.id,
@@ -24,6 +28,8 @@ class InvoiceModel extends BaseModel<Invoice> {
     required this.dueDate,
     required this.totalAmount,
     required this.status,
+    required this.clientOrderModel,
+    required this.paymentsModel,
   });
 
   @override
@@ -36,6 +42,8 @@ class InvoiceModel extends BaseModel<Invoice> {
       dueDate: parseDateRawToDateTime(dueDate),
       totalAmount: totalAmount,
       status: invoiceStatusFromString(status),
+      clientOrder: clientOrderModel.toEntity(),
+      payments: paymentsModel.map((e) => e.toEntity()).toList(),
     );
   }
 
@@ -60,6 +68,14 @@ class InvoiceModel extends BaseModel<Invoice> {
       dueDate: map['due_date'] as String,
       totalAmount: BaseModel.parseToDouble(map['total_amount']),
       status: map['status'] as String,
+      clientOrderModel: ClientOrderModel.fromMap(
+        map['client'] as Map<String, dynamic>,
+      ),
+      paymentsModel: List<PaymentModel>.from(
+        (map['payments'] as List<dynamic>).map<PaymentModel>(
+          (x) => PaymentModel.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
     );
   }
 

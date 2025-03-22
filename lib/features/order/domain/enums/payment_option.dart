@@ -17,7 +17,7 @@ PaymentOption paymentOptionfromString(String value) {
   switch (value) {
     case 'transfer':
       return PaymentOption.transfer;
-    case 'process':
+    case 'cash':
       return PaymentOption.cash;
     default:
       throw ArgumentError("$value not values for PaymentOption enums");

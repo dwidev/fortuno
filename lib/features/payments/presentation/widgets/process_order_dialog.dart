@@ -1,7 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_swipe_button/flutter_swipe_button.dart';
-import 'package:fortuno/core/models/base_model.dart';
-
 import 'package:fortuno/features/order/domain/enums/order_status.dart';
 
 import '../../../../core/core.dart';
@@ -63,9 +61,7 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
 
   @override
   void initState() {
-    controller = TextEditingController(
-      text: widget.order.downPayment.toString(),
-    );
+    controller = TextEditingController(text: widget.order.pay.toString());
     super.initState();
   }
 
@@ -155,8 +151,8 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
                             }
 
                             final data = double.tryParse(value) ?? 0;
-                            if (data < widget.order.downPayment) {
-                              return "Kurang dari nilai DP 10%";
+                            if (data < widget.order.pay) {
+                              return "Kurang dari nilai DP 30%";
                             }
 
                             return null;

@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import '../../../../core/models/base_model.dart';
@@ -15,6 +16,8 @@ class OrderModel extends BaseModel<Order> {
   final double totalPrice;
   final double shippingCost;
   final double discount;
+  final double totalPaid;
+  final double remainingPayment;
   final String paymentOption;
   final String orderStatus;
   final String createdAt;
@@ -31,6 +34,8 @@ class OrderModel extends BaseModel<Order> {
     required this.totalPrice,
     required this.shippingCost,
     required this.discount,
+    this.totalPaid = 0,
+    this.remainingPayment = 0,
     required this.paymentOption,
     required this.orderStatus,
     required this.createdAt,
@@ -48,6 +53,8 @@ class OrderModel extends BaseModel<Order> {
       totalPrice: totalPrice,
       shippingCost: shippingCost,
       discount: discount,
+      totalPaid: totalPaid,
+      remainingPayment: remainingPayment,
       paymentOption: paymentOption,
       orderStatus: orderStatusfromString(orderStatus),
       createdAt: DateTime.parse(createdAt),
@@ -82,6 +89,8 @@ class OrderModel extends BaseModel<Order> {
       totalPrice: BaseModel.parseToDouble(map['total_price']),
       shippingCost: BaseModel.parseToDouble(map['shipping_cost']),
       discount: BaseModel.parseToDouble(map['discount']),
+      totalPaid: BaseModel.parseToDouble(map['total_paid']),
+      remainingPayment: BaseModel.parseToDouble(map['remaining_payment']),
       paymentOption: map['payment_option'] as String,
       orderStatus: map['order_status'] as String,
       createdAt: map['created_at'] as String,

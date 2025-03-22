@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:fortuno/core/utils/formatter.dart';
 
 import '../../../order/domain/enums/payment_option.dart';
 
@@ -8,6 +9,10 @@ class Payment extends Equatable {
   final double amount;
   final PaymentOption paymentMethod;
   final DateTime paymentDate;
+
+  String get amountDisplay => moneyFormatter(amount);
+  String get paymentDateDisplay =>
+      formatDate(paymentDate, pattern: "dd/MM/yyyy");
 
   const Payment({
     required this.id,
