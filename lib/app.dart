@@ -15,7 +15,13 @@ class App extends StatelessWidget {
       locale: Locale('id', 'ID'),
       routerConfig: router,
       builder: EasyLoading.init(
-        builder: (context, child) => child ?? Offstage(),
+        builder:
+            (context, child) => MediaQuery(
+              data: MediaQuery.of(
+                context,
+              ).copyWith(textScaler: TextScaler.noScaling),
+              child: child ?? Offstage(),
+            ),
       ),
     );
   }
