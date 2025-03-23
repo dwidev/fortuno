@@ -8,7 +8,39 @@ export 'colors.dart';
 export 'default_size.dart';
 
 ThemeData get lightTheme {
-  final textTheme = GoogleFonts.poppinsTextTheme();
+  final textTheme = GoogleFonts.poppinsTextTheme().copyWith(
+    displayLarge: GoogleFonts.poppins(
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+    ),
+    displayMedium: GoogleFonts.poppins(
+      fontSize: 28,
+      fontWeight: FontWeight.bold,
+    ),
+    displaySmall: GoogleFonts.poppins(
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+    ),
+    headlineMedium: GoogleFonts.poppins(
+      fontSize: 20,
+      fontWeight: FontWeight.w600,
+    ),
+    titleLarge: GoogleFonts.poppins(
+      fontSize: 18 * 0.9,
+      fontWeight: FontWeight.w600,
+    ),
+    bodyLarge: GoogleFonts.poppins(fontSize: 16 * 0.9),
+    bodyMedium: GoogleFonts.poppins(fontSize: 14 * 0.9),
+    bodySmall: GoogleFonts.poppins(fontSize: 12 * 0.9),
+    labelLarge: GoogleFonts.poppins(
+      fontSize: 14 * 0.9,
+      fontWeight: FontWeight.w500,
+    ),
+    labelMedium: GoogleFonts.poppins(
+      fontSize: 12 * 0.9,
+      fontWeight: FontWeight.w500,
+    ),
+  );
 
   return ThemeData(
     useMaterial3: true,
@@ -52,6 +84,6 @@ const defaultGradient = LinearGradient(
   colors: [mutedLemonColor, sageGreenColor],
 );
 
-const defaultShadow = [
-  BoxShadow(color: lightGrey7, blurRadius: 20, offset: Offset(0, 25)),
+final defaultShadow = [
+  BoxShadow(color: lightGrey5, blurRadius: 20, offset: Offset(0, 25)),
 ];

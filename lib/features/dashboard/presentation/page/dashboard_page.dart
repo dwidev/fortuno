@@ -20,13 +20,13 @@ class DashboardPage extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(
-                    height: context.height / 2.5,
+                    height: context.height / 2.2,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: Container(
-                            padding: EdgeInsets.all(kDefaultPadding * 2),
+                            padding: EdgeInsets.all(kDefaultPadding),
                             decoration: BoxDecoration(
                               color: whiteColor,
                               borderRadius: BorderRadius.circular(
@@ -60,7 +60,7 @@ class DashboardPage extends StatelessWidget {
                                         SizedBox(width: kSizeS),
                                         Text(
                                           "Total Income",
-                                          style: context.textTheme.bodyMedium
+                                          style: context.textTheme.bodySmall
                                               ?.copyWith(
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -75,7 +75,7 @@ class DashboardPage extends StatelessWidget {
                                         ),
                                         Text(
                                           "25%",
-                                          style: context.textTheme.bodyMedium
+                                          style: context.textTheme.bodySmall
                                               ?.copyWith(color: greenColor),
                                         ),
                                       ],
@@ -85,31 +85,31 @@ class DashboardPage extends StatelessWidget {
                                 SizedBox(height: kSizeS),
                                 Text(
                                   "Rp. 13.534.000",
-                                  style: context.textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: kSizeML,
-                                  ),
+                                  style: context.textTheme.displayMedium,
                                 ),
+                                SizedBox(height: kSizeXL),
                                 Expanded(
-                                  child: AspectRatio(
-                                    aspectRatio: 1,
-                                    child: PieChart(
-                                      PieChartData(
-                                        pieTouchData: PieTouchData(
-                                          touchCallback:
-                                              (
-                                                FlTouchEvent event,
-                                                pieTouchResponse,
-                                              ) {},
+                                  child: LayoutBuilder(
+                                    builder: (context, bc) {
+                                      return PieChart(
+                                        PieChartData(
+                                          pieTouchData: PieTouchData(
+                                            touchCallback:
+                                                (
+                                                  FlTouchEvent event,
+                                                  pieTouchResponse,
+                                                ) {},
+                                          ),
+                                          borderData: FlBorderData(show: false),
+                                          sectionsSpace: 5,
+                                          centerSpaceRadius: bc.maxWidth * 0.2,
+                                          sections: showingSections(),
                                         ),
-                                        borderData: FlBorderData(show: false),
-                                        sectionsSpace: 5,
-                                        centerSpaceRadius: 70,
-                                        sections: showingSections(),
-                                      ),
-                                    ),
+                                      );
+                                    },
                                   ),
                                 ),
+                                SizedBox(height: kSizeXL),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
@@ -122,7 +122,7 @@ class DashboardPage extends StatelessWidget {
                                         SizedBox(width: kSizeSS),
                                         Text(
                                           "Product",
-                                          style: context.textTheme.bodyMedium,
+                                          style: context.textTheme.bodySmall,
                                         ),
                                       ],
                                     ),
@@ -136,7 +136,7 @@ class DashboardPage extends StatelessWidget {
                                         SizedBox(width: kSizeSS),
                                         Text(
                                           "Package",
-                                          style: context.textTheme.bodyMedium,
+                                          style: context.textTheme.bodySmall,
                                         ),
                                       ],
                                     ),
@@ -151,7 +151,7 @@ class DashboardPage extends StatelessWidget {
                           child: Column(
                             children: [
                               Expanded(child: TotalOrderWidget()),
-                              SizedBox(height: kSizeM),
+                              SizedBox(height: kSizeS),
                               Expanded(child: TotalOrderWidget()),
                             ],
                           ),
@@ -168,7 +168,7 @@ class DashboardPage extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: whiteColor,
                               borderRadius: BorderRadius.circular(
-                                kDefaultRadius * 2,
+                                kDefaultRadius,
                               ),
                               boxShadow: defaultShadow,
                             ),
@@ -181,23 +181,20 @@ class DashboardPage extends StatelessWidget {
                                   ),
                                   child: Text(
                                     "Penjualan mingguan",
-                                    style: context.textTheme.bodyMedium
+                                    style: context.textTheme.bodySmall
                                         ?.copyWith(fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 SizedBox(height: kSizeMS),
                                 Expanded(
-                                  child: AspectRatio(
-                                    aspectRatio: 1.70,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                        right: 18,
-                                        left: 12,
-                                        top: 24,
-                                        bottom: 12,
-                                      ),
-                                      child: LineChart(mainData(context)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      right: 18,
+                                      left: 12,
+                                      top: 24,
+                                      bottom: 12,
                                     ),
+                                    child: LineChart(mainData(context)),
                                   ),
                                 ),
                               ],
@@ -224,7 +221,7 @@ class DashboardPage extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: whiteColor,
                               borderRadius: BorderRadius.circular(
-                                kDefaultRadius * 2,
+                                kDefaultRadius,
                               ),
                               boxShadow: defaultShadow,
                             ),
@@ -233,7 +230,7 @@ class DashboardPage extends StatelessWidget {
                               children: [
                                 Text(
                                   "Order yang sedang diproses",
-                                  style: context.textTheme.bodyMedium?.copyWith(
+                                  style: context.textTheme.bodySmall?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -298,14 +295,14 @@ class DashboardPage extends StatelessWidget {
                                                       "Paket Berkah 25k",
                                                       style: context
                                                           .textTheme
-                                                          .bodyMedium
+                                                          .bodySmall
                                                           ?.copyWith(
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                           ),
                                                     ),
                                                     SizedBox(
-                                                      width: 150,
+                                                      width: 100,
                                                       child: Text(
                                                         "Nasi, Ayam bakar, Tahu Tempe, Cah kangkung, Buah jeruk, Sambal Lalap",
                                                         style:
@@ -365,14 +362,14 @@ class DashboardPage extends StatelessWidget {
           return PieChartSectionData(
             color: primaryColor,
             value: 10,
-            radius: 10,
+            radius: 5,
             showTitle: false,
           );
         case 1:
           return PieChartSectionData(
             color: secondaryColor,
             value: 20,
-            radius: 10,
+            radius: 5,
             showTitle: false,
           );
         default:
@@ -475,7 +472,6 @@ class DashboardAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.only(top: context.padTop),
       padding: EdgeInsets.symmetric(vertical: kSizeML),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -483,12 +479,7 @@ class DashboardAppBar extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text(
-                  "Dashboard",
-                  style: context.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                child: Text("Dashboard", style: context.textTheme.titleLarge),
               ),
               Text(formatDate(DateTime.now())),
               SizedBox(width: kSizeMS),
@@ -540,11 +531,11 @@ class TotalOrderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(
-        kDefaultPadding * 2,
+        kDefaultPadding,
       ).copyWith(bottom: kDefaultPadding),
       decoration: BoxDecoration(
         color: whiteColor,
-        borderRadius: BorderRadius.circular(kDefaultRadius * 2),
+        borderRadius: BorderRadius.circular(kDefaultRadius),
         boxShadow: defaultShadow,
       ),
       child: Column(
@@ -570,7 +561,7 @@ class TotalOrderWidget extends StatelessWidget {
                   SizedBox(width: kSizeMS),
                   Text(
                     "Total Orders",
-                    style: context.textTheme.bodyMedium?.copyWith(
+                    style: context.textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -581,7 +572,7 @@ class TotalOrderWidget extends StatelessWidget {
                   Icon(CupertinoIcons.arrow_down_right, color: secondaryColor),
                   Text(
                     "2%",
-                    style: context.textTheme.bodyMedium?.copyWith(
+                    style: context.textTheme.bodySmall?.copyWith(
                       color: secondaryColor,
                     ),
                   ),
@@ -590,22 +581,16 @@ class TotalOrderWidget extends StatelessWidget {
             ],
           ),
           Spacer(),
-          Text(
-            "100",
-            style: context.textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: kSizeXL,
-            ),
-          ),
+          Text("100", style: context.textTheme.displayLarge),
           Spacer(),
-          Text(
-            "lebih banyak 2 pesanan dari pada bulan lalu",
-            style: context.textTheme.bodySmall?.copyWith(
-              color: lightGrey2,
-              fontStyle: FontStyle.italic,
-            ),
-            textAlign: TextAlign.end,
-          ),
+          // Text(
+          //   "lebih banyak 2 pesanan dari pada bulan lalu",
+          //   style: context.textTheme.bodySmall?.copyWith(
+          //     color: lightGrey2,
+          //     fontStyle: FontStyle.italic,
+          //   ),
+          //   textAlign: TextAlign.end,
+          // ),
         ],
       ),
     );
@@ -629,7 +614,7 @@ class MostProductWidget extends StatelessWidget {
       ).copyWith(bottom: kDefaultPadding),
       decoration: BoxDecoration(
         color: whiteColor,
-        borderRadius: BorderRadius.circular(kDefaultRadius * 2),
+        borderRadius: BorderRadius.circular(kDefaultRadius),
         boxShadow: defaultShadow,
       ),
       child: Column(
@@ -652,7 +637,7 @@ class MostProductWidget extends StatelessWidget {
               SizedBox(width: kSizeMS),
               Text(
                 "Paling sering dipesan",
-                style: context.textTheme.bodyMedium?.copyWith(
+                style: context.textTheme.bodySmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -704,7 +689,7 @@ class MostProductWidget extends StatelessWidget {
                                   data[index],
                                   style: context.textTheme.bodySmall?.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: kSizeMS,
+                                    fontSize: kSizeS * 0.9,
                                   ),
                                 ),
                               ),
@@ -714,7 +699,7 @@ class MostProductWidget extends StatelessWidget {
                                 children: [
                                   Text(
                                     "20x",
-                                    style: context.textTheme.bodyMedium
+                                    style: context.textTheme.bodySmall
                                         ?.copyWith(
                                           fontWeight: FontWeight.bold,
                                           fontSize: kSizeS,
@@ -724,7 +709,7 @@ class MostProductWidget extends StatelessWidget {
                                   ),
                                   Text(
                                     "200 pcs",
-                                    style: context.textTheme.bodyMedium
+                                    style: context.textTheme.bodySmall
                                         ?.copyWith(
                                           fontWeight: FontWeight.bold,
                                           fontSize: kSizeS,
