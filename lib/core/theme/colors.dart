@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 
-const primaryColor = mutedLemonColor;
-const secondaryColor = Color(0xffFCC3D2);
+// new color plate
+const primaryColor = Color(0xffFFCA40);
+const secondaryColor = Color(0xffC8161D);
+final darkColor = Color(0xff000000);
+const darkLightColor = Color(0xffF8F8F7);
+
+const greyColor = Color(0xff808080);
+const lightGrey1 = Color(0xffA0A0A0);
+const lightGrey2 = Color(0xffB0B0B0);
+const lightGrey3 = Color(0xffC0C0C0);
+const lightGrey4 = Color(0xffD0D0D0);
+const lightGrey5 = Color(0xffE0E0E0);
+const lightGrey6 = Color(0xffE8E8E8);
+const lightGrey7 = Color(0xffF0F0F0);
+const lightGrey8 = Color(0xffF8F8F8);
+
 const softPinkColor = Color(0x07f93263);
 const secondarySoftColor = Color(0xffFFDFDF);
 const whiteColor = Colors.white;
-const darkLightColor = Color(0xffF7F7F9);
-final darkColor = Color(0xFF2E2E2E);
 const blueLightColor = Color(0xff00A9FF);
 const softblueColor = Color(0xffAEDEFC);
 const blackColor = Color(0xff0F0F0F);

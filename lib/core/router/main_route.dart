@@ -28,6 +28,9 @@ final router = GoRouter(
         return MainPage(navigationShell: navigationShell);
       },
       branches: [
+        // profile
+        StatefulShellBranch(navigatorKey: profilRouteKey, routes: profilRoute),
+
         // create order route
         StatefulShellBranch(
           navigatorKey: createOrderRouteKey,
@@ -39,9 +42,6 @@ final router = GoRouter(
           navigatorKey: processOrderRoutKey,
           routes: processOrderRoute,
         ),
-
-        // profile
-        StatefulShellBranch(navigatorKey: profilRouteKey, routes: profilRoute),
       ],
     ),
   ],

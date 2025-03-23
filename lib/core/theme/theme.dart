@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fortuno/core/core.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'colors.dart';
@@ -11,15 +12,14 @@ ThemeData get lightTheme {
 
   return ThemeData(
     useMaterial3: true,
+    scaffoldBackgroundColor: darkLightColor,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: darkMossGreen,
+      seedColor: primaryColor,
       brightness: Brightness.light,
     ),
     appBarTheme: AppBarTheme(
-      backgroundColor: darkMossGreen,
-      titleTextStyle: GoogleFonts.poppinsTextTheme().titleLarge?.copyWith(
-        color: whiteColor,
-      ),
+      backgroundColor: whiteColor,
+      titleTextStyle: textTheme.titleLarge?.copyWith(color: primaryColor),
     ),
     textTheme: textTheme,
     iconTheme: IconThemeData(color: darkColor, size: 15),
@@ -28,7 +28,22 @@ ThemeData get lightTheme {
       hintStyle: textTheme.bodySmall?.copyWith(fontSize: 13),
     ),
     textButtonTheme: TextButtonThemeData(
-      style: ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.symmetric(horizontal: kDefaultFontSize),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(kDefaultRadius * 0.5),
+        ),
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: lightGrey6,
+        elevation: 0,
+        foregroundColor: darkColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(kDefaultRadius),
+        ),
+      ),
     ),
   );
 }
@@ -36,3 +51,7 @@ ThemeData get lightTheme {
 const defaultGradient = LinearGradient(
   colors: [mutedLemonColor, sageGreenColor],
 );
+
+const defaultShadow = [
+  BoxShadow(color: lightGrey7, blurRadius: 20, offset: Offset(0, 25)),
+];
