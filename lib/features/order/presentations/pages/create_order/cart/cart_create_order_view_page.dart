@@ -98,7 +98,7 @@ class CartCreateOrderViewPage extends StatelessWidget {
                             title: "",
                             controller: cartProcess.shippingCostController,
                             hintText: "Ongkir: Rp.xxxxx",
-                            onEditingComplete: (value) {
+                            onChanged: (value) {
                               bloc.add(OnChangeShippingConstEvent());
                             },
                           ),
