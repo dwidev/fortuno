@@ -50,20 +50,23 @@ class _SideMenuState extends State<SideMenu> {
 
   final iconOther = [
     [CupertinoIcons.bell_circle_fill, "Notifikasi"],
-    [CupertinoIcons.settings_solid, "Pengaturan"],
+    [CupertinoIcons.gear_alt_fill, "Pengaturan"],
   ];
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: context.width / 5.5,
+      width: activeIndex == 1 ? null : context.width / 5.7,
       height: context.height,
       decoration: BoxDecoration(
         border: Border(right: BorderSide(color: lightGrey6, width: 2)),
       ),
       child: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+              activeIndex == 1
+                  ? CrossAxisAlignment.center
+                  : CrossAxisAlignment.start,
           children: [
             Container(
               margin: EdgeInsets.symmetric(
@@ -71,7 +74,10 @@ class _SideMenuState extends State<SideMenu> {
                 vertical: kSizeXL,
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment:
+                    activeIndex == 1
+                        ? CrossAxisAlignment.center
+                        : CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: kSizeXL),
                   Row(
@@ -89,16 +95,18 @@ class _SideMenuState extends State<SideMenu> {
                           color: secondaryColor,
                         ),
                       ),
-                      SizedBox(width: kSizeS),
-                      Text(
-                        "FortunoPOS",
-                        style: context.textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
+                      if (activeIndex != 1) ...[
+                        SizedBox(width: kSizeS),
+                        Text(
+                          "FortunoPOS",
+                          style: context.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
+                      ],
                     ],
                   ),
-                  SizedBox(height: kSizeL),
+                  SizedBox(height: kSizeM),
                   ...List.generate(icon.length, (index) {
                     return GestureDetector(
                       onTap: () {
@@ -118,18 +126,25 @@ class _SideMenuState extends State<SideMenu> {
                         });
                       },
                       child: Container(
-                        margin: EdgeInsets.only(top: kSizeS - 10),
+                        margin:
+                            activeIndex == 1
+                                ? EdgeInsets.only(top: kSizeM)
+                                : null,
                         padding: EdgeInsets.symmetric(
-                          horizontal: kSizeM,
-                          vertical: kSizeM,
+                          horizontal: activeIndex == 1 ? kSizeS : kSizeM,
+                          vertical: activeIndex == 1 ? kSizeS : kSizeM,
                         ),
-                        width: double.infinity,
+                        // width: double.infinity,
                         decoration: BoxDecoration(
                           color:
                               index == activeIndex
                                   ? primaryColor
                                   : Colors.transparent,
-                          borderRadius: BorderRadius.circular(kDefaultRadius),
+                          borderRadius: BorderRadius.circular(
+                            activeIndex == 1
+                                ? kDefaultRadius * 0.3
+                                : kDefaultRadius,
+                          ),
                         ),
                         child: Row(
                           children: [
@@ -139,16 +154,20 @@ class _SideMenuState extends State<SideMenu> {
                               color:
                                   index == activeIndex ? darkColor : greyColor,
                             ),
-                            SizedBox(width: kSizeS),
-                            Expanded(
-                              child: Text(
-                                icon[index][1] as String,
-                                style: context.textTheme.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
+                            if (activeIndex != 1) ...[
+                              SizedBox(width: kSizeS),
+                              Expanded(
+                                child: Text(
+                                  icon[index][1] as String,
+                                  style: context.textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                            if (index == 2 && index != activeIndex)
+                            ],
+                            if (index == 2 &&
+                                index != activeIndex &&
+                                activeIndex != 1)
                               Container(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 7,
@@ -169,26 +188,30 @@ class _SideMenuState extends State<SideMenu> {
                       ),
                     );
                   }),
-                  SizedBox(height: kSizeL),
-                  Padding(
-                    padding: EdgeInsets.only(left: kSizeM),
-                    child: Text(
-                      "Lainnya",
-                      style: context.textTheme.bodyMedium?.copyWith(
-                        color: greyColor,
+                  if (activeIndex != 1) ...[
+                    SizedBox(height: kSizeL),
+                    Padding(
+                      padding: EdgeInsets.only(left: kSizeM),
+                      child: Text(
+                        "Lainnya",
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: greyColor,
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                   ...List.generate(iconOther.length, (index) {
                     return Container(
-                      margin: EdgeInsets.only(top: kSizeS - 10),
+                      margin:
+                          activeIndex == 1
+                              ? EdgeInsets.only(top: kSizeM)
+                              : null,
                       padding: EdgeInsets.symmetric(
-                        horizontal: kSizeM,
-                        vertical: kSizeM,
+                        horizontal: activeIndex == 1 ? kSizeS : kSizeM,
+                        vertical: activeIndex == 1 ? kSizeS : kSizeM,
                       ),
-                      width: double.infinity,
                       decoration: BoxDecoration(
-                        color: Colors.transparent,
+                        color: const Color.fromRGBO(0, 0, 0, 0),
                         borderRadius: BorderRadius.circular(kDefaultRadius),
                       ),
                       child: Row(
@@ -198,13 +221,15 @@ class _SideMenuState extends State<SideMenu> {
                             size: kSizeM,
                             color: greyColor,
                           ),
-                          SizedBox(width: kSizeS),
-                          Text(
-                            iconOther[index][1] as String,
-                            style: context.textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
+                          if (activeIndex != 1) ...[
+                            SizedBox(width: kSizeS),
+                            Text(
+                              iconOther[index][1] as String,
+                              style: context.textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
+                          ],
                         ],
                       ),
                     );
@@ -212,60 +237,80 @@ class _SideMenuState extends State<SideMenu> {
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.symmetric(
-                vertical: kSizeM,
-                horizontal: kSizeM,
-              ),
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(
-                horizontal: kSizeS,
-                vertical: kSizeS,
-              ).copyWith(top: 0),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [whiteColor, darkLightColor],
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
+            if (activeIndex == 1)
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [whiteColor, darkLightColor],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
+                  borderRadius: BorderRadius.circular(kSizeM),
+                  boxShadow: defaultShadow,
                 ),
-                borderRadius: BorderRadius.circular(kSizeM),
-                boxShadow: defaultShadow,
+                child: CircleAvatar(
+                  minRadius: 20,
+                  backgroundImage: AssetImage(logo),
+                ),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircleAvatar(
-                    minRadius: 35,
-                    backgroundImage: AssetImage(logo),
+            if (activeIndex != 1)
+              Container(
+                margin: EdgeInsets.symmetric(
+                  vertical: kSizeM,
+                  horizontal: kSizeM,
+                ),
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(
+                  horizontal: kSizeS,
+                  vertical: kSizeS,
+                ).copyWith(top: 0),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [whiteColor, darkLightColor],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
                   ),
-                  SizedBox(height: kSizeM),
-                  Text(
-                    "RM Barokah Catering",
-                    textAlign: TextAlign.center,
-                    style: context.textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
+                  borderRadius: BorderRadius.circular(kSizeM),
+                  boxShadow: defaultShadow,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircleAvatar(
+                      minRadius: 35,
+                      backgroundImage: AssetImage(logo),
                     ),
-                  ),
-                  SizedBox(height: kSizeMS),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Fahmi dwi",
-                        textAlign: TextAlign.center,
-                        style: context.textTheme.bodyLarge?.copyWith(
-                          color: greyColor,
-                        ),
+                    SizedBox(height: kSizeM),
+                    Text(
+                      "RM Barokah Catering",
+                      textAlign: TextAlign.center,
+                      style: context.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
                       ),
-                      SizedBox(width: kSizeMS),
-                      CircleAvatar(backgroundColor: greenColor, minRadius: 5),
-                    ],
-                  ),
-                  SizedBox(height: kSizeMS),
-                  ElevatedButton(onPressed: () {}, child: Text("Open Profile")),
-                ],
+                    ),
+                    SizedBox(height: kSizeMS),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Fahmi dwi",
+                          textAlign: TextAlign.center,
+                          style: context.textTheme.bodyLarge?.copyWith(
+                            color: greyColor,
+                          ),
+                        ),
+                        SizedBox(width: kSizeMS),
+                        CircleAvatar(backgroundColor: greenColor, minRadius: 5),
+                      ],
+                    ),
+                    SizedBox(height: kSizeMS),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Text("Open Profile"),
+                    ),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),

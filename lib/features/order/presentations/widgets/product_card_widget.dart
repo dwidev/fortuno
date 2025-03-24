@@ -32,101 +32,95 @@ class ProductCardWidget extends StatelessWidget {
                   "Silahkan kembali kemenu Rincian pesanan",
                 );
               },
-      child: Card(
-        color: darkLightColor,
-        child: LayoutBuilder(
-          builder: (context, ct) {
-            return Stack(
+      child: Container(
+        constraints: BoxConstraints(minHeight: 100),
+        decoration: BoxDecoration(
+          color: whiteColor,
+          borderRadius: BorderRadius.circular(kDefaultRadius),
+          boxShadow: defaultShadow,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Stack(
               children: [
-                Stack(
-                  children: [
-                    AnimatedContainer(
-                      duration: 1.seconds,
-                      width: ct.maxWidth,
-                      height: ct.maxHeight,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(kDefaultRadius - 2),
+                Container(
+                  padding: EdgeInsets.all(kSizeS),
+                  width: double.infinity,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(kSizeMS),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(kSizeMS),
+                    child: ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                        isFinish ? Colors.grey : Colors.transparent,
+                        isFinish
+                            ? BlendMode.saturation
+                            : BlendMode.dst, // Menurunkan saturasi warna
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(kDefaultRadius - 2),
-                        child: ColorFiltered(
-                          colorFilter: ColorFilter.mode(
-                            isFinish ? Colors.grey : Colors.transparent,
-                            isFinish
-                                ? BlendMode.saturation
-                                : BlendMode.dst, // Menurunkan saturasi warna
-                          ),
-                          child: Image.network(
-                            "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
-                            fit: BoxFit.cover,
-                          ),
+                      child: Image.network(
+                        "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                if (((product is CategoryProduct) &&
+                        !(product as CategoryProduct).haveProduct) ||
+                    product.price > 0 ||
+                    quantity != 0)
+                  Positioned(
+                    top: kSizeS * 0.5,
+                    right: kSizeS * 0.5,
+                    child: Container(
+                      padding: EdgeInsets.all(kSizeS * 0.5),
+                      decoration: BoxDecoration(
+                        color: quantity != 0 ? darkOliveGreen : whiteColor,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Text(
+                        quantity != 0 ? "x$quantity" : product.displayPrice,
+                        style: context.textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: quantity != 0 ? whiteColor : darkOliveGreen,
                         ),
                       ),
                     ),
-                    if (((product is CategoryProduct) &&
-                            !(product as CategoryProduct).haveProduct) ||
-                        product.price > 0 ||
-                        quantity != 0)
-                      Positioned(
-                        top: kSizeS * 0.5,
-                        right: kSizeS * 0.5,
-                        child: Container(
-                          padding: EdgeInsets.all(kSizeS * 0.5),
-                          decoration: BoxDecoration(
-                            color: quantity != 0 ? darkOliveGreen : whiteColor,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Text(
-                            quantity != 0 ? "x$quantity" : product.displayPrice,
-                            style: context.textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color:
-                                  quantity != 0 ? whiteColor : darkOliveGreen,
-                            ),
-                          ),
-                        ),
+                  ),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Container(
+                padding: EdgeInsets.all(kSizeS * 0.3),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      product.name,
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        color: darkOliveGreen,
                       ),
+                    ),
                   ],
                 ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      return Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Container(
-                          padding: EdgeInsets.all(kSizeS * 0.3),
-                          width: constraints.maxWidth / 1.2,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                product.name,
-                                style: context.textTheme.bodyMedium?.copyWith(
-                                  color: darkOliveGreen,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                // Container(
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(kDefaultRadius - 2),
-                //     color: darkColor.withAlpha(150),
-                //   ),
-                // ),
-              ],
-            );
-          },
+              ),
+            ),
+            // Container(
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(kDefaultRadius - 2),
+            //     color: darkColor.withAlpha(150),
+            //   ),
+            // ),
+          ],
         ),
       ),
     );
