@@ -14,8 +14,8 @@ import 'package:fortuno/core/depedency_injection/register_module.dart' as _i852;
 import 'package:fortuno/core/firebase/auth_service.dart' as _i592;
 import 'package:fortuno/core/firebase/firebase.dart' as _i512;
 import 'package:fortuno/core/local_storage/local_storage.dart' as _i968;
-import 'package:fortuno/core/local_storage/local_storage.dart';
 import 'package:fortuno/core/local_storage/secure_storage.dart' as _i121;
+import 'package:fortuno/core/local_storage/shared_pref_storage.dart';
 import 'package:fortuno/features/auth/data/datasource/auth_nosql_datasource.dart'
     as _i787;
 import 'package:fortuno/features/auth/data/datasource/auth_remote_datasource.dart'
@@ -96,8 +96,6 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
-import '../local_storage/shared_pref_storage.dart';
-
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
   Future<_i174.GetIt> init({
@@ -164,7 +162,7 @@ extension GetItInjectableX on _i174.GetIt {
         preference: gh<_i968.ILocalStorage>(instanceName: 'shared-pref'),
       ),
     );
-    gh.lazySingleton<ILocalStorage>(
+    gh.lazySingleton<_i968.ILocalStorage>(
       () => SharedPrefStorage(preferences: gh<_i460.SharedPreferences>()),
       instanceName: 'shared-pref',
     );

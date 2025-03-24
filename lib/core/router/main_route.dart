@@ -1,6 +1,9 @@
-import '../../features/dashboard/presentation/page/dashboard_page.dart';
+import '../../features/auth/presentations/bloc/auth_bloc.dart';
+import '../../features/auth/presentations/pages/splash_page.dart';
+import '../../features/auth/presentations/widgets/auth_listener_widget.dart';
 import '../../features/main_page.dart';
 import '../core.dart';
+import '../depedency_injection/injection.dart';
 import 'auth_route.dart';
 import 'create_order_route.dart';
 import 'dashboard_route.dart';
@@ -25,13 +28,21 @@ final profilRouteKey = GlobalKey<NavigatorState>(debugLabel: "profile-route");
 
 final router = GoRouter(
   navigatorKey: rootNavigatorKey,
-  initialLocation: DashboardPage.path,
+  initialLocation: SplashPage.path,
   routes: [
     // auth route
     ...authRoute,
+
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
-        return MainPage(navigationShell: navigationShell);
+        return MultiBlocProvider(
+          providers: [BlocProvider(create: (context) => getIt<AuthBloc>())],
+          child: AuthListener(
+            builder: (context, bloc, state) {
+              return MainPage(navigationShell: navigationShell);
+            },
+          ),
+        );
       },
       branches: [
         // dashboard

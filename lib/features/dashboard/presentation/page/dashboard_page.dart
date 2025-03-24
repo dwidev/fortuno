@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:fortuno/core/core.dart';
+import 'package:fortuno/features/auth/presentations/bloc/auth_bloc.dart';
 
 class DashboardPage extends StatelessWidget {
   static const path = '/dashboard-page';
@@ -488,7 +489,9 @@ class DashboardAppBar extends StatelessWidget {
               Text(formatDate(DateTime.now())),
               SizedBox(width: kSizeMS),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.read<AuthBloc>().add(OnSignOutEvent());
+                },
                 child: Row(
                   children: [
                     Icon(CupertinoIcons.square_arrow_right, color: darkColor),

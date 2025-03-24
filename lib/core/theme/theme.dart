@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:fortuno/core/core.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'colors.dart';
+import '../core.dart';
 
 export 'colors.dart';
 export 'default_size.dart';

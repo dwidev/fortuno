@@ -1,8 +1,9 @@
+import 'dart:developer';
+
 import 'package:either_dart/either.dart';
-import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../failures/failure.dart';
+import '../core.dart';
 
 part 'base_type.dart';
 
@@ -26,4 +27,9 @@ abstract class BaseUsecase<ReturnType, ParamsType> {
   }
 
   FutureReturn<ReturnType> calling(ParamsType params);
+
+  @disposeMethod
+  void dispose() {
+    log("DISPOSING $runtimeType");
+  }
 }
