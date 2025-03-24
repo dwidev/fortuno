@@ -302,13 +302,17 @@ class DashboardPage extends StatelessWidget {
                                                           ),
                                                     ),
                                                     SizedBox(
-                                                      width: 100,
+                                                      width: context.width / 8,
                                                       child: Text(
                                                         "Nasi, Ayam bakar, Tahu Tempe, Cah kangkung, Buah jeruk, Sambal Lalap",
                                                         style:
                                                             context
                                                                 .textTheme
                                                                 .bodySmall,
+                                                        maxLines: 3,
+                                                        overflow:
+                                                            TextOverflow
+                                                                .ellipsis,
                                                       ),
                                                     ),
                                                   ],

@@ -85,5 +85,9 @@ const defaultGradient = LinearGradient(
 );
 
 final defaultShadow = [
-  BoxShadow(color: lightGrey5, blurRadius: 20, offset: Offset(0, 25)),
+  BoxShadow(
+    color: shadowColor.withAlpha((225 * 0.5).toInt()),
+    blurRadius: 20,
+    offset: Offset(0, 25),
+  ),
 ];

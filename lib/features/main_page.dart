@@ -213,9 +213,10 @@ class _SideMenuState extends State<SideMenu> {
               ),
             ),
             Container(
-              margin: EdgeInsets.all(
-                10,
-              ), // Beri jarak luar agar shadow terlihat
+              margin: EdgeInsets.symmetric(
+                vertical: kSizeM,
+                horizontal: kSizeM,
+              ),
               width: double.infinity,
               padding: EdgeInsets.symmetric(
                 horizontal: kSizeS,
