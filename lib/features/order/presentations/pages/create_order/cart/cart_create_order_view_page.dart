@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:fortuno/core/widgets/form/currency_form_field_widget.dart';
 import 'package:fortuno/features/order/presentations/pages/process_order/process_order_page.dart';
 import 'package:fortuno/features/order/presentations/widgets/order_summary_widget.dart';
 
@@ -93,13 +94,12 @@ class CartCreateOrderViewPage extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                             horizontal: kSizeMS,
                           ).copyWith(right: 0),
-                          child: TextFormFieldWidget(
+                          child: CurrencyFormFieldWidget(
                             title: "",
                             controller: cartProcess.shippingCostController,
-                            keyboardType: TextInputType.number,
                             hintText: "Ongkir: Rp.xxxxx",
                             onEditingComplete: (value) {
-                              bloc.add(OnChangeShippingConstEvent(cost: value));
+                              bloc.add(OnChangeShippingConstEvent());
                             },
                           ),
                         ),

@@ -5,6 +5,7 @@ export 'package:go_router/go_router.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:injectable/injectable.dart' hide Order;
 export 'package:intl/intl.dart' hide TextDirection;
+export 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 
 export 'extensions/extensions.dart';
 export 'theme/theme.dart';

@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import '../../core.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
@@ -14,6 +16,7 @@ class TextFormFieldWidget extends StatelessWidget {
     this.keyboardType,
     this.onChanged,
     this.onEditingComplete,
+    this.inputFormatters,
   });
 
   final TextEditingController? controller;
@@ -27,6 +30,7 @@ class TextFormFieldWidget extends StatelessWidget {
   final TextInputType? keyboardType;
   final Function(String value)? onChanged;
   final Function(String value)? onEditingComplete;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +50,7 @@ class TextFormFieldWidget extends StatelessWidget {
           controller: controller,
           initialValue: initialValue,
           maxLines: maxLines,
+          inputFormatters: inputFormatters,
           decoration: InputDecoration(
             enabled: enable,
             filled: true,

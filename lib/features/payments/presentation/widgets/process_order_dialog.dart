@@ -3,7 +3,7 @@ import 'package:flutter_swipe_button/flutter_swipe_button.dart';
 import 'package:fortuno/features/order/domain/enums/order_status.dart';
 
 import '../../../../core/core.dart';
-import '../../../../core/widgets/form/text_form_field_widget.dart';
+import '../../../../core/widgets/form/currency_form_field_widget.dart';
 import '../../../order/domain/entities/order.dart';
 import '../../../order/domain/enums/payment_option.dart';
 
@@ -49,7 +49,7 @@ class ProcessOrderViewPage extends StatefulWidget {
 }
 
 class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
-  late TextEditingController controller;
+  late TextEditingIDRController controller;
   final formKey = GlobalKey<FormState>();
   bool paylatter = false;
 
@@ -61,7 +61,7 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
 
   @override
   void initState() {
-    controller = TextEditingController(text: widget.order.pay.toString());
+    controller = TextEditingIDRController(initialValue: widget.order.pay);
     super.initState();
   }
 
@@ -72,11 +72,11 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
 
     context.pop(); // pop this dialog
 
-    final amount = double.tryParse(controller.text) ?? 0;
+    final amount = controller.getDoubleValue();
     final result = ProcessOrderDialogResult(
       option: value,
       paylatter: paylatter,
-      amount: !paylatter ? amount : 0.0,
+      amount: paylatter == false ? amount : 0.0,
     );
 
     widget.onSwipe(result);
@@ -142,16 +142,12 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: TextFormFieldWidget(
+                        child: CurrencyFormFieldWidget(
                           controller: controller,
                           title: "",
                           hintText: "Masukan Nomial bayar",
                           validator: (value) {
-                            if (value.isEmpty) {
-                              return "Masukan nilai bayar";
-                            }
-
-                            final data = double.tryParse(value) ?? 0;
+                            final data = value;
 
                             if (widget.order.orderStatus.iswaiting) {
                               if (data < widget.order.pay) {

@@ -14,12 +14,10 @@ class OnAddOrderItemsEvent extends CartProcessingEvent {
 }
 
 class OnChangeShippingConstEvent extends CartProcessingEvent {
-  final String cost;
-
-  const OnChangeShippingConstEvent({required this.cost});
+  const OnChangeShippingConstEvent();
 
   @override
-  List<Object?> get props => [cost];
+  List<Object?> get props => [];
 }
 
 class OnCreateOrder extends CartProcessingEvent {
