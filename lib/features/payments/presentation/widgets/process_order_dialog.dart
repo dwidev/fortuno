@@ -76,8 +76,9 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
     final result = ProcessOrderDialogResult(
       option: value,
       paylatter: paylatter,
-      amount: amount,
+      amount: !paylatter ? amount : 0.0,
     );
+
     widget.onSwipe(result);
   }
 
@@ -151,8 +152,21 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
                             }
 
                             final data = double.tryParse(value) ?? 0;
-                            if (data < widget.order.pay) {
-                              return "Kurang dari nilai DP 30%";
+
+                            if (widget.order.orderStatus.iswaiting) {
+                              if (data < widget.order.pay) {
+                                return "Kurang dari nilai DP 30% (${moneyFormatter(widget.order.pay)})";
+                              }
+                            }
+
+                            if (widget.order.orderStatus.isprocess) {
+                              if (data < widget.order.remainingPayment) {
+                                return "Kurang dari sisa pembayaran ${moneyFormatter(widget.order.remainingPayment)}";
+                              }
+                            }
+
+                            if (data > widget.order.totalPrice) {
+                              return "Tidak boleh melebihi total bayar ${moneyFormatter(widget.order.totalPrice)}";
                             }
 
                             return null;
@@ -214,18 +228,17 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
                 ),
           ),
           SizedBox(height: kSizeM),
-          Padding(
-            padding: EdgeInsets.only(left: 10),
-            child: Text(
-              (isPaylatter && value.isCash)
-                  ? "Bayar nanti setelah pesanan diproses"
-                  : "Minimal down payment adalah 10%",
-              style: context.textTheme.bodySmall?.copyWith(
-                fontStyle: FontStyle.italic,
-                color: bronzeYellow,
+          if (widget.order.orderStatus.iswaiting)
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                "Minimal down payment adalah 30%",
+                style: context.textTheme.bodySmall?.copyWith(
+                  fontStyle: FontStyle.italic,
+                  color: bronzeYellow,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

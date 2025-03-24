@@ -4,6 +4,11 @@ enum OrderStatus {
   done,
   cancel;
 
+  bool get iswaiting => this == OrderStatus.waiting;
+  bool get isprocess => this == OrderStatus.process;
+  bool get isdone => this == OrderStatus.done;
+  bool get iscancel => this == OrderStatus.cancel;
+
   String tabValue(String count) {
     switch (this) {
       case OrderStatus.waiting:
