@@ -32,7 +32,7 @@ class _DateFormPickerWidgetState extends State<DateFormPickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () async {
         final date = await showDatePicker(
           context: context,

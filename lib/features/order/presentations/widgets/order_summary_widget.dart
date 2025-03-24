@@ -1,3 +1,5 @@
+import 'package:dotted_line/dotted_line.dart';
+
 import '../../../../core/core.dart';
 import '../../domain/entities/client_order.dart';
 import '../../domain/entities/order.dart';
@@ -25,13 +27,13 @@ class OrderSummaryWidget extends StatelessWidget {
         SizedBox(height: kSizeS),
         Text(
           "Rincian pesanan",
-          style: context.textTheme.bodyMedium?.copyWith(
+          style: context.textTheme.bodySmall?.copyWith(
             fontWeight: FontWeight.bold,
-            color: mustardYellow,
           ),
         ),
 
         ListView.builder(
+          padding: EdgeInsets.zero,
           shrinkWrap: true,
           itemCount: items.length,
           physics: NeverScrollableScrollPhysics(),
@@ -49,16 +51,18 @@ class OrderSummaryWidget extends StatelessWidget {
                       children: [
                         Text(
                           item.title,
-                          style: context.textTheme.bodyMedium?.copyWith(
+                          style: context.textTheme.bodySmall?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: darkOliveGreen,
                           ),
                         ),
                         SizedBox(
                           width: 300,
                           child: Text(
                             item.contents,
-                            style: context.textTheme.bodySmall,
+                            style: context.textTheme.labelSmall?.copyWith(
+                              color: greyColor,
+                              fontSize: 9,
+                            ),
                           ),
                         ),
                       ],
@@ -76,7 +80,7 @@ class OrderSummaryWidget extends StatelessWidget {
                       ),
                       Text(
                         item.totalPriceString,
-                        style: context.textTheme.bodyLarge?.copyWith(
+                        style: context.textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -88,32 +92,60 @@ class OrderSummaryWidget extends StatelessWidget {
           },
         ),
         SizedBox(height: kSizeSS),
+        additionalPriceWidget != null ? additionalPriceWidget! : Offstage(),
+        SizedBox(height: kSizeM),
+        DottedLine(dashColor: lightGrey4),
+        SizedBox(height: kSizeM),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Total",
-              style: context.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              "Sub Total",
+              style: context.textTheme.bodySmall?.copyWith(color: lightGrey1),
             ),
             Text(
               items.totalPriceString,
-              style: context.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: context.textTheme.bodySmall?.copyWith(color: lightGrey1),
             ),
           ],
         ),
-        SizedBox(height: kSizeM),
-        additionalPriceWidget != null ? additionalPriceWidget! : Offstage(),
+        SizedBox(height: kSizeS),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Ongkir",
+              style: context.textTheme.bodySmall?.copyWith(color: lightGrey1),
+            ),
+            Text(
+              moneyFormatter(order.shippingCost),
+              style: context.textTheme.bodySmall?.copyWith(color: lightGrey1),
+            ),
+          ],
+        ),
+        SizedBox(height: kSizeS),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Discount",
+              style: context.textTheme.bodySmall?.copyWith(color: lightGrey1),
+            ),
+            Text(
+              moneyFormatter(order.discount),
+              style: context.textTheme.bodySmall?.copyWith(color: lightGrey1),
+            ),
+          ],
+        ),
         SizedBox(height: kSizeL),
+        DottedLine(dashColor: lightGrey4),
+        SizedBox(height: kSizeS),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               "Total Bayar",
-              style: context.textTheme.titleMedium?.copyWith(
+              style: context.textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -121,7 +153,7 @@ class OrderSummaryWidget extends StatelessWidget {
                   order.totalPriceString,
                   style: context.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: darkOliveGreen,
+                    color: darkColor,
                   ),
                 )
                 .animate(onPlay: (c) => c.repeat())
@@ -132,62 +164,80 @@ class OrderSummaryWidget extends StatelessWidget {
                 ),
           ],
         ),
-        SizedBox(height: kDefaultPadding),
-        Divider(),
         SizedBox(height: kSizeS),
+        DottedLine(dashColor: lightGrey4),
+        SizedBox(height: kSizeML),
         Text(
           "Data Pemesan",
-          style: context.textTheme.bodyMedium?.copyWith(
+          style: context.textTheme.bodySmall?.copyWith(
             fontWeight: FontWeight.bold,
-            color: mustardYellow,
           ),
         ),
         SizedBox(height: kDefaultPadding),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Column(
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Nama : ",
-                  style: context.textTheme.bodyMedium?.copyWith(
+                  style: context.textTheme.bodySmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: kDefaultPadding),
-                Text(
-                  "Tanggal & jam kirim : ",
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: kDefaultPadding),
-                Text(
-                  "Alamat kirim : ",
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                Spacer(flex: 1),
+                Expanded(
+                  child: Text(
+                    client.name,
+                    textAlign: TextAlign.right,
+                    style: context.textTheme.bodySmall,
                   ),
                 ),
               ],
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+            SizedBox(height: kDefaultPadding),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(client.name, style: context.textTheme.bodyMedium),
-                SizedBox(height: kDefaultPadding),
                 Text(
-                  client.sendDateDisplay,
-                  style: context.textTheme.bodyMedium,
+                  "Tanggal & jam kirim : ",
+                  style: context.textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                SizedBox(height: kDefaultPadding),
-                SizedBox(
-                  width: 200,
+                Spacer(flex: 1),
+                Expanded(
                   child: Text(
-                    client.addressDisplay,
+                    client.sendDateDisplay,
                     textAlign: TextAlign.right,
-                    style: context.textTheme.bodyMedium,
+                    style: context.textTheme.bodySmall,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: kDefaultPadding),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Alamat kirim : ",
+                  style: context.textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Spacer(flex: 1),
+                Expanded(
+                  child: SizedBox(
+                    width: 200,
+                    child: Text(
+                      client.addressDisplay,
+                      textAlign: TextAlign.right,
+                      style: context.textTheme.bodySmall,
+                    ),
                   ),
                 ),
               ],

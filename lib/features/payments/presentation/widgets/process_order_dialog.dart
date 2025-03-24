@@ -205,7 +205,7 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
             alignment: Alignment.center,
             child: SwipeButton.expand(
                   onSwipe: onSwipe,
-                  activeThumbColor: softLimeColor,
+                  activeThumbColor: primaryColor,
                   activeTrackColor: darkLightColor,
                   borderRadius: BorderRadius.circular(kDefaultRadius),
                   thumb: Icon(Icons.double_arrow_rounded),
@@ -231,7 +231,7 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
                 "Minimal down payment adalah 30%",
                 style: context.textTheme.bodySmall?.copyWith(
                   fontStyle: FontStyle.italic,
-                  color: bronzeYellow,
+                  color: warningButtonColor,
                 ),
               ),
             ),

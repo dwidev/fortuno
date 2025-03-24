@@ -33,31 +33,35 @@ class CartOrderItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: kSizeS),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         item.title,
-                        style: context.textTheme.bodyMedium?.copyWith(
+                        style: context.textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: darkOliveGreen,
                         ),
                       ),
-                      SizedBox(
-                        width: 200,
-                        child: Text(
-                          item.contents,
-                          style: context.textTheme.bodySmall,
+                      if (item.contents.isNotEmpty)
+                        SizedBox(
+                          width: 200,
+                          child: Text(
+                            item.contents,
+                            style: context.textTheme.labelSmall?.copyWith(
+                              color: greyColor,
+                              fontSize: 9,
+                            ),
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
               ],
             ),
           ),
+          SizedBox(width: kSizeS),
           IncrementCartWidget(item: item),
         ],
       ),
@@ -75,8 +79,11 @@ class IncrementCartWidget extends StatelessWidget {
     final bloc = context.read<CartBloc>();
     return Row(
       children: [
-        ButtonCircleWidget.gradient(
+        ButtonCircleWidget(
+          backgroundColor: lightGrey5,
+          noShadow: true,
           icon: Icons.remove,
+          iconColor: darkColor,
           onPressed: () {
             final q = item.quantity - 1;
             if (q == 0) {
@@ -120,6 +127,7 @@ class IncrementCartWidget extends StatelessWidget {
           child: Column(
             children: [
               Container(
+                constraints: BoxConstraints(minWidth: 25),
                 padding: EdgeInsets.symmetric(horizontal: 3, vertical: 2),
                 decoration: BoxDecoration(
                   border: Border.all(

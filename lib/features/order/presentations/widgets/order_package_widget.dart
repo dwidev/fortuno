@@ -13,7 +13,7 @@ class OrderPackageWidget extends StatelessWidget {
         width: context.width / 4,
         padding: EdgeInsets.symmetric(vertical: kSizeS, horizontal: kSizeS),
         decoration: BoxDecoration(
-          color: lemonChiffonColor,
+          color: primaryColor,
           borderRadius: BorderRadius.circular(5),
         ),
         child: Column(

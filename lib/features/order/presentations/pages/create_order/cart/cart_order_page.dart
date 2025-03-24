@@ -113,56 +113,37 @@ class _CartOrderPageState extends State<CartOrderPage>
         }
       },
       builder: (context, bloc, state) {
-        return Container(
+        return SizedBox(
           height: double.infinity,
-          color: Colors.white,
           child: Stack(
             children: [
               TabBarView(
                 controller: tabController,
                 physics: NeverScrollableScrollPhysics(),
                 children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: kDefaultPadding * 2,
-                      horizontal: kDefaultPadding,
-                    ),
-                    child: CartDetailsViewPage(),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: kDefaultPadding * 2,
-                      horizontal: kDefaultPadding,
-                    ),
-                    child: CartCreateOrderViewPage(onBack: onBack),
-                  ),
+                  CartDetailsViewPage(),
+                  CartCreateOrderViewPage(onBack: onBack),
                 ],
               ),
               if (!context.isKeyboardOpen)
                 Positioned(
-                  bottom: 0,
-                  right: 0,
+                  bottom: kSizeM,
+                  right: kSizeM,
                   left: 0,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: kSizeML,
-                      horizontal: kSizeML,
-                    ),
-                    child: GradientButton(
-                      onPressed: onTapOder,
-                      height: kSizeXXL,
-                      child: AnimatedSwitcher(
-                        duration: Duration(milliseconds: 500),
-                        switchInCurve: Curves.easeIn,
-                        switchOutCurve: Curves.easeOut,
-                        child: Text(
-                          tabController.index == 0
-                              ? "Proses Order"
-                              : "Buat Order",
-                          style: context.textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: darkColor,
-                          ),
+                  child: GradientButton(
+                    onPressed: onTapOder,
+                    height: kSizeXXL,
+                    child: AnimatedSwitcher(
+                      duration: Duration(milliseconds: 500),
+                      switchInCurve: Curves.easeIn,
+                      switchOutCurve: Curves.easeOut,
+                      child: Text(
+                        tabController.index == 0
+                            ? "Proses Order"
+                            : "Buat Order",
+                        style: context.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: darkColor,
                         ),
                       ),
                     ),

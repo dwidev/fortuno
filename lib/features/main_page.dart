@@ -83,17 +83,11 @@ class _SideMenuState extends State<SideMenu> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: lightGrey6,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Icon(
-                          CupertinoIcons.bag,
-                          size: kSizeM,
-                          color: secondaryColor,
-                        ),
+                      ButtonCircleWidget(
+                        icon: CupertinoIcons.bag,
+                        iconColor: secondaryColor,
+                        backgroundColor: lightGrey6,
+                        onPressed: () {},
                       ),
                       if (activeIndex != 1) ...[
                         SizedBox(width: kSizeS),
@@ -136,10 +130,12 @@ class _SideMenuState extends State<SideMenu> {
                         ),
                         // width: double.infinity,
                         decoration: BoxDecoration(
-                          color:
-                              index == activeIndex
-                                  ? primaryColor
-                                  : Colors.transparent,
+                          // color:
+                          //     index == activeIndex
+                          //         ? primaryColor
+                          //         : Colors.transparent,
+                          gradient:
+                              index == activeIndex ? defaultGradient : null,
                           borderRadius: BorderRadius.circular(
                             activeIndex == 1
                                 ? kDefaultRadius * 0.3

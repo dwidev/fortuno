@@ -33,82 +33,83 @@ class CartCreateOrderViewPage extends StatelessWidget {
         }
       },
       builder: (context, bloc, state) {
-        return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  ButtonCircleWidget.gradient(
-                    icon: CupertinoIcons.back,
-                    buttonSize: kSizeXL,
-                    onPressed: onBack,
-                    iconColor: darkColor,
-                  ),
-                  SizedBox(width: kSizeM),
-                  Text(
-                    "Rincian Pembayaran",
-                    style: context.textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: mustardYellow,
+        return Container(
+          padding: EdgeInsets.only(right: kSizeM, top: kSizeM + context.padTop),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    ButtonCircleWidget.gradient(
+                      icon: CupertinoIcons.back,
+                      buttonSize: kSizeXL,
+                      onPressed: onBack,
+                      iconColor: darkColor,
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: kSizeS),
-              Divider(),
-              BlocBuilder<CartBloc, CartState>(
-                builder: (context, state) {
-                  return OrderSummaryWidget(
-                    order: cartProcess.state.order,
-                    items: state.items,
-                    client: bloc.client,
-                    additionalPriceWidget: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Ongkir",
-                              style: context.textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 200,
-                              child: Text(
-                                "*Cek aplikasi grab/gojek lalu input manual nilai ongkir",
+                    SizedBox(width: kSizeM),
+                    Text(
+                      "Rincian Pembayaran",
+                      style: context.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: kSizeS),
+                BlocBuilder<CartBloc, CartState>(
+                  builder: (context, state) {
+                    return OrderSummaryWidget(
+                      order: cartProcess.state.order,
+                      items: state.items,
+                      client: bloc.client,
+                      additionalPriceWidget: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Ongkir",
                                 style: context.textTheme.bodySmall?.copyWith(
-                                  color: Colors.redAccent,
-                                  fontSize: 10,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          width: context.width * 0.1,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: kSizeMS,
-                          ).copyWith(right: 0),
-                          child: CurrencyFormFieldWidget(
-                            title: "",
-                            controller: cartProcess.shippingCostController,
-                            hintText: "Ongkir: Rp.xxxxx",
-                            onChanged: (value) {
-                              bloc.add(OnChangeShippingConstEvent());
-                            },
+                              SizedBox(
+                                width: 200,
+                                child: Text(
+                                  "*Cek aplikasi grab/gojek lalu input manual nilai ongkir",
+                                  style: context.textTheme.bodySmall?.copyWith(
+                                    color: Colors.redAccent,
+                                    fontSize: 10,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-              if (!context.isKeyboardOpen) SizedBox(height: kSizeXXL * 2),
-            ],
+                          Container(
+                            width: context.width * 0.1,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: kSizeMS,
+                            ).copyWith(right: 0),
+                            child: CurrencyFormFieldWidget(
+                              title: "",
+                              controller: cartProcess.shippingCostController,
+                              hintText: "Ongkir: Rp.xxxxx",
+                              onChanged: (value) {
+                                bloc.add(OnChangeShippingConstEvent());
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                if (!context.isKeyboardOpen) SizedBox(height: kSizeXXL * 2),
+              ],
+            ),
           ),
         );
       },

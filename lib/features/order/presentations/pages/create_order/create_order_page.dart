@@ -158,6 +158,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                 ],
               ),
             ),
+            SizedBox(width: kSizeL),
             Expanded(child: CartOrderPage.init()),
           ],
         );

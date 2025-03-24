@@ -71,16 +71,14 @@ ThemeData get lightTheme {
         elevation: 0,
         foregroundColor: darkColor,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(kDefaultRadius),
+          borderRadius: BorderRadius.circular(kDefaultRadius * 0.5),
         ),
       ),
     ),
   );
 }
 
-const defaultGradient = LinearGradient(
-  colors: [mutedLemonColor, sageGreenColor],
-);
+const defaultGradient = LinearGradient(colors: [primaryColor, secondaryColor]);
 
 final defaultShadow = [
   BoxShadow(

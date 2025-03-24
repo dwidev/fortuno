@@ -50,7 +50,7 @@ class _WelcomePageState extends State<WelcomePage>
     return Container(
       decoration: BoxDecoration(
         gradient: RadialGradient(
-          colors: [lemonChiffonColor, darkMossGreen],
+          colors: [primaryColor, secondaryColor],
           radius: 0.9,
         ),
       ),

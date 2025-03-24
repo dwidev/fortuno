@@ -21,6 +21,7 @@ class GradientButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final radius = BorderRadius.circular(kDefaultRadius * 0.5);
 
     return AnimatedContainer(
       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -29,7 +30,7 @@ class GradientButton extends StatelessWidget {
       width: width ?? size.width / 1.3,
       height: height ?? 48,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: radius,
         boxShadow:
             !noShadow
                 ? const [
@@ -41,8 +42,7 @@ class GradientButton extends StatelessWidget {
                 ]
                 : null,
         gradient:
-            gradient ??
-            LinearGradient(colors: [mutedLemonColor, sageGreenColor]),
+            gradient ?? LinearGradient(colors: [primaryColor, secondaryColor]),
       ),
       child: ElevatedButton(
         onPressed: onPressed,
@@ -50,9 +50,7 @@ class GradientButton extends StatelessWidget {
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: radius),
         ),
         child: child,
       ),

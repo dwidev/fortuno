@@ -40,7 +40,7 @@ class TextFormFieldWidget extends StatelessWidget {
         if (title.isNotEmpty)
           Text(
             title,
-            style: context.textTheme.bodyMedium?.copyWith(
+            style: context.textTheme.bodySmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -54,19 +54,19 @@ class TextFormFieldWidget extends StatelessWidget {
           decoration: InputDecoration(
             enabled: enable,
             filled: true,
-            fillColor: darkLightColor,
+            fillColor: lightGrey7,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(kSizeMS),
               borderSide: BorderSide.none,
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: lemonChiffonColor),
+              borderRadius: BorderRadius.circular(kDefaultRadius),
+              borderSide: BorderSide(color: primaryColor),
             ),
             hintText: hintText.isEmpty ? "Masukan $title" : hintText,
-            hintStyle: TextStyle(color: darkColor.withAlpha(100)),
+            hintStyle: context.textTheme.bodySmall?.copyWith(color: lightGrey2),
           ),
-          style: TextStyle(color: darkColor),
+          style: context.textTheme.bodySmall,
           validator: (value) {
             if (optional) return null;
 
