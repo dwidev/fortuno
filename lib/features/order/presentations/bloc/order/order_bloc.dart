@@ -85,11 +85,26 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
     );
 
     resCat.fold((err) => failure ??= err, (data) {
-      newState = newState.copyWith(products: data);
+      newState = newState.copyWith(
+        products: [...data, ...data, ...data, ...data],
+      );
     });
 
     resPac.fold((err) => failure ??= err, (data) {
-      newState = newState.copyWith(packages: data);
+      newState = newState.copyWith(
+        packages: [
+          ...data,
+          ...data,
+          ...data,
+          ...data,
+          ...data,
+          ...data,
+          ...data,
+          ...data,
+          ...data,
+          ...data,
+        ],
+      );
     });
 
     if (failure != null) {

@@ -658,9 +658,7 @@ class MostProductWidget extends StatelessWidget {
               itemCount: data.length,
               itemBuilder: (context, index) {
                 return InkWell(
-                  onTap: () {
-                    print("asdas");
-                  },
+                  onTap: () {},
                   child: Container(
                     margin: EdgeInsets.only(top: kSizeS),
                     padding: EdgeInsets.all(kSizeS),

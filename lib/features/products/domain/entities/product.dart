@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
+import 'package:fortuno/core/utils/formatter.dart';
 
 class Product extends Equatable {
   final String id;
@@ -8,7 +9,8 @@ class Product extends Equatable {
   final double price;
   final String createAt;
 
-  String get displayPrice => "${(price / 1000).toStringAsFixed(0)}K";
+  String get kDisplayPrice => "${(price / 1000).toStringAsFixed(0)}K";
+  String get priceFormated => moneyFormatter(price);
 
   const Product({
     required this.id,

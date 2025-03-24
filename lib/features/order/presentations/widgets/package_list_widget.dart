@@ -1,4 +1,5 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../bloc/order/order_bloc.dart';
 
 import '../../../../core/core.dart';
@@ -16,147 +17,130 @@ class PackageListWidget extends StatelessWidget {
         }
 
         final packages = state.packages;
+        return MasonryGridView.builder(
+          padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+          crossAxisSpacing: kSizeMS,
+          mainAxisSpacing: kSizeMS,
+          itemCount: packages.length,
+          gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+          ),
+          itemBuilder: (context, index) {
+            final package = packages[index];
+            final quantity = state.productCountCart[package.id] ?? 0;
 
-        return Container(
-          constraints: BoxConstraints(maxHeight: 200),
-          margin: EdgeInsets.symmetric(
-            horizontal: kDefaultPadding,
-          ).copyWith(top: kSizeM),
-          child: SingleChildScrollView(
-            child: Wrap(
-              spacing: 8.0,
-              runSpacing: 8.0,
-              children: List.generate(packages.length + 1, (index) {
-                if (index == 0) {
-                  return InkWell(
-                    borderRadius: BorderRadius.circular(kDefaultRadius),
-                    onTap: () {},
-                    child: Ink(
-                      padding: EdgeInsets.all(kDefaultPadding * 0.5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(kDefaultRadius),
-                        color: whiteColor,
-                      ),
-                      child: Column(
-                        children: [
-                          Icon(
-                            CupertinoIcons.add_circled,
-                            size: kSizeL,
-                            color: darkOliveGreen,
-                          ),
-                          SizedBox(height: kSizeS),
-                          Text(
-                            "Buat package",
-                            style: context.textTheme.bodyMedium?.copyWith(
-                              color: darkOliveGreen,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+            return GestureDetector(
+              onTap: () {
+                if (state.finishSelected) {
+                  EasyLoading.showToast(
+                    "Silahkan kembali kemenu Rincian pesanan",
                   );
+                  return;
                 }
 
-                final package = packages[index - 1];
-                final quantity = state.productCountCart[package.id] ?? 0;
-
-                return InkWell(
+                context.read<CartBloc>().add(
+                  AddProductToCartEvent(
+                    categoryProduct: state.categoryProduct,
+                    package: package,
+                    quantity: quantity + 1,
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.all(kDefaultPadding),
+                decoration: BoxDecoration(
+                  color: state.finishSelected ? darkLightColor : whiteColor,
                   borderRadius: BorderRadius.circular(kDefaultRadius),
-                  onTap: () {
-                    if (state.finishSelected) {
-                      EasyLoading.showToast(
-                        "Silahkan kembali kemenu Rincian pesanan",
-                      );
-                      return;
-                    }
-
-                    context.read<CartBloc>().add(
-                      AddProductToCartEvent(
-                        categoryProduct: state.categoryProduct,
-                        package: package,
-                        quantity: quantity + 1,
-                      ),
-                    );
-                  },
-                  child: Ink(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color:
-                          state.finishSelected
-                              ? darkLightColor
-                              : quantity != 0
-                              ? lemonChiffonColor
-                              : whiteColor,
-                      borderRadius: BorderRadius.circular(kDefaultRadius),
-                    ),
-                    child: Row(
+                  boxShadow: defaultShadow,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: darkLightColor,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: Image.network(
-                              "https://www.lalamove.com/hubfs/catering%20lunch%20box%20%284%29.jpg",
-                              fit: BoxFit.cover,
+                        Stack(
+                          children: [
+                            Container(
+                              width: 75,
+                              height: 75,
+                              decoration: BoxDecoration(
+                                color: darkLightColor,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image.network(
+                                  "https://www.lalamove.com/hubfs/catering%20lunch%20box%20%284%29.jpg",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            if (quantity != 0)
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: primaryColor,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Text(
+                                  "x$quantity",
+                                  style: context.textTheme.bodySmall?.copyWith(
+                                    color: whiteColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                        SizedBox(width: kSizeS),
+                        Expanded(
+                          child: Text(
+                            package.name,
+                            style: context.textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        SizedBox(width: kSizeS),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              constraints: BoxConstraints(maxWidth: 150),
-                              child: Text(
-                                package.name,
-                                style: context.textTheme.bodySmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: darkOliveGreen,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: kSizeS),
-                            Container(
-                              constraints: BoxConstraints(maxWidth: 130),
-                              child: Text(
-                                package.contents,
-                                style: context.textTheme.bodySmall?.copyWith(
-                                  color: darkColor,
-                                ),
-                              ),
-                            ),
-                          ],
+                      ],
+                    ),
+                    SizedBox(height: kSizeS),
+                    Text(
+                      package.contents,
+                      style: context.textTheme.labelSmall?.copyWith(
+                        color: greyColor,
+                      ),
+                    ),
+                    SizedBox(height: kSizeS),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          package.priceFormated,
+                          style: context.textTheme.bodySmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         if (quantity != 0)
                           Container(
-                            margin: EdgeInsets.only(left: kSizeS),
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(kSizeS),
                             decoration: BoxDecoration(
-                              color: darkOliveGreen,
-                              borderRadius: BorderRadius.circular(5),
+                              color: deleteButtonColor,
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Text(
-                              "x$quantity",
-                              style: context.textTheme.bodySmall?.copyWith(
-                                color: whiteColor,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            child: Icon(
+                              CupertinoIcons.delete,
+                              color: whiteColor,
                             ),
                           ),
                       ],
                     ),
-                  ),
-                );
-              }),
-            ),
-          ),
+                  ],
+                ),
+              ),
+            );
+          },
         );
       },
     );
