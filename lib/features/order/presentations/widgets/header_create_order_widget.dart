@@ -8,9 +8,7 @@ class HeaderCreateOrderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final orderBloc = context.read<OrderBloc>();
     return Container(
-      padding: EdgeInsets.all(
-        kDefaultPadding,
-      ).copyWith(top: kDefaultPadding * 3, bottom: 10),
+      margin: anchorCustomAppBar,
       child: BlocBuilder<OrderBloc, OrderState>(
         builder: (context, state) {
           if (state is AtProductPage) {
@@ -36,7 +34,7 @@ class HeaderCreateOrderWidget extends StatelessWidget {
           }
 
           return Text(
-            "RM Barokah Catering",
+            "RM Barokah Catering", // TODO: implement company data
             style: context.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),

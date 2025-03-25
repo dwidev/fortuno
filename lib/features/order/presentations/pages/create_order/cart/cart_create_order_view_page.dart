@@ -1,16 +1,12 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:fortuno/core/widgets/form/currency_form_field_widget.dart';
-import 'package:fortuno/features/order/presentations/pages/process_order/process_order_page.dart';
-import 'package:fortuno/features/order/presentations/widgets/order_summary_widget.dart';
-
 import '../../../../../../core/core.dart';
+import '../../../../../../core/widgets/form/currency_form_field_widget.dart';
 import '../../../bloc/cart/cart_bloc.dart';
 import '../../../bloc/cart/cart_processing_bloc.dart';
+import '../../../widgets/order_summary_widget.dart';
+import '../../process_order/process_order_page.dart';
 
 class CartCreateOrderViewPage extends StatelessWidget {
-  const CartCreateOrderViewPage({super.key, required this.onBack});
-
-  final VoidCallback onBack;
+  const CartCreateOrderViewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,29 +30,11 @@ class CartCreateOrderViewPage extends StatelessWidget {
       },
       builder: (context, bloc, state) {
         return Container(
-          padding: EdgeInsets.only(right: kSizeM, top: kSizeM + context.padTop),
+          padding: EdgeInsets.only(right: kSizeM),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    ButtonCircleWidget.gradient(
-                      icon: CupertinoIcons.back,
-                      buttonSize: kSizeXL,
-                      onPressed: onBack,
-                      iconColor: darkColor,
-                    ),
-                    SizedBox(width: kSizeM),
-                    Text(
-                      "Rincian Pembayaran",
-                      style: context.textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: kSizeS),
                 BlocBuilder<CartBloc, CartState>(
                   builder: (context, state) {
                     return OrderSummaryWidget(

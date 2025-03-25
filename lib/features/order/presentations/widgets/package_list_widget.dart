@@ -46,13 +46,7 @@ class PackageListWidget extends StatelessWidget {
                   ),
                 );
               },
-              child: Container(
-                padding: EdgeInsets.all(kDefaultPadding),
-                decoration: BoxDecoration(
-                  color: state.finishSelected ? darkLightColor : whiteColor,
-                  borderRadius: BorderRadius.circular(kDefaultRadius),
-                  boxShadow: defaultShadow,
-                ),
+              child: CustomCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -71,9 +65,19 @@ class PackageListWidget extends StatelessWidget {
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(5),
-                                child: Image.network(
-                                  "https://www.lalamove.com/hubfs/catering%20lunch%20box%20%284%29.jpg",
-                                  fit: BoxFit.cover,
+                                child: ColorFiltered(
+                                  colorFilter: ColorFilter.mode(
+                                    state.finishSelected
+                                        ? Colors.grey
+                                        : Colors.transparent,
+                                    state.finishSelected
+                                        ? BlendMode.saturation
+                                        : BlendMode.dst,
+                                  ),
+                                  child: Image.network(
+                                    "https://www.lalamove.com/hubfs/catering%20lunch%20box%20%284%29.jpg",
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             ),
@@ -126,7 +130,10 @@ class PackageListWidget extends StatelessWidget {
                           Container(
                             padding: EdgeInsets.all(kSizeS),
                             decoration: BoxDecoration(
-                              color: deleteButtonColor,
+                              color:
+                                  state.finishSelected
+                                      ? disabledButtonColor
+                                      : deleteButtonColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Icon(

@@ -31,20 +31,15 @@ class ProductCardWidget extends StatelessWidget {
                   "Silahkan kembali kemenu Rincian pesanan",
                 );
               },
-      child: Container(
+      child: CustomCard(
+        padding: anchorAllContent.min(10),
         constraints: BoxConstraints(minHeight: 100),
-        decoration: BoxDecoration(
-          color: whiteColor,
-          borderRadius: BorderRadius.circular(kDefaultRadius),
-          boxShadow: defaultShadow,
-        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Stack(
               children: [
                 Container(
-                  padding: EdgeInsets.all(kDefaultPadding),
                   width: double.infinity,
                   height: 130,
                   decoration: BoxDecoration(
@@ -55,9 +50,7 @@ class ProductCardWidget extends StatelessWidget {
                     child: ColorFiltered(
                       colorFilter: ColorFilter.mode(
                         isFinish ? Colors.grey : Colors.transparent,
-                        isFinish
-                            ? BlendMode.saturation
-                            : BlendMode.dst, // Menurunkan saturasi warna
+                        isFinish ? BlendMode.saturation : BlendMode.dst,
                       ),
                       child: Image.network(
                         "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
@@ -68,13 +61,13 @@ class ProductCardWidget extends StatelessWidget {
                 ),
                 if (quantity != 0)
                   Positioned(
-                    top: kSizeS * 0.9,
-                    right: kSizeS * 0.9,
+                    top: 0,
+                    right: 0,
                     child: Container(
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: primaryColor,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       child:
                           quantity != 0
@@ -93,54 +86,53 @@ class ProductCardWidget extends StatelessWidget {
                   ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Container(
-                padding: EdgeInsets.all(kSizeS * 0.3),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
+            SizedBox(height: kSizeM),
+            Container(
+              padding: EdgeInsets.only(left: kSizeSS, right: kSizeSS),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          product.name,
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        if (product.price > 0)
                           Text(
-                            product.name,
-                            style: context.textTheme.bodyMedium?.copyWith(
+                            product.priceFormated,
+                            style: context.textTheme.bodySmall?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          if (product.price > 0)
-                            Text(
-                              product.priceFormated,
-                              style: context.textTheme.bodySmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                        ],
-                      ),
+                      ],
                     ),
-                    if (quantity != 0) ...[
-                      SizedBox(width: kSizeMS),
-                      Container(
-                        padding: EdgeInsets.all(kSizeS),
-                        decoration: BoxDecoration(
-                          color: deleteButtonColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(CupertinoIcons.delete, color: whiteColor),
+                  ),
+                  if (quantity != 0) ...[
+                    SizedBox(width: kSizeMS),
+                    Container(
+                      padding: EdgeInsets.all(kSizeS),
+                      decoration: BoxDecoration(
+                        color:
+                            isFinish ? disabledButtonColor : deleteButtonColor,
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                    ],
+                      child: Icon(CupertinoIcons.delete, color: whiteColor),
+                    ),
                   ],
-                ),
+                ],
               ),
             ),
-
+            SizedBox(height: kSizeS),
             // Container(
             //   decoration: BoxDecoration(
             //     borderRadius: BorderRadius.circular(kDefaultRadius - 2),

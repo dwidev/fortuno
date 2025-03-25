@@ -31,7 +31,8 @@ class OrderSummaryWidget extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-
+        SizedBox(height: kSizeMS),
+        DottedLine(dashColor: lightGrey4),
         ListView.builder(
           padding: EdgeInsets.zero,
           shrinkWrap: true,
