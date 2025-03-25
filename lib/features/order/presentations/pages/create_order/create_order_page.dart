@@ -1,4 +1,5 @@
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fortuno/core/widgets/custom_tab.dart';
 import '../../bloc/cart/cart_bloc.dart';
 import 'cart/cart_order_page.dart';
 
@@ -55,30 +56,11 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
 
                   if (state is AtProductPage)
                     Padding(
-                      padding: EdgeInsets.only(
-                        left: kDefaultPadding,
-                        bottom: kSizeS,
-                      ),
-                      child: Row(
-                        children:
-                            menus
-                                .map(
-                                  (e) => TextButton(
-                                    onPressed: () => changeMenu(e),
-                                    child: Text(
-                                      e,
-                                      style: context.textTheme.bodySmall
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            color:
-                                                e == activeMenu
-                                                    ? darkColor
-                                                    : lightGrey1,
-                                          ),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
+                      padding: anchorLeftContent,
+                      child: CustomTab(
+                        value: activeMenu,
+                        menus: menus,
+                        changeMenu: changeMenu,
                       ),
                     ),
 

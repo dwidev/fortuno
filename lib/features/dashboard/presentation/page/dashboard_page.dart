@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:fortuno/core/core.dart';
+import 'package:fortuno/core/widgets/custom_tab.dart';
 import 'package:fortuno/features/auth/presentations/bloc/auth_bloc.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -9,342 +10,299 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(kDefaultRadius).copyWith(top: kSizeML),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          DashboardAppBar(),
-          Expanded(
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: context.height / 2.2,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.all(kDefaultPadding),
-                            decoration: BoxDecoration(
-                              color: whiteColor,
-                              borderRadius: BorderRadius.circular(
-                                kDefaultRadius * 1.5,
-                              ),
-                              boxShadow: defaultShadow,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                            color: primaryColor,
-                                            borderRadius: BorderRadius.circular(
-                                              5,
-                                            ),
-                                          ),
-                                          child: Icon(
-                                            CupertinoIcons.money_dollar_circle,
-                                            size: kSizeM,
-                                            color: darkColor,
-                                          ),
-                                        ),
-                                        SizedBox(width: kSizeS),
-                                        Text(
-                                          "Total Income",
-                                          style: context.textTheme.bodySmall
-                                              ?.copyWith(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          CupertinoIcons.arrow_up_right,
-                                          color: greenColor,
-                                        ),
-                                        Text(
-                                          "25%",
-                                          style: context.textTheme.bodySmall
-                                              ?.copyWith(color: greenColor),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: kSizeS),
-                                Text(
-                                  "Rp. 13.534.000",
-                                  style: context.textTheme.displayMedium,
-                                ),
-                                SizedBox(height: kSizeXL),
-                                Expanded(
-                                  child: LayoutBuilder(
-                                    builder: (context, bc) {
-                                      return PieChart(
-                                        PieChartData(
-                                          pieTouchData: PieTouchData(
-                                            touchCallback:
-                                                (
-                                                  FlTouchEvent event,
-                                                  pieTouchResponse,
-                                                ) {},
-                                          ),
-                                          borderData: FlBorderData(show: false),
-                                          sectionsSpace: 5,
-                                          centerSpaceRadius: bc.maxWidth * 0.2,
-                                          sections: showingSections(),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                SizedBox(height: kSizeXL),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundColor: primaryColor,
-                                          radius: 5,
-                                        ),
-                                        SizedBox(width: kSizeSS),
-                                        Text(
-                                          "Product",
-                                          style: context.textTheme.bodySmall,
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(width: kSizeM),
-                                    Row(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundColor: secondaryColor,
-                                          radius: 5,
-                                        ),
-                                        SizedBox(width: kSizeSS),
-                                        Text(
-                                          "Package",
-                                          style: context.textTheme.bodySmall,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: kSizeM),
-                        Expanded(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        DashboardAppBar(),
+        Expanded(
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: context.height / 2.2,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: CustomCard(
+                          margin: anchorLeftContent,
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(child: TotalOrderWidget()),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          color: primaryColor,
+                                          borderRadius: BorderRadius.circular(
+                                            5,
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          CupertinoIcons.money_dollar_circle,
+                                          size: kSizeM,
+                                          color: darkColor,
+                                        ),
+                                      ),
+                                      SizedBox(width: kSizeS),
+                                      Text(
+                                        "Total Income",
+                                        style: context.textTheme.bodySmall
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        CupertinoIcons.arrow_up_right,
+                                        color: greenColor,
+                                      ),
+                                      Text(
+                                        "25%",
+                                        style: context.textTheme.bodySmall
+                                            ?.copyWith(color: greenColor),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                               SizedBox(height: kSizeS),
-                              Expanded(child: TotalOrderWidget()),
+                              Text(
+                                "Rp. 13.534.000",
+                                style: context.textTheme.displayMedium,
+                              ),
+                              SizedBox(height: kSizeXL),
+                              Expanded(
+                                child: LayoutBuilder(
+                                  builder: (context, bc) {
+                                    return PieChart(
+                                      PieChartData(
+                                        pieTouchData: PieTouchData(
+                                          touchCallback:
+                                              (
+                                                FlTouchEvent event,
+                                                pieTouchResponse,
+                                              ) {},
+                                        ),
+                                        borderData: FlBorderData(show: false),
+                                        sectionsSpace: 5,
+                                        centerSpaceRadius: bc.maxWidth * 0.2,
+                                        sections: showingSections(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(height: kSizeXL),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: primaryColor,
+                                        radius: 5,
+                                      ),
+                                      SizedBox(width: kSizeSS),
+                                      Text(
+                                        "Product",
+                                        style: context.textTheme.bodySmall,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(width: kSizeM),
+                                  Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: secondaryColor,
+                                        radius: 5,
+                                      ),
+                                      SizedBox(width: kSizeSS),
+                                      Text(
+                                        "Package",
+                                        style: context.textTheme.bodySmall,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
-                        SizedBox(width: kSizeM),
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                            height: double.infinity,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: kDefaultPadding,
-                              vertical: kDefaultPadding * 2,
-                            ).copyWith(bottom: kDefaultPadding),
-                            decoration: BoxDecoration(
-                              color: whiteColor,
-                              borderRadius: BorderRadius.circular(
-                                kDefaultRadius,
+                      ),
+                      SizedBox(width: kSizeM),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Expanded(child: TotalOrderWidget()),
+                            SizedBox(height: kSizeM),
+                            Expanded(child: TotalOrderWidget()),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: kSizeM),
+                      Expanded(
+                        flex: 2,
+                        child: CustomCard(
+                          height: double.infinity,
+                          margin: anchorRightContent,
+                          padding:
+                              [anchorTopContent, anchorHorizontalContent].merge,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Penjualan mingguan",
+                                style: context.textTheme.bodySmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                              boxShadow: defaultShadow,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: kDefaultPadding,
-                                  ),
-                                  child: Text(
-                                    "Penjualan mingguan",
-                                    style: context.textTheme.bodySmall
-                                        ?.copyWith(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                SizedBox(height: kSizeMS),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                      right: 18,
-                                      left: 12,
-                                      top: 24,
-                                      bottom: 12,
-                                    ),
-                                    child: LineChart(mainData(context)),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              SizedBox(height: kSizeML),
+                              Expanded(child: LineChart(mainData(context))),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: kSizeM),
-                  SizedBox(
-                    height: context.height / 3,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                            height: double.infinity,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: kDefaultPadding,
-                              vertical: kDefaultPadding * 2,
-                            ).copyWith(bottom: kDefaultPadding),
-                            decoration: BoxDecoration(
-                              color: whiteColor,
-                              borderRadius: BorderRadius.circular(
-                                kDefaultRadius,
+                ),
+                SizedBox(height: kSizeM),
+                SizedBox(
+                  height: context.height / 2.2,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: CustomCard(
+                          margin:
+                              [anchorLeftContent, anchorBottomContent].merge,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Order yang sedang diproses",
+                                style: context.textTheme.bodySmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                              boxShadow: defaultShadow,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Order yang sedang diproses",
-                                  style: context.textTheme.bodySmall?.copyWith(
-                                    fontWeight: FontWeight.bold,
+                              SizedBox(height: kSizeMS),
+                              Table(
+                                columnWidths: {
+                                  0: FlexColumnWidth(1),
+                                  1: FlexColumnWidth(2),
+                                  2: FlexColumnWidth(1),
+                                  3: FlexColumnWidth(1),
+                                },
+                                children: [
+                                  TableRow(
+                                    children: [
+                                      tableCell("Pelanggan", isHeader: true),
+                                      tableCell("Produk", isHeader: true),
+                                      tableCell("Tanggal", isHeader: true),
+                                      tableCell("Status", isHeader: true),
+                                    ],
                                   ),
-                                ),
-                                SizedBox(height: kSizeMS),
-                                Table(
-                                  columnWidths: {
-                                    0: FlexColumnWidth(1),
-                                    1: FlexColumnWidth(2),
-                                    2: FlexColumnWidth(1),
-                                    3: FlexColumnWidth(1),
-                                  },
-                                  children: [
-                                    TableRow(
-                                      children: [
-                                        tableCell("Pelanggan", isHeader: true),
-                                        tableCell("Produk", isHeader: true),
-                                        tableCell("Tanggal", isHeader: true),
-                                        tableCell("Status", isHeader: true),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: kSizeM),
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Table(
-                                      columnWidths: {
-                                        0: FlexColumnWidth(1),
-                                        1: FlexColumnWidth(2),
-                                        2: FlexColumnWidth(1),
-                                        3: FlexColumnWidth(1),
-                                      },
-                                      children: List.generate(3, (index) {
-                                        return TableRow(
-                                          children: [
-                                            tableCell("SMK Globin"),
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  width: 50,
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadiusDirectional.circular(
-                                                          kDefaultRadius * 0.5,
-                                                        ),
-                                                    image: DecorationImage(
-                                                      image: NetworkImage(
-                                                        "https://cdn.prod.website-files.com/6346686a30512816becfbf47/671ed63b8d688b6b1d10a0ec_freepik__retouch__32461.png",
+                                ],
+                              ),
+                              SizedBox(height: kSizeM),
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  child: Table(
+                                    columnWidths: {
+                                      0: FlexColumnWidth(1),
+                                      1: FlexColumnWidth(2),
+                                      2: FlexColumnWidth(1),
+                                      3: FlexColumnWidth(1),
+                                    },
+                                    children: List.generate(3, (index) {
+                                      return TableRow(
+                                        children: [
+                                          tableCell("SMK Globin"),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width: 50,
+                                                height: 50,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadiusDirectional.circular(
+                                                        kDefaultRadius * 0.5,
                                                       ),
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                      "https://cdn.prod.website-files.com/6346686a30512816becfbf47/671ed63b8d688b6b1d10a0ec_freepik__retouch__32461.png",
                                                     ),
                                                   ),
                                                 ),
-                                                SizedBox(width: 10),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "Paket Berkah 25k",
-                                                      style: context
-                                                          .textTheme
-                                                          .bodySmall
-                                                          ?.copyWith(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
+                                              ),
+                                              SizedBox(width: 10),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Paket Berkah 25k",
+                                                    style: context
+                                                        .textTheme
+                                                        .bodySmall
+                                                        ?.copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: context.width / 8,
+                                                    child: Text(
+                                                      "Nasi, Ayam bakar, Tahu Tempe, Cah kangkung, Buah jeruk, Sambal Lalap",
+                                                      style:
+                                                          context
+                                                              .textTheme
+                                                              .bodySmall,
+                                                      maxLines: 3,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
-                                                    SizedBox(
-                                                      width: context.width / 8,
-                                                      child: Text(
-                                                        "Nasi, Ayam bakar, Tahu Tempe, Cah kangkung, Buah jeruk, Sambal Lalap",
-                                                        style:
-                                                            context
-                                                                .textTheme
-                                                                .bodySmall,
-                                                        maxLines: 3,
-                                                        overflow:
-                                                            TextOverflow
-                                                                .ellipsis,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            tableCell(
-                                              formatToDateTime(DateTime.now()),
-                                            ),
-                                            tableCell("2 Hari lagi"),
-                                          ],
-                                        );
-                                      }),
-                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          tableCell(
+                                            formatToDateTime(DateTime.now()),
+                                          ),
+                                          tableCell("2 Hari lagi"),
+                                        ],
+                                      );
+                                    }),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(width: kSizeM),
-                        Expanded(child: MostProductWidget()),
-                      ],
-                    ),
+                      ),
+                      SizedBox(width: kSizeM),
+                      Expanded(child: MostProductWidget()),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -476,8 +434,8 @@ class DashboardAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: anchorCustomAppBar,
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: kSizeML),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -508,22 +466,10 @@ class DashboardAppBar extends StatelessWidget {
             ],
           ),
           SizedBox(height: kSizeSS),
-          Row(
-            children:
-                ["Minggu", "Bulan", "Tahun"]
-                    .map(
-                      (e) => TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          e,
-                          style: context.textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: e == "Minggu" ? darkColor : lightGrey1,
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
+          CustomTab(
+            value: 'Minggu',
+            menus: ["Minggu", "Bulan", "Tahun"],
+            changeMenu: (menu) {},
           ),
         ],
       ),
@@ -536,15 +482,7 @@ class TotalOrderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(
-        kDefaultPadding,
-      ).copyWith(bottom: kDefaultPadding),
-      decoration: BoxDecoration(
-        color: whiteColor,
-        borderRadius: BorderRadius.circular(kDefaultRadius),
-        boxShadow: defaultShadow,
-      ),
+    return CustomCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -614,16 +552,9 @@ class MostProductWidget extends StatelessWidget {
       "Paket Hemat Berkah 16K Ayam Goreng",
       "Paket Kue 10K",
     ];
-    return Container(
+    return CustomCard(
       width: double.infinity,
-      padding: EdgeInsets.all(
-        kDefaultPadding * 2,
-      ).copyWith(bottom: kDefaultPadding),
-      decoration: BoxDecoration(
-        color: whiteColor,
-        borderRadius: BorderRadius.circular(kDefaultRadius),
-        boxShadow: defaultShadow,
-      ),
+      margin: [anchorRightContent, anchorBottomContent].merge,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
