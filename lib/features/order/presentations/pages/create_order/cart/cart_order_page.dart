@@ -64,7 +64,7 @@ class _CartOrderPageState extends State<CartOrderPage>
     }
 
     final cartProcess = context.read<CartProcessingBloc>();
-    // if (cartProcess.formKey.currentState?.validate() == false) return;
+    if (cartProcess.formKey.currentState?.validate() == false) return;
 
     if (tabController.index == 0) {
       final orderBloc = context.read<OrderBloc>();

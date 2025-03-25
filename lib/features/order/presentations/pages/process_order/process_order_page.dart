@@ -1,4 +1,5 @@
 import '../../../../../core/core.dart';
+import '../../../../../core/widgets/custom_tab.dart';
 import '../../../domain/entities/order.dart';
 import '../../../domain/enums/order_status.dart';
 import '../../bloc/order_process/order_process_bloc.dart';
@@ -130,73 +131,116 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
       builder: (context, bloc, state) {
         final total = (state as OrderProcessState).orders.length;
         return Scaffold(
-          backgroundColor: darkLightColor,
-          body: Padding(
-            padding: EdgeInsets.only(top: context.padTop),
-            child: Row(
+          body: Container(
+            padding: anchorCustomAppBar,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      TabBar(
-                        indicatorWeight: 10,
-                        controller: tabController,
-                        isScrollable: true,
-                        tabs:
-                            tabHeader
-                                .map(
-                                  (i) => Container(
-                                    padding: EdgeInsets.all(kDefaultPadding),
-                                    child: Text(i.tabValue(total.toString())),
-                                  ),
-                                )
-                                .toList(),
-                        onTap: onChangeTab,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Orders",
+                        style: context.textTheme.titleLarge,
                       ),
-                      Expanded(
-                        child: TabBarView(
-                          physics: NeverScrollableScrollPhysics(),
-                          controller: tabController,
-                          children: List.generate(tabHeader.length, (index) {
-                            return BlocBuilder<
-                              OrderProcessBloc,
-                              OrderProcessState
-                            >(
-                              builder: (context, state) {
-                                return ListView.builder(
-                                  itemCount: state.orders.length,
-                                  padding: EdgeInsets.zero,
-                                  itemBuilder: (context, index) {
-                                    return OrderProcessItemListWidget(
-                                      order: state.orders[index],
-                                      index: index,
-                                      activeIndex: activeIndex ?? -1,
-                                      isDetail: isDetail,
-                                      onClickDetail: (order) {
-                                        onClickDetail(order, index, true);
-                                      },
-                                    );
-                                  },
-                                );
-                              },
-                            );
-                          }),
-                        ),
+                    ),
+                    Text(formatDate(DateTime.now())),
+                    SizedBox(width: kSizeMS),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Row(
+                        children: [
+                          Icon(
+                            CupertinoIcons.square_arrow_right,
+                            color: darkColor,
+                          ),
+                          SizedBox(width: 6),
+                          Text(
+                            "Keluar",
+                            style: context.textTheme.bodySmall?.copyWith(
+                              color: darkColor,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                if (widthAnimation != null && activeIndex != -1)
-                  DetailProcessOrderPage(
-                    widthAnimation: widthAnimation,
-                    maxWidthDetail: maxWidthDetail,
-                    onClosePage: () {
-                      onClickDetail(null, -1, false);
-                    },
-                  ),
+                SizedBox(height: kSizeSS),
+                CustomTab(
+                  value: 'Waiting',
+                  menus: ["Waiting", "Proses", "Selesai", "Batal"],
+                  changeMenu: (menu) {},
+                ),
               ],
             ),
           ),
+          // body: Padding(
+          //   padding: EdgeInsets.only(top: context.padTop),
+          //   child: Row(
+          //     children: [
+          //       Expanded(
+          //         child: Column(
+          //           children: [
+          //             TabBar(
+          //               indicatorWeight: 10,
+          //               controller: tabController,
+          //               isScrollable: true,
+          //               tabs:
+          //                   tabHeader
+          //                       .map(
+          //                         (i) => Container(
+          //                           padding: EdgeInsets.all(kDefaultPadding),
+          //                           child: Text(i.tabValue(total.toString())),
+          //                         ),
+          //                       )
+          //                       .toList(),
+          //               onTap: onChangeTab,
+          //             ),
+          //             Expanded(
+          //               child: TabBarView(
+          //                 physics: NeverScrollableScrollPhysics(),
+          //                 controller: tabController,
+          //                 children: List.generate(tabHeader.length, (index) {
+          //                   return BlocBuilder<
+          //                     OrderProcessBloc,
+          //                     OrderProcessState
+          //                   >(
+          //                     builder: (context, state) {
+          //                       return ListView.builder(
+          //                         itemCount: state.orders.length,
+          //                         padding: EdgeInsets.zero,
+          //                         itemBuilder: (context, index) {
+          //                           return OrderProcessItemListWidget(
+          //                             order: state.orders[index],
+          //                             index: index,
+          //                             activeIndex: activeIndex ?? -1,
+          //                             isDetail: isDetail,
+          //                             onClickDetail: (order) {
+          //                               onClickDetail(order, index, true);
+          //                             },
+          //                           );
+          //                         },
+          //                       );
+          //                     },
+          //                   );
+          //                 }),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //       if (widthAnimation != null && activeIndex != -1)
+          //         DetailProcessOrderPage(
+          //           widthAnimation: widthAnimation,
+          //           maxWidthDetail: maxWidthDetail,
+          //           onClosePage: () {
+          //             onClickDetail(null, -1, false);
+          //           },
+          //         ),
+          //     ],
+          //   ),
+          // ),
         );
       },
     );
