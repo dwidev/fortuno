@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class InvetoryPage extends StatefulWidget {
+  static const path = '/inventory-page';
   const InvetoryPage({super.key});
 
   @override

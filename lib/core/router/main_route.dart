@@ -7,8 +7,8 @@ import '../depedency_injection/injection.dart';
 import 'auth_route.dart';
 import 'create_order_route.dart';
 import 'dashboard_route.dart';
+import 'inventory_route.dart';
 import 'process_order_route.dart';
-import 'profile_route.dart';
 
 export 'main_route.dart';
 
@@ -25,6 +25,9 @@ final processOrderRoutKey = GlobalKey<NavigatorState>(
   debugLabel: "process-order-route",
 );
 final profilRouteKey = GlobalKey<NavigatorState>(debugLabel: "profile-route");
+final inventoryRouteKey = GlobalKey<NavigatorState>(
+  debugLabel: "inventory-route",
+);
 
 final router = GoRouter(
   navigatorKey: rootNavigatorKey,
@@ -64,7 +67,10 @@ final router = GoRouter(
         ),
 
         // inventaris
-        StatefulShellBranch(navigatorKey: profilRouteKey, routes: profilRoute),
+        StatefulShellBranch(
+          navigatorKey: inventoryRouteKey,
+          routes: inventoryRoute,
+        ),
 
         // // notification
         // StatefulShellBranch(navigatorKey: profilRouteKey, routes: profilRoute),
