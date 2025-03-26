@@ -1,3 +1,5 @@
+import 'package:fortuno/core/router/profile_route.dart';
+
 import '../../features/auth/presentations/bloc/auth_bloc.dart';
 import '../../features/auth/presentations/pages/splash_page.dart';
 import '../../features/auth/presentations/widgets/auth_listener_widget.dart';
@@ -25,6 +27,7 @@ final processOrderRoutKey = GlobalKey<NavigatorState>(
   debugLabel: "process-order-route",
 );
 final profilRouteKey = GlobalKey<NavigatorState>(debugLabel: "profile-route");
+
 final inventoryRouteKey = GlobalKey<NavigatorState>(
   debugLabel: "inventory-route",
 );
@@ -65,6 +68,9 @@ final router = GoRouter(
           navigatorKey: processOrderRoutKey,
           routes: processOrderRoute,
         ),
+
+        // payment
+        StatefulShellBranch(navigatorKey: profilRouteKey, routes: profilRoute),
 
         // inventaris
         StatefulShellBranch(

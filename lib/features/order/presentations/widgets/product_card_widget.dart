@@ -1,32 +1,51 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../../../core/core.dart';
 import '../../../products/domain/entities/product.dart';
-import '../bloc/order/order_bloc.dart';
 
-class ProductCardWidget extends StatelessWidget {
+class ProductCardWidget extends StatefulWidget {
   const ProductCardWidget({
     super.key,
-    required this.product,
     this.quantity = 0,
+    required this.product,
     required this.onTap,
+    this.isDisable = false,
+    this.isInventory = false,
+    this.onNonActive,
   });
 
   final int quantity;
   final Product product;
   final VoidCallback onTap;
+  final bool isDisable;
+  final bool isInventory;
+  final Function(bool value)? onNonActive;
+
+  @override
+  State<ProductCardWidget> createState() => _ProductCardWidgetState();
+}
+
+class _ProductCardWidgetState extends State<ProductCardWidget> {
+  var active = false;
+
+  bool get isDisable => widget.isDisable || !active;
+
+  @override
+  void initState() {
+    active = !widget.isDisable;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final isFinish = context.select<OrderBloc, bool>((value) {
-      return value.state.finishSelected;
-    });
-
     return GestureDetector(
       onTap:
-          !isFinish
-              ? onTap
+          !isDisable
+              ? widget.onTap
               : () {
+                if (widget.isInventory) return;
+
                 EasyLoading.showToast(
                   "Silahkan kembali kemenu Rincian pesanan",
                 );
@@ -49,8 +68,8 @@ class ProductCardWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(kSizeMS),
                     child: ColorFiltered(
                       colorFilter: ColorFilter.mode(
-                        isFinish ? Colors.grey : Colors.transparent,
-                        isFinish ? BlendMode.saturation : BlendMode.dst,
+                        isDisable ? Colors.grey : Colors.transparent,
+                        isDisable ? BlendMode.saturation : BlendMode.dst,
                       ),
                       child: Image.network(
                         "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
@@ -59,7 +78,21 @@ class ProductCardWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (quantity != 0)
+                if (widget.isInventory)
+                  Positioned(
+                    right: kSizeSS,
+                    child: Switch.adaptive(
+                      value: active,
+                      onChanged: (value) {
+                        setState(() {
+                          active = value;
+                        });
+
+                        widget.onNonActive?.call(value);
+                      },
+                    ),
+                  ),
+                if (widget.quantity != 0 && !widget.isInventory)
                   Positioned(
                     top: 0,
                     right: 0,
@@ -70,9 +103,9 @@ class ProductCardWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child:
-                          quantity != 0
+                          widget.quantity != 0
                               ? Text(
-                                "x$quantity",
+                                "x${widget.quantity}",
                                 style: context.textTheme.bodySmall?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: whiteColor,
@@ -102,14 +135,14 @@ class ProductCardWidget extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          product.name,
+                          widget.product.name,
                           style: context.textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        if (product.price > 0)
+                        if (widget.product.price > 0)
                           Text(
-                            product.priceFormated,
+                            widget.product.priceFormated,
                             style: context.textTheme.bodySmall?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -117,13 +150,13 @@ class ProductCardWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (quantity != 0) ...[
+                  if (widget.quantity != 0) ...[
                     SizedBox(width: kSizeMS),
                     Container(
                       padding: EdgeInsets.all(kSizeS),
                       decoration: BoxDecoration(
                         color:
-                            isFinish ? disabledButtonColor : deleteButtonColor,
+                            isDisable ? disabledButtonColor : deleteButtonColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Icon(CupertinoIcons.delete, color: whiteColor),
@@ -133,12 +166,6 @@ class ProductCardWidget extends StatelessWidget {
               ),
             ),
             SizedBox(height: kSizeS),
-            // Container(
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(kDefaultRadius - 2),
-            //     color: darkColor.withAlpha(150),
-            //   ),
-            // ),
           ],
         ),
       ),

@@ -112,6 +112,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                               }
 
                               return ProductCardWidget(
+                                isDisable: state.finishSelected,
                                 product: cp,
                                 quantity: quantity,
                                 onTap: () {

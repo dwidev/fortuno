@@ -16,7 +16,7 @@ const shadowColor = Color(0xffD6D6D6); // Abu-abu sangat soft
 const deleteButtonColor = Color(
   0xffE63946,
 ); // Merah lembut, tidak terlalu mencolok
-const successButtonColor = Color(0xff52B788); // Hijau pastel yang tetap segar
+const successButtonColor = Color(0xFF34C759); // Hijau pastel yang tetap segar
 const warningButtonColor = Color(0xffFFC75F); // Kuning oranye yang lebih hangat
 const infoButtonColor = Color(0xff8ECAE6); // Biru muda yang lebih soft
 const disabledButtonColor = Color(

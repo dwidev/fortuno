@@ -75,6 +75,28 @@ ThemeData get lightTheme {
         ),
       ),
     ),
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return Colors.white;
+        }
+        return Colors.grey.shade400;
+      }),
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return successButtonColor;
+        }
+
+        return Colors.grey.shade300;
+      }),
+      trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
+      thumbIcon: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return Icon(Icons.circle, color: Colors.white, size: 20);
+        }
+        return null;
+      }),
+    ),
   );
 }
 
