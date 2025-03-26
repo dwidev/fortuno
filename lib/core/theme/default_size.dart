@@ -14,9 +14,9 @@ const kSizeL = 30.0;
 const kSizeXL = 40.0;
 const kSizeXXL = 50.0;
 
-final anchorCustomAppBar = EdgeInsets.all(
-  kDefaultRadius,
-).copyWith(top: kSizeML + kSizeML);
+final anchorCustomAppBar = EdgeInsets.symmetric(
+  horizontal: kSizeL,
+).copyWith(top: kSizeL + kSizeM, bottom: kSizeMS);
 
 final anchorAllContent = EdgeInsets.all(kSizeM);
 final anchorHorizontalContent = EdgeInsets.symmetric(horizontal: kSizeM);
@@ -36,6 +36,10 @@ extension ListEdgeInsetsEx on List<EdgeInsets> {
 }
 
 extension EdgeInsetsEx on EdgeInsets {
+  EdgeInsets addTopHeightMenubar(BuildContext context) {
+    return copyWith(top: top + context.padBot);
+  }
+
   EdgeInsets replace({
     double? left,
     double? top,

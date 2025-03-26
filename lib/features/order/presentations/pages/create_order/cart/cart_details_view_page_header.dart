@@ -6,7 +6,9 @@ class CartDetailsViewPageHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: anchorCustomAppBar.min(0, left: anchorAllContent.left),
+      margin: anchorCustomAppBar
+          .min(0, left: anchorAllContent.left)
+          .addTopHeightMenubar(context),
       child: Text(
         "Rincian pesanan",
         style: context.textTheme.bodyLarge?.copyWith(

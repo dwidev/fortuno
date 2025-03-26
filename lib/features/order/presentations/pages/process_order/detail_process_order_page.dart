@@ -46,6 +46,8 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.widthAnimation == null) return Offstage();
+
     return AnimatedBuilder(
       animation: widget.widthAnimation!,
       builder: (context, _) {
@@ -57,12 +59,11 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
         return SizedBox(
           height: context.height,
           width: wAnimation.value,
-          child: Container(
-            padding: EdgeInsets.all(kDefaultPadding),
-            color: whiteColor,
-            child:
-                wAnimation.value >= (widget.maxWidthDetail ?? 0)
-                    ? BlocBuilder<OrderProcessBloc, OrderProcessState>(
+          child:
+              wAnimation.value >= (widget.maxWidthDetail ?? 0)
+                  ? Container(
+                    padding: EdgeInsets.all(kDefaultPadding),
+                    child: BlocBuilder<OrderProcessBloc, OrderProcessState>(
                       builder: (context, state) {
                         final order = state.order;
                         final client = state.order.client;
@@ -129,6 +130,7 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
                                           OrderStatus.waiting ||
                                       order.orderStatus == OrderStatus.process)
                                     GradientButton(
+                                      backgroundColor: order.orderStatus.color,
                                       height: 35,
                                       width: 130,
                                       onPressed: () => onTap(order),
@@ -144,9 +146,9 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
                           ],
                         );
                       },
-                    )
-                    : Offstage(),
-          ),
+                    ),
+                  )
+                  : Offstage(),
         );
       },
     );

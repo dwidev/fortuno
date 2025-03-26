@@ -87,3 +87,11 @@ final defaultShadow = [
     offset: Offset(0, 25),
   ),
 ];
+
+final defaultShadowButton = [
+  BoxShadow(
+    color: shadowColor.withAlpha((225 * 0.9).toInt()),
+    blurRadius: 10,
+    offset: Offset(0.0, 4.0),
+  ),
+];

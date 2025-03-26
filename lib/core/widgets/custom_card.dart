@@ -16,16 +16,26 @@ class CustomCard extends Container {
     super.transformAlignment,
     super.clipBehavior = Clip.none,
     super.child,
+    this.border,
   });
 
+  final BoxBorder? border;
+
   @override
-  Decoration? get decoration =>
-      super.decoration ??
-      BoxDecoration(
-        color: whiteColor,
-        borderRadius: BorderRadius.circular(kDefaultRadius * 1.5),
-        boxShadow: defaultShadow,
-      );
+  Decoration? get decoration {
+    assert(
+      super.decoration == null || border != null,
+      "decoration must be null when add border",
+    );
+    if (super.decoration != null) return super.decoration;
+
+    return BoxDecoration(
+      color: whiteColor,
+      borderRadius: BorderRadius.circular(kDefaultRadius * 1.5),
+      boxShadow: defaultShadow,
+      border: border,
+    );
+  }
 
   @override
   EdgeInsetsGeometry? get padding => super.padding ?? [anchorAllContent].merge;

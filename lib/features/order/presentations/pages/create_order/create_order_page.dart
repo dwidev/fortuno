@@ -23,7 +23,7 @@ class CreateOrderPage extends StatefulWidget {
 }
 
 class _CreateOrderPageState extends State<CreateOrderPage> {
-  var activeMenu = '';
+  var activeMenu = 0;
   var menus = ["Package", "Product"];
 
   @override
@@ -34,9 +34,9 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
     );
   }
 
-  void changeMenu(String menu) {
+  void changeMenu(int index) {
     setState(() {
-      activeMenu = menu;
+      activeMenu = index;
     });
   }
 
@@ -58,7 +58,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                     Padding(
                       padding: anchorLeftContent,
                       child: CustomTab(
-                        value: activeMenu,
+                        currentIndex: activeMenu,
                         menus: menus,
                         changeMenu: changeMenu,
                       ),
@@ -124,7 +124,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                                       ),
                                     );
                                   } else {
-                                    changeMenu("Package");
+                                    changeMenu(0);
                                     final cp = state.categories[index];
                                     orderBloc.add(
                                       OnClickCategory(categoryProduct: cp),

@@ -75,7 +75,7 @@ class OrderItem extends Equatable {
   }
 
   String get totalPriceString {
-    if (totalPrice == 0) return "";
+    if (totalPrice == 0) return "Gratis";
     return moneyFormatter(totalPrice);
   }
 

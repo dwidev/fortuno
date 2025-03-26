@@ -28,6 +28,9 @@ class Order extends Equatable {
 
   String get subTotalString => items.totalPriceString;
 
+  String get shippingCostString =>
+      shippingCost > 0 ? moneyFormatter(shippingCost) : "Free";
+
   double get pay {
     if (orderStatus == OrderStatus.waiting) {
       return totalPrice * 30 / 100;
@@ -35,6 +38,9 @@ class Order extends Equatable {
 
     return remainingPayment;
   }
+
+  String get createdAtDisplay => formatToDateTime(createdAt);
+  String get updatedAtDisplay => formatToDateTime(updatedAt);
 
   const Order({
     required this.id,

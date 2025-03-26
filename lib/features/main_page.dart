@@ -42,8 +42,8 @@ class _SideMenuState extends State<SideMenu> {
 
   final icon = [
     [CupertinoIcons.chart_bar_alt_fill, "Dashboard"],
-    [CupertinoIcons.bag_fill, "Buat Order"],
-    [CupertinoIcons.cart_fill, "Orders"],
+    [CupertinoIcons.cart_fill, "Buat Order"],
+    [CupertinoIcons.bag_fill, "Orders"],
     [CupertinoIcons.money_dollar_circle_fill, "Payment"],
     [CupertinoIcons.cube_box_fill, "Inventaris"],
   ];

@@ -6,7 +6,7 @@ class DashboardAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: anchorCustomAppBar,
+      margin: anchorCustomAppBar.addTopHeightMenubar(context),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +39,7 @@ class DashboardAppBar extends StatelessWidget {
           ),
           SizedBox(height: kSizeSS),
           CustomTab(
-            value: 'Minggu',
+            currentIndex: 0,
             menus: ["Minggu", "Bulan", "Tahun"],
             changeMenu: (menu) {},
           ),

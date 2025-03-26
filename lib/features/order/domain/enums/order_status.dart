@@ -1,3 +1,7 @@
+import 'dart:ui';
+
+import 'package:fortuno/core/theme/theme.dart';
+
 enum OrderStatus {
   waiting,
   process,
@@ -19,6 +23,19 @@ enum OrderStatus {
         return "Selesai";
       case OrderStatus.cancel:
         return "Batal";
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case OrderStatus.waiting:
+        return warningButtonColor;
+      case OrderStatus.process:
+        return infoButtonColor;
+      case OrderStatus.done:
+        return successButtonColor;
+      case OrderStatus.cancel:
+        return deleteButtonColor;
     }
   }
 
