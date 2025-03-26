@@ -40,7 +40,7 @@ class _AddCategoryProductPageState extends State<AddCategoryProductPage> {
               title: Text('Buat category'),
               backgroundColor:
                   innerBoxIsScrolled ? Colors.white : Colors.transparent,
-              pinned: false,
+              pinned: true,
               elevation: 0,
               actions: [
                 ElevatedButton(
@@ -73,35 +73,7 @@ class _AddCategoryProductPageState extends State<AddCategoryProductPage> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      DottedBorder(
-                        borderType: BorderType.RRect,
-                        radius: Radius.circular(kDefaultRadius),
-                        padding: EdgeInsets.all(kSizeSS),
-                        color: lightGrey3,
-                        child: InkWell(
-                          onTap: () {},
-                          borderRadius: BorderRadius.circular(kDefaultRadius),
-                          child: Ink(
-                            width: 120,
-                            height: 120,
-                            decoration: BoxDecoration(
-                              color: lightGrey5,
-                              borderRadius: BorderRadius.circular(
-                                kDefaultRadius,
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Upload Gambar",
-                                textAlign: TextAlign.center,
-                                style: context.textTheme.bodySmall?.copyWith(
-                                  color: lightGrey2,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      ImagePickerWidget(),
                       SizedBox(width: kSizeM),
                       Expanded(
                         child: Column(

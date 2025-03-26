@@ -13,8 +13,10 @@ class ProductCardWidget extends StatefulWidget {
     this.isDisable = false,
     this.isInventory = false,
     this.onNonActive,
+    this.width,
   });
 
+  final double? width;
   final int quantity;
   final Product product;
   final VoidCallback onTap;
@@ -59,7 +61,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
             Stack(
               children: [
                 Container(
-                  width: double.infinity,
+                  width: widget.width ?? double.infinity,
                   height: 130,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(kSizeMS),

@@ -1,5 +1,6 @@
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fortuno/features/products/presentation/pages/add_category_product_page.dart';
+import 'package:fortuno/features/products/presentation/pages/add_product_page.dart';
 
 import '../../../../core/core.dart';
 import '../../../order/presentations/widgets/loading_product_widget.dart';
@@ -40,7 +41,7 @@ class _CategoryProductViewPageState extends State<CategoryProductViewPage> {
             if (index == 0) {
               return AddInventoryWidget(
                 onTap: () {
-                  context.push(AddCategoryProductPage.path);
+                  context.push(AddProductPage.path);
                 },
               );
             }

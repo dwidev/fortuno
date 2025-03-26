@@ -40,7 +40,18 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
         error(emit, err);
       },
       (data) {
-        final newState = state.copyWith(categories: data);
+        final newState = state.copyWith(
+          categories: [
+            ...data,
+            ...data,
+            ...data,
+            ...data,
+            ...data,
+            ...data,
+            ...data,
+            ...data,
+          ],
+        );
         emit(newState);
       },
     );
