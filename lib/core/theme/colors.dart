@@ -13,15 +13,15 @@ const darkLightColor = Color(0xffF8F9FA); // Putih bersih
 const shadowColor = Color(0xffD6D6D6); // Abu-abu sangat soft
 
 // Warna tambahan
-const deleteButtonColor = Color(0xffD90429); // Merah terang untuk tombol delete
-const successButtonColor = Color(
-  0xff06D6A0,
-); // Hijau terang untuk tombol sukses
-const warningButtonColor = Color(
-  0xffFF9F1C,
-); // Kuning oranye untuk tombol peringatan
-const infoButtonColor = Color(0xff219EBC); // Biru soft untuk tombol informasi
-const disabledButtonColor = Color(0xffB0B0B0); // Abu-abu untuk tombol nonaktif
+const deleteButtonColor = Color(
+  0xffE63946,
+); // Merah lembut, tidak terlalu mencolok
+const successButtonColor = Color(0xff52B788); // Hijau pastel yang tetap segar
+const warningButtonColor = Color(0xffFFC75F); // Kuning oranye yang lebih hangat
+const infoButtonColor = Color(0xff8ECAE6); // Biru muda yang lebih soft
+const disabledButtonColor = Color(
+  0xffD3D3D3,
+); // Abu-abu lebih lembut untuk tombol nonaktif
 
 // const primaryColor = Color(0xffFF5F00); // Orange terang
 // const secondaryColor = Color(0xff00B4D8); // Biru cerah

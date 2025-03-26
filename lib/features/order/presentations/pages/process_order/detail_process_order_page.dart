@@ -62,7 +62,7 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
           child:
               wAnimation.value >= (widget.maxWidthDetail ?? 0)
                   ? Container(
-                    padding: EdgeInsets.all(kDefaultPadding),
+                    margin: anchorRightContent,
                     child: BlocBuilder<OrderProcessBloc, OrderProcessState>(
                       builder: (context, state) {
                         final order = state.order;
@@ -122,15 +122,16 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
                               ],
                             ),
                             Positioned(
-                              bottom: 0,
-                              right: 0,
+                              bottom: kSizeMS,
+                              right: 5,
                               child: Row(
                                 children: [
                                   if (order.orderStatus ==
                                           OrderStatus.waiting ||
                                       order.orderStatus == OrderStatus.process)
                                     GradientButton(
-                                      backgroundColor: order.orderStatus.color,
+                                      backgroundColor:
+                                          order.orderStatus.colorAction,
                                       height: 35,
                                       width: 130,
                                       onPressed: () => onTap(order),

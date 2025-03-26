@@ -39,6 +39,17 @@ enum OrderStatus {
     }
   }
 
+  Color get colorAction {
+    switch (this) {
+      case OrderStatus.waiting:
+        return infoButtonColor;
+      case OrderStatus.process:
+        return successButtonColor;
+      default:
+        throw ArgumentError("$this not available for colorAction");
+    }
+  }
+
   String get valueAction {
     switch (this) {
       case OrderStatus.waiting:
