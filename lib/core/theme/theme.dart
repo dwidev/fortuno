@@ -48,8 +48,9 @@ ThemeData get lightTheme {
       brightness: Brightness.light,
     ),
     appBarTheme: AppBarTheme(
-      backgroundColor: whiteColor,
-      titleTextStyle: textTheme.titleLarge?.copyWith(color: primaryColor),
+      backgroundColor: Colors.transparent,
+      titleTextStyle: textTheme.titleLarge?.copyWith(color: darkColor),
+      actionsPadding: anchorRightContent * 2,
     ),
     textTheme: textTheme,
     iconTheme: IconThemeData(color: darkColor, size: 15),

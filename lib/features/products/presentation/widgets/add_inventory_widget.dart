@@ -1,8 +1,11 @@
 import 'package:dotted_border/dotted_border.dart';
+
 import 'package:fortuno/core/core.dart';
 
 class AddInventoryWidget extends StatelessWidget {
-  const AddInventoryWidget({super.key});
+  const AddInventoryWidget({super.key, required this.onTap});
+
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +16,7 @@ class AddInventoryWidget extends StatelessWidget {
       color: lightGrey4,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () {},
+        onTap: onTap,
         child: Ink(
           height: 150,
           width: double.infinity,

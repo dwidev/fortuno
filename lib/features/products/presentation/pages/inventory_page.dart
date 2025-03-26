@@ -29,53 +29,43 @@ class _InvetoryPageState extends State<InvetoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        title: Text("Inventaris"),
+        actions: [
+          SizedBox(
+            width: context.width / 4,
+            child: TextFormFieldWidget(
+              title: "",
+              controller: TextEditingController(),
+              hintText: "Cari berdasarkan nama, order, atau lainnya",
+            ),
+          ),
+        ],
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(kBottomNavigationBarHeight),
+          child: CustomTab(
+            currentIndex: activeMenu,
+            menus: ["Kategori", "Product", "Package"],
+            changeMenu: (index) {
+              setState(() {
+                activeMenu = index;
+              });
+            },
+          ),
+        ),
+      ),
       body: BaseListenerWidget<ProductsBloc, ProductState>(
         builder: (context, bloc, state) {
-          return Column(
-            children: [
-              /// APP BAR
-              Container(
-                margin: anchorCustomAppBar.addTopHeightMenubar(context),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "Inventaris",
-                            style: context.textTheme.titleLarge,
-                          ),
-                        ),
-                        SizedBox(
-                          width: context.width / 3,
-                          child: TextFormFieldWidget(
-                            title: "",
-                            controller: TextEditingController(),
-                            hintText:
-                                "Cari berdasarkan nama, order, atau lainnya",
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: kSizeSS),
-                    CustomTab(
-                      currentIndex: activeMenu,
-                      menus: ["Kategori", "Product", "Package"],
-                      changeMenu: (index) {
-                        setState(() {
-                          activeMenu = index;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-
-              /// CONTENT
-              /// CATEGORY
-              if (activeMenu == 0) Expanded(child: CategoryProductViewPage()),
-            ],
+          return Container(
+            margin: anchorTopContent,
+            child: Column(
+              children: [
+                /// CONTENT
+                /// CATEGORY
+                if (activeMenu == 0) Expanded(child: CategoryProductViewPage()),
+              ],
+            ),
           );
         },
       ),
