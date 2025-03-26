@@ -448,7 +448,15 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                                                     ? 2
                                                     : 4,
                                             child: GradientButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                context
+                                                    .read<OrderProcessBloc>()
+                                                    .add(
+                                                      ShowInvoiceOrder(
+                                                        order: order,
+                                                      ),
+                                                    );
+                                              },
                                               isGradient: true,
                                               child: Text("Invoice"),
                                             ),
