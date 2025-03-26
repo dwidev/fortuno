@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../../../core/core.dart';
@@ -14,15 +15,35 @@ class ProductCardWidget extends StatefulWidget {
     this.isInventory = false,
     this.onNonActive,
     this.width,
+    this.height,
+    this.isPreview = false,
+    this.imagePreview,
+  });
+
+  const ProductCardWidget.preview({
+    super.key,
+    this.quantity = 0,
+    required this.product,
+    required this.onTap,
+    this.isDisable = false,
+    this.isInventory = false,
+    this.onNonActive,
+    this.width,
+    this.height,
+    this.isPreview = true,
+    this.imagePreview,
   });
 
   final double? width;
+  final double? height;
   final int quantity;
   final Product product;
   final VoidCallback onTap;
   final bool isDisable;
   final bool isInventory;
   final Function(bool value)? onNonActive;
+  final bool isPreview;
+  final Uint8List? imagePreview;
 
   @override
   State<ProductCardWidget> createState() => _ProductCardWidgetState();
@@ -32,6 +53,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
   var active = false;
 
   bool get isDisable => widget.isDisable || !active;
+
+  bool get isImagePreview => widget.imagePreview == null && widget.isPreview;
 
   @override
   void initState() {
@@ -53,6 +76,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                 );
               },
       child: CustomCard(
+        width: widget.width,
+        height: widget.height,
         padding: anchorAllContent.min(10),
         constraints: BoxConstraints(minHeight: 100),
         child: Column(
@@ -61,24 +86,33 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
             Stack(
               children: [
                 Container(
-                  width: widget.width ?? double.infinity,
+                  width: double.infinity,
                   height: 130,
                   decoration: BoxDecoration(
+                    color: isImagePreview ? lightGrey8 : null,
                     borderRadius: BorderRadius.circular(kSizeMS),
                   ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(kSizeMS),
-                    child: ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        isDisable ? Colors.grey : Colors.transparent,
-                        isDisable ? BlendMode.saturation : BlendMode.dst,
-                      ),
-                      child: Image.network(
-                        "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                  child:
+                      isImagePreview
+                          ? Offstage()
+                          : ClipRRect(
+                            borderRadius: BorderRadius.circular(kSizeMS),
+                            child: ColorFiltered(
+                              colorFilter: ColorFilter.mode(
+                                isDisable ? Colors.grey : Colors.transparent,
+                                isDisable
+                                    ? BlendMode.saturation
+                                    : BlendMode.dst,
+                              ),
+                              child:
+                                  isImagePreview
+                                      ? Image.memory(widget.imagePreview!)
+                                      : Image.network(
+                                        "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
+                                        fit: BoxFit.cover,
+                                      ),
+                            ),
+                          ),
                 ),
                 if (widget.isInventory)
                   Positioned(
@@ -142,6 +176,13 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        if (widget.isPreview && widget.product.price == 0)
+                          Text(
+                            "Harga produk",
+                            style: context.textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         if (widget.product.price > 0)
                           Text(
                             widget.product.priceFormated,

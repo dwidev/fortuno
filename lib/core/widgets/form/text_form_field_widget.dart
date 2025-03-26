@@ -53,16 +53,6 @@ class TextFormFieldWidget extends StatelessWidget {
           inputFormatters: inputFormatters,
           decoration: InputDecoration(
             enabled: enable,
-            filled: true,
-            fillColor: lightGrey7,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(kSizeMS),
-              borderSide: BorderSide.none,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(kDefaultRadius),
-              borderSide: BorderSide(color: primaryColor),
-            ),
             hintText: hintText.isEmpty ? "Masukan $title" : hintText,
             hintStyle: context.textTheme.bodySmall?.copyWith(color: lightGrey2),
           ),

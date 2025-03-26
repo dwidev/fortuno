@@ -17,9 +17,11 @@ class CustomCard extends Container {
     super.clipBehavior = Clip.none,
     super.child,
     this.border,
+    this.backgroundColor,
   });
 
   final BoxBorder? border;
+  final Color? backgroundColor;
 
   @override
   Decoration? get decoration {
@@ -30,7 +32,7 @@ class CustomCard extends Container {
     if (super.decoration != null) return super.decoration;
 
     return BoxDecoration(
-      color: whiteColor,
+      color: backgroundColor ?? whiteColor,
       borderRadius: BorderRadius.circular(kDefaultRadius * 1.5),
       boxShadow: defaultShadow,
       border: border,

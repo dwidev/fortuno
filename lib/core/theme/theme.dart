@@ -55,8 +55,17 @@ ThemeData get lightTheme {
     textTheme: textTheme,
     iconTheme: IconThemeData(color: darkColor, size: 15),
     inputDecorationTheme: InputDecorationTheme(
-      border: InputBorder.none,
       hintStyle: textTheme.bodySmall?.copyWith(fontSize: 13),
+      filled: true,
+      fillColor: lightGrey7,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(kSizeMS),
+        borderSide: BorderSide.none,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(kDefaultRadius * 0.5),
+        borderSide: BorderSide(color: primaryColor),
+      ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
@@ -81,14 +90,14 @@ ThemeData get lightTheme {
         if (states.contains(WidgetState.selected)) {
           return Colors.white;
         }
-        return Colors.grey.shade400;
+        return lightGrey4;
       }),
       trackColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
           return successButtonColor;
         }
 
-        return Colors.grey.shade300;
+        return lightGrey3;
       }),
       trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
       thumbIcon: WidgetStateProperty.resolveWith((states) {
@@ -96,6 +105,16 @@ ThemeData get lightTheme {
           return Icon(Icons.circle, color: Colors.white, size: 20);
         }
         return null;
+      }),
+    ),
+    checkboxTheme: CheckboxThemeData(
+      side: BorderSide(color: lightGrey4),
+      fillColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return successButtonColor;
+        }
+
+        return lightGrey5;
       }),
     ),
   );

@@ -33,7 +33,7 @@ class GradientButton extends StatelessWidget {
       padding: EdgeInsets.zero,
       margin: EdgeInsets.zero,
       duration: const Duration(milliseconds: 200),
-      // width: width ?? size.width / 1.3,
+      width: width,
       height: height ?? 40,
       decoration: BoxDecoration(
         borderRadius: radius,

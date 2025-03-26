@@ -6,10 +6,12 @@ class InventoryFormWidget extends StatelessWidget {
     required this.title,
     required this.onSave,
     required this.child,
+    this.onDelete,
   });
 
   final String title;
   final VoidCallback onSave;
+  final VoidCallback? onDelete;
   final Widget child;
 
   @override
@@ -25,10 +27,17 @@ class InventoryFormWidget extends StatelessWidget {
               pinned: true,
               elevation: 0,
               actions: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: successButtonColor,
-                  ),
+                GradientButton(
+                  noShadow: true,
+                  backgroundColor: deleteButtonColor,
+                  child: Icon(CupertinoIcons.delete, color: Colors.white),
+                  onPressed: () => onDelete?.call(),
+                ),
+                SizedBox(width: kSizeM),
+                GradientButton(
+                  noShadow: true,
+                  width: 190,
+                  backgroundColor: successButtonColor,
                   onPressed: onSave,
                   child: Text(
                     "Simpan",

@@ -20,6 +20,22 @@ class Product extends Equatable {
     required this.createAt,
   });
 
+  factory Product.init() => Product(
+    id: "id",
+    name: "",
+    code: "",
+    price: 0.0,
+    createAt: DateTime.now().toString(),
+  );
+
+  factory Product.dummy() => Product(
+    id: "id",
+    name: "Nama Product",
+    code: "",
+    price: 120000,
+    createAt: DateTime.now().toString(),
+  );
+
   @override
   List<Object?> get props => [id, name, code, price, createAt];
 
