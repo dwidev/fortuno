@@ -117,6 +117,11 @@ ThemeData get lightTheme {
         return lightGrey5;
       }),
     ),
+    badgeTheme: BadgeThemeData(
+      backgroundColor: primaryColor,
+      textColor: darkColor,
+      padding: EdgeInsets.all(kSizeSS * 0.5),
+    ),
   );
 }
 

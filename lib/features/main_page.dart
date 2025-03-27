@@ -164,20 +164,10 @@ class _SideMenuState extends State<SideMenu> {
                             if (index == 2 &&
                                 index != activeIndex &&
                                 activeIndex != 1)
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 7,
-                                  vertical: 3,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  borderRadius: BorderRadius.circular(
-                                    kDefaultRadius * 2,
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text("2", textAlign: TextAlign.center),
-                                ),
+                              Badge.count(
+                                count: 2,
+                                smallSize: 5,
+                                largeSize: 10,
                               ),
                           ],
                         ),
