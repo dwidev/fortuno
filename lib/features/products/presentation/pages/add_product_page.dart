@@ -111,7 +111,6 @@ class _AddProductPageState extends State<AddProductPage> {
                   ],
                 ),
               ),
-              // Text("data"),
             ],
           ),
         ],
