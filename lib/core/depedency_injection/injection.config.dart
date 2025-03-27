@@ -83,6 +83,8 @@ import 'package:fortuno/features/products/domain/usecases/get_package_by_categor
     as _i359;
 import 'package:fortuno/features/products/domain/usecases/get_products_by_categoryid.dart'
     as _i852;
+import 'package:fortuno/features/products/domain/usecases/get_products_by_company.dart'
+    as _i189;
 import 'package:fortuno/features/products/presentation/bloc/product_bloc.dart'
     as _i722;
 import 'package:fortuno/features/profile/data/datasource/company_datasource.dart'
@@ -247,6 +249,12 @@ extension GetItInjectableX on _i174.GetIt {
         productsRepository: gh<_i1028.ProductsRepository>(),
       ),
     );
+    gh.lazySingleton<_i189.GetProductsByCompany>(
+      () => _i189.GetProductsByCompany(
+        productsRepository: gh<_i1028.ProductsRepository>(),
+        companyRepository: gh<_i1060.CompanyRepository>(),
+      ),
+    );
     gh.factory<_i955.OrderProcessBloc>(
       () => _i955.OrderProcessBloc(
         getOrdersByCompanyId: gh<_i1028.GetOrdersByCompanyId>(),
@@ -261,15 +269,16 @@ extension GetItInjectableX on _i174.GetIt {
         getPackageByCategoryid: gh<_i359.GetPackageByCategoryid>(),
       ),
     );
+    gh.factory<_i184.CartBloc>(
+      () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
+    );
     gh.factory<_i722.ProductsBloc>(
       () => _i722.ProductsBloc(
         getCategoryByCompanyId: gh<_i436.GetCategoryByCompanyId>(),
+        getProductsByCompany: gh<_i189.GetProductsByCompany>(),
         getProductsByCategoryId: gh<_i852.GetProductsByCategoryId>(),
         getPackageByCategoryid: gh<_i359.GetPackageByCategoryid>(),
       ),
-    );
-    gh.factory<_i184.CartBloc>(
-      () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
     );
     return this;
   }

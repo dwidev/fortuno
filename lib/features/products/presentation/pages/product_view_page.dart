@@ -1,22 +1,20 @@
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:fortuno/features/products/presentation/pages/add_category_product_page.dart';
-import 'package:fortuno/features/products/presentation/pages/add_product_page.dart';
 
 import '../../../../core/core.dart';
 import '../../../order/presentations/widgets/loading_product_widget.dart';
 import '../../../order/presentations/widgets/product_card_widget.dart';
 import '../bloc/product_bloc.dart';
 import '../widgets/add_inventory_widget.dart';
+import 'add_product_page.dart';
 
-class CategoryProductViewPage extends StatefulWidget {
-  const CategoryProductViewPage({super.key});
+class ProductViewPage extends StatefulWidget {
+  const ProductViewPage({super.key});
 
   @override
-  State<CategoryProductViewPage> createState() =>
-      _CategoryProductViewPageState();
+  State<ProductViewPage> createState() => _ProductViewPageState();
 }
 
-class _CategoryProductViewPageState extends State<CategoryProductViewPage> {
+class _ProductViewPageState extends State<ProductViewPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductsBloc, ProductState>(
@@ -25,7 +23,7 @@ class _CategoryProductViewPageState extends State<CategoryProductViewPage> {
           return LoadingProductWidget(crossAxisCount: 5);
         }
 
-        if (state.categories.isEmpty) {
+        if (state.products.isEmpty) {
           return Offstage();
         }
 
@@ -33,7 +31,7 @@ class _CategoryProductViewPageState extends State<CategoryProductViewPage> {
           padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
           crossAxisSpacing: kSizeMS,
           mainAxisSpacing: kSizeMS,
-          itemCount: state.categories.length + 1,
+          itemCount: state.products.length + 1,
           gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 5,
           ),
@@ -41,11 +39,11 @@ class _CategoryProductViewPageState extends State<CategoryProductViewPage> {
             if (index == 0) {
               return AddInventoryWidget(
                 onTap: () {
-                  context.push(AddCategoryProductPage.path);
+                  context.push(AddProductPage.path);
                 },
               );
             }
-            final category = state.categories[index - 1];
+            final category = state.products[index - 1];
             return ProductCardWidget(
               product: category,
               quantity: 0,
