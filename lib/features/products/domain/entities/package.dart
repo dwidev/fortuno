@@ -25,6 +25,16 @@ class Package extends Equatable {
     required this.items,
   });
 
+  factory Package.dummy() => Package(
+    id: "id",
+    name: "Nama Package",
+    code: "code",
+    price: 16000,
+    isActive: true,
+    createAt: DateTime.now().toString(),
+    items: [Product.dummy(), Product.dummy(), Product.dummy(), Product.dummy()],
+  );
+
   Package copyWith({
     String? id,
     String? name,

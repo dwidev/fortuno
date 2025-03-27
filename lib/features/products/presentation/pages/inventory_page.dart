@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fortuno/features/products/presentation/pages/category_product_view_page.dart';
+import 'package:fortuno/features/products/presentation/pages/package_view_page.dart';
 import 'package:fortuno/features/products/presentation/pages/product_view_page.dart';
 
 import '../../../../core/core.dart';
@@ -66,8 +67,11 @@ class _InvetoryPageState extends State<InvetoryPage> {
                 /// CATEGORY
                 if (activeMenu == 0) Expanded(child: CategoryProductViewPage()),
 
-                /// CATEGORY
+                /// PRODUCT
                 if (activeMenu == 1) Expanded(child: ProductViewPage()),
+
+                /// PACKAGE
+                if (activeMenu == 2) Expanded(child: PackageViewPage()),
               ],
             ),
           );

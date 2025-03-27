@@ -1,15 +1,14 @@
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:fortuno/core/widgets/custom_tab.dart';
-import '../../bloc/cart/cart_bloc.dart';
-import 'cart/cart_order_page.dart';
 
 import '../../../../../core/core.dart';
+import '../../bloc/cart/cart_bloc.dart';
 import '../../bloc/order/order_bloc.dart';
 import '../../widgets/header_create_order_widget.dart';
 import '../../widgets/loading_product_widget.dart';
 import '../../widgets/order_listener_widget.dart';
 import '../../widgets/package_list_widget.dart';
 import '../../widgets/product_card_widget.dart';
+import 'cart/cart_order_page.dart';
 
 class CreateOrderPage extends StatefulWidget {
   static const path = '/create-order';
@@ -64,11 +63,11 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                       ),
                     ),
 
-                  if (activeMenu == "Package" && state is AtProductPage)
+                  if (activeMenu == 0 && state is AtProductPage)
                     /// PACKAGE LIST
                     Expanded(child: PackageListWidget()),
 
-                  if (activeMenu == "Product" || state is! AtProductPage)
+                  if (activeMenu == 1 || state is! AtProductPage)
                     /// CATEGORY & PRODUCT LIST
                     Expanded(
                       child: BlocBuilder<OrderBloc, OrderState>(
