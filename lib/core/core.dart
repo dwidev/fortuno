@@ -14,5 +14,6 @@ export 'dialogs/dialogs.dart';
 export 'constants/lottie_assets.dart';
 export 'router/main_route.dart';
 export 'utils/formatter.dart';
+export 'utils/colors_gen.dart';
 export '../../../../../core/failures/failure.dart';
 export '../../../../../core/bloc/base_bloc.dart';

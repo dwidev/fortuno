@@ -43,9 +43,10 @@ class _ProductViewPageState extends State<ProductViewPage> {
                 },
               );
             }
-            final category = state.products[index - 1];
+
+            final product = state.products[index - 1];
             return ProductCardWidget(
-              product: category,
+              product: product,
               quantity: 0,
               onTap: () {},
               isInventory: true,

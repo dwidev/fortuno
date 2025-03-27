@@ -26,7 +26,7 @@ class _PackageViewPageState extends State<PackageViewPage> {
           return LoadingProductWidget(crossAxisCount: 5);
         }
 
-        if (state.products.isEmpty) {
+        if (state.packages.isEmpty) {
           return Offstage();
         }
 
@@ -34,7 +34,7 @@ class _PackageViewPageState extends State<PackageViewPage> {
           padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
           crossAxisSpacing: kSizeMS,
           mainAxisSpacing: kSizeMS,
-          itemCount: state.products.length + 1,
+          itemCount: state.packages.length + 1,
           gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 4,
           ),
@@ -46,10 +46,11 @@ class _PackageViewPageState extends State<PackageViewPage> {
                 },
               );
             }
-            final category = state.products[index - 1];
+
+            final package = state.packages[index - 1];
 
             return PackageCardWidget(
-              package: Package.dummy(),
+              package: package,
               quantity: 0,
               disable: false,
               onTap: () {},

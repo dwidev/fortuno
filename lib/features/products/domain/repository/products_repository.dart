@@ -8,4 +8,5 @@ abstract class ProductsRepository {
   Future<List<Product>> getProductByCategory({required String categoryId});
   Future<List<Product>> getProductByCompany({required String companyId});
   Future<List<Package>> getPackageByCategory({required String categoryId});
+  Future<List<Package>> getPackageByCompany({required String companyId});
 }

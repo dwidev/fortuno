@@ -53,4 +53,13 @@ class ProductsRepositoryImpl implements ProductsRepository {
     final result = response.map((e) => e.toEntity()).toList();
     return result;
   }
+
+  @override
+  Future<List<Package>> getPackageByCompany({required String companyId}) async {
+    final response = await productsDatasource.getPackageByCompany(
+      companyId: companyId,
+    );
+    final result = response.map((e) => e.toEntity()).toList();
+    return result;
+  }
 }

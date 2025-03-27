@@ -8,4 +8,5 @@ abstract class ProductsDatasource {
   Future<List<ProductModel>> getProductByCategory({required String categoryId});
   Future<List<ProductModel>> getProductByCompany({required String companyId});
   Future<List<PackageModel>> getPackageByCategory({required String categoryId});
+  Future<List<PackageModel>> getPackageByCompany({required String companyId});
 }

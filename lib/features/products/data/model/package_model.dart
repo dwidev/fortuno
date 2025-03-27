@@ -1,9 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import '../../../../core/models/base_model.dart';
-import 'product_model.dart';
+import 'package:fortuno/features/products/data/model/category_model.dart';
 
+import '../../../../core/models/base_model.dart';
 import '../../domain/entities/package.dart';
+import 'product_model.dart';
 
 class PackageModel extends BaseModel<Package> {
   final String id;
@@ -12,6 +14,7 @@ class PackageModel extends BaseModel<Package> {
   final double price;
   final bool isActive;
   final String createAt;
+  final CategoryModel? categoryModel;
   final List<ProductModel> productModel;
 
   PackageModel({
@@ -21,6 +24,7 @@ class PackageModel extends BaseModel<Package> {
     required this.price,
     required this.isActive,
     required this.createAt,
+    required this.categoryModel,
     required this.productModel,
   });
 
@@ -34,6 +38,7 @@ class PackageModel extends BaseModel<Package> {
       isActive: isActive,
       createAt: createAt,
       items: productModel.map((e) => e.toEntity()).toList(),
+      category: categoryModel?.toEntity(),
     );
   }
 
@@ -64,6 +69,10 @@ class PackageModel extends BaseModel<Package> {
           (x) => ProductModel.fromMap(x as Map<String, dynamic>),
         ),
       ),
+      categoryModel:
+          map['category'] != null
+              ? CategoryModel.fromMap(map['category'])
+              : null,
     );
   }
 

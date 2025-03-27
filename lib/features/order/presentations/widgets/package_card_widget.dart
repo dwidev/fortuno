@@ -73,11 +73,22 @@ class PackageCardWidget extends StatelessWidget {
                 ),
                 SizedBox(width: kSizeS),
                 Expanded(
-                  child: Text(
-                    package.name,
-                    style: context.textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        package.name,
+                        style: context.textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: kSizeS),
+                      if ((package.category?.name ?? "").isNotEmpty)
+                        TextBadgeWidget(
+                          text: package.category?.name ?? "",
+                          color: getValueColor(package.category?.name ?? ""),
+                        ),
+                    ],
                   ),
                 ),
               ],

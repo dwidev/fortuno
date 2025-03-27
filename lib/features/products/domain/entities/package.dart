@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
+
 import 'package:fortuno/core/utils/formatter.dart';
 import 'package:fortuno/features/products/domain/entities/category.dart';
 import 'package:fortuno/features/products/domain/entities/product.dart';
@@ -10,6 +12,7 @@ class Package extends Equatable {
   final double price;
   final bool isActive;
   final String createAt;
+  final CategoryProduct? category;
   final List<Product> items;
 
   String get contents => items.map((e) => e.name).join(", ");
@@ -22,6 +25,7 @@ class Package extends Equatable {
     required this.price,
     required this.isActive,
     required this.createAt,
+    required this.category,
     required this.items,
   });
 
@@ -33,6 +37,7 @@ class Package extends Equatable {
     isActive: true,
     createAt: DateTime.now().toString(),
     items: [Product.dummy(), Product.dummy(), Product.dummy(), Product.dummy()],
+    category: CategoryProduct.initial(),
   );
 
   Package copyWith({
@@ -52,13 +57,14 @@ class Package extends Equatable {
       price: price ?? this.price,
       isActive: isActive ?? this.isActive,
       createAt: createAt ?? this.createAt,
+      category: category ?? this.category,
       items: items ?? this.items,
     );
   }
 
   @override
-  List<Object> get props {
-    return [id, name, code, price, isActive, createAt, items];
+  List<Object?> get props {
+    return [id, name, code, price, isActive, createAt, category, items];
   }
 
   @override

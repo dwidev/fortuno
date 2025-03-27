@@ -78,4 +78,16 @@ class ProductNosqlDatasource extends ProductsDatasource {
     final result = response.map((e) => ProductModel.fromMap(e)).toList();
     return result;
   }
+
+  @override
+  Future<List<PackageModel>> getPackageByCompany({
+    required String companyId,
+  }) async {
+    final params = <String, String>{"company_uuid": companyId};
+    final response =
+        await client.rpc('get_packages_by_company', params: params).select();
+
+    final result = response.map((e) => PackageModel.fromMap(e)).toList();
+    return result;
+  }
 }

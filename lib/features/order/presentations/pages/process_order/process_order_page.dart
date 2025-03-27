@@ -264,25 +264,9 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                                             ),
                                           ),
                                           SizedBox(width: kSizeM),
-                                          Container(
-                                            padding: EdgeInsets.all(kSizeSS),
-                                            decoration: BoxDecoration(
-                                              color: order.orderStatus.color
-                                                  .withAlpha(50),
-                                              borderRadius:
-                                                  BorderRadius.circular(kSizeS),
-                                            ),
-                                            child: Text(
-                                              order.orderStatus.name,
-                                              style: context
-                                                  .textTheme
-                                                  .labelSmall
-                                                  ?.copyWith(
-                                                    color:
-                                                        order.orderStatus.color,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                            ),
+                                          TextBadgeWidget(
+                                            text: order.orderStatus.name,
+                                            color: order.orderStatus.color,
                                           ),
                                         ],
                                       ),
