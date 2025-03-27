@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortuno/core/usecases/base_usecase.dart';
@@ -28,6 +30,7 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
     required this.getPackagesByCompany,
   }) : super(ProductInitial()) {
     on<OnInitInvetoryPageEvent>(_onInit);
+    on<OnAddProduct>(_onAddProduct);
   }
 
   Future<void> _onInit(OnInitInvetoryPageEvent event, Emitter emit) async {
@@ -69,5 +72,13 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
       packages: packages,
     );
     emit(newState);
+  }
+
+  Future<void> _onAddProduct(OnAddProduct event, Emitter emit) async {}
+
+  @override
+  Future<void> close() {
+    log("CLOSE $runtimeType");
+    return super.close();
   }
 }

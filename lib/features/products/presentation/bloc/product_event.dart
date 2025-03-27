@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'product_bloc.dart';
 
 sealed class ProductEvent extends BaseEvent {
@@ -9,4 +10,9 @@ sealed class ProductEvent extends BaseEvent {
 
 class OnInitInvetoryPageEvent extends ProductEvent {
   const OnInitInvetoryPageEvent();
+}
+
+class OnAddProduct extends ProductEvent {
+  final Product product;
+  const OnAddProduct(this.product);
 }

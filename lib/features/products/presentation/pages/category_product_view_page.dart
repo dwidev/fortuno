@@ -41,7 +41,7 @@ class _CategoryProductViewPageState extends State<CategoryProductViewPage> {
             if (index == 0) {
               return AddInventoryWidget(
                 onTap: () {
-                  context.push(AddCategoryProductPage.path);
+                  context.pushNamed(AddCategoryProductPage.path);
                 },
               );
             }

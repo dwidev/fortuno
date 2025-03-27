@@ -35,11 +35,11 @@ class _ProductViewPageState extends State<ProductViewPage> {
           gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 5,
           ),
-          itemBuilder: (context, index) {
+          itemBuilder: (_, index) {
             if (index == 0) {
               return AddInventoryWidget(
                 onTap: () {
-                  context.push(AddProductPage.path);
+                  context.pushNamed(AddProductPage.path);
                 },
               );
             }

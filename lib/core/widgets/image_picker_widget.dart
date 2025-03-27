@@ -13,13 +13,13 @@ class ImagePickerWidget extends StatelessWidget {
       color: lightGrey3,
       child: InkWell(
         onTap: () {},
-        borderRadius: BorderRadius.circular(kDefaultRadius),
+        borderRadius: BorderRadius.circular(kDefaultRadius * 0.8),
         child: Ink(
-          width: 120,
-          height: 120,
+          width: 75,
+          height: 75,
           decoration: BoxDecoration(
             color: lightGrey5,
-            borderRadius: BorderRadius.circular(kDefaultRadius),
+            borderRadius: BorderRadius.circular(kDefaultRadius * 0.8),
           ),
           child: Center(
             child: Text(

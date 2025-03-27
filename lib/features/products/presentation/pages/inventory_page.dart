@@ -1,15 +1,9 @@
-import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:fortuno/features/products/presentation/pages/category_product_view_page.dart';
-import 'package:fortuno/features/products/presentation/pages/package_view_page.dart';
-import 'package:fortuno/features/products/presentation/pages/product_view_page.dart';
-
 import '../../../../core/core.dart';
-import '../../../../core/widgets/custom_tab.dart';
 import '../../../../core/widgets/form/text_form_field_widget.dart';
-import '../../../order/presentations/widgets/loading_product_widget.dart';
-import '../../../order/presentations/widgets/product_card_widget.dart';
 import '../bloc/product_bloc.dart';
+import 'category_product_view_page.dart';
+import 'package_view_page.dart';
+import 'product_view_page.dart';
 
 class InvetoryPage extends StatefulWidget {
   static const path = '/inventory-page';

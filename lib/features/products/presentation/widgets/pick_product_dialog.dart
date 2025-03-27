@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../../../../core/core.dart';
@@ -6,8 +7,16 @@ import '../../domain/entities/product.dart';
 
 class PickProductDialogOpts {
   final String title;
+  final List<Product> data;
+  final List<Product> selectedData;
+  final Function(Product product)? onChange;
 
-  PickProductDialogOpts({required this.title});
+  PickProductDialogOpts({
+    required this.title,
+    required this.data,
+    required this.selectedData,
+    this.onChange,
+  });
 }
 
 Future<T?> showPickProductDialog<T>({
@@ -46,7 +55,6 @@ class _PickProductDialogState extends State<_PickProductDialog> {
   Widget build(BuildContext context) {
     return Container(
       width: context.width / 1.5,
-      // height: context.height / 3,
       padding: EdgeInsets.all(kDefaultPadding),
       decoration: BoxDecoration(
         color: whiteColor,
@@ -80,13 +88,15 @@ class _PickProductDialogState extends State<_PickProductDialog> {
                   padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
                   crossAxisSpacing: kSizeMS,
                   mainAxisSpacing: kSizeMS,
-                  itemCount: 25,
+                  itemCount: widget.opts.data.length,
                   gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 5,
                   ),
                   itemBuilder: (context, index) {
+                    final product = widget.opts.data[index];
+
                     return ProductCardWidget.picker(
-                      product: Product.dummy(),
+                      product: product,
                       onTap: () {},
                     );
                   },

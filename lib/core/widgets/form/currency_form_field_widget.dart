@@ -32,14 +32,6 @@ class CurrencyFormFieldWidget extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (title.isNotEmpty)
-              Text(
-                title,
-                style: context.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            if (title.isNotEmpty) SizedBox(height: kSizeMS),
             TextFormFieldWidget(
               enable: enable,
               title: title,
@@ -50,7 +42,7 @@ class CurrencyFormFieldWidget extends StatelessWidget {
               validator: (value) {
                 final value = _formatter.getUnformattedValue();
 
-                if (value < 0) {
+                if (value <= 0) {
                   return hintText;
                 }
 

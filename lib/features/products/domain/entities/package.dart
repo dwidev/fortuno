@@ -37,7 +37,7 @@ class Package extends Equatable {
     isActive: true,
     createAt: DateTime.now().toString(),
     items: [Product.dummy(), Product.dummy(), Product.dummy(), Product.dummy()],
-    category: CategoryProduct.initial(),
+    category: CategoryProduct.initial(name: "Category"),
   );
 
   Package copyWith({
