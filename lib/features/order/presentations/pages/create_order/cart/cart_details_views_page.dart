@@ -18,18 +18,6 @@ class CartDetailsViewPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.only(top: kSizeS),
-            child: Text(
-              "Rincian pesanan",
-              style: context.textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: mustardYellow,
-              ),
-            ),
-          ),
-          SizedBox(height: kSizeMS),
-          Divider(),
           BlocBuilder<CartBloc, CartState>(
             builder: (context, state) {
               if (state.items.isEmpty) {
@@ -53,6 +41,7 @@ class CartDetailsViewPage extends StatelessWidget {
               }
 
               return ListView.builder(
+                padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 itemCount: state.items.length,
                 physics: NeverScrollableScrollPhysics(),
@@ -63,21 +52,12 @@ class CartDetailsViewPage extends StatelessWidget {
               );
             },
           ),
-          SizedBox(height: kSizeMS * 1.5),
-          Text(
-            "Data Pemesan",
-            style: context.textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: mustardYellow,
-            ),
-          ),
+          SizedBox(height: kSizeMS * 1.2),
           Form(
             autovalidateMode: AutovalidateMode.onUserInteraction,
             key: bloc.formKey,
             child: Column(
               children: [
-                SizedBox(height: kSizeMS),
-                Divider(),
                 SizedBox(height: kSizeMS),
                 TextFormFieldWidget(
                   controller: bloc.nameController,

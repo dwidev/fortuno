@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import '../../core.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
@@ -14,6 +16,7 @@ class TextFormFieldWidget extends StatelessWidget {
     this.keyboardType,
     this.onChanged,
     this.onEditingComplete,
+    this.inputFormatters,
   });
 
   final TextEditingController? controller;
@@ -27,6 +30,7 @@ class TextFormFieldWidget extends StatelessWidget {
   final TextInputType? keyboardType;
   final Function(String value)? onChanged;
   final Function(String value)? onEditingComplete;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,7 @@ class TextFormFieldWidget extends StatelessWidget {
         if (title.isNotEmpty)
           Text(
             title,
-            style: context.textTheme.bodyMedium?.copyWith(
+            style: context.textTheme.bodySmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -46,22 +50,13 @@ class TextFormFieldWidget extends StatelessWidget {
           controller: controller,
           initialValue: initialValue,
           maxLines: maxLines,
+          inputFormatters: inputFormatters,
           decoration: InputDecoration(
             enabled: enable,
-            filled: true,
-            fillColor: darkLightColor,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(kSizeMS),
-              borderSide: BorderSide.none,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: lemonChiffonColor),
-            ),
             hintText: hintText.isEmpty ? "Masukan $title" : hintText,
-            hintStyle: TextStyle(color: darkColor.withAlpha(100)),
+            hintStyle: context.textTheme.bodySmall?.copyWith(color: lightGrey2),
           ),
-          style: TextStyle(color: darkColor),
+          style: context.textTheme.bodySmall,
           validator: (value) {
             if (optional) return null;
 

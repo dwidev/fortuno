@@ -34,7 +34,7 @@ class _TimeFormPickerWidgetState extends State<TimeFormPickerWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        InkWell(
+        GestureDetector(
           onTap: () async {
             final time = await showTimePicker(
               context: context,

@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fortuno/features/order/presentations/pages/create_order/cart/cart_create_order_view_page_header.dart';
+import 'package:fortuno/features/order/presentations/pages/create_order/cart/cart_details_view_page_header.dart';
 import 'package:fortuno/features/order/presentations/widgets/process_cart_order_dialog.dart';
 
 import '../../../../../../core/core.dart';
@@ -32,10 +34,16 @@ class _CartOrderPageState extends State<CartOrderPage>
     with TickerProviderStateMixin {
   late TabController tabController;
 
+  final tabDuration = 300.ms;
+
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 2, vsync: this);
+    tabController = TabController(
+      length: 2,
+      vsync: this,
+      animationDuration: tabDuration,
+    );
   }
 
   @override
@@ -113,56 +121,66 @@ class _CartOrderPageState extends State<CartOrderPage>
         }
       },
       builder: (context, bloc, state) {
-        return Container(
+        return SizedBox(
           height: double.infinity,
-          color: Colors.white,
           child: Stack(
             children: [
-              TabBarView(
-                controller: tabController,
-                physics: NeverScrollableScrollPhysics(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: kDefaultPadding * 2,
-                      horizontal: kDefaultPadding,
-                    ),
-                    child: CartDetailsViewPage(),
+                  AnimatedSwitcher(
+                    transitionBuilder: (
+                      Widget child,
+                      Animation<double> animation,
+                    ) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: SlideTransition(
+                          position: Tween<Offset>(
+                            begin: Offset(1.0, 0.0),
+                            end: Offset.zero,
+                          ).animate(animation),
+                          child: child,
+                        ),
+                      );
+                    },
+                    duration: tabDuration * 1.5,
+                    child:
+                        tabController.index == 0
+                            ? CartDetailsViewPageHeader()
+                            : CartCreateOrderViewPageHeader(onBack: onBack),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: kDefaultPadding * 2,
-                      horizontal: kDefaultPadding,
+                  Expanded(
+                    child: TabBarView(
+                      controller: tabController,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: [
+                        CartDetailsViewPage(),
+                        CartCreateOrderViewPage(),
+                      ],
                     ),
-                    child: CartCreateOrderViewPage(onBack: onBack),
                   ),
                 ],
               ),
               if (!context.isKeyboardOpen)
                 Positioned(
-                  bottom: 0,
-                  right: 0,
+                  bottom: kSizeM,
+                  right: kSizeM,
                   left: 0,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: kSizeML,
-                      horizontal: kSizeML,
-                    ),
-                    child: GradientButton(
-                      onPressed: onTapOder,
-                      height: kSizeXXL,
-                      child: AnimatedSwitcher(
-                        duration: Duration(milliseconds: 500),
-                        switchInCurve: Curves.easeIn,
-                        switchOutCurve: Curves.easeOut,
-                        child: Text(
-                          tabController.index == 0
-                              ? "Proses Order"
-                              : "Buat Order",
-                          style: context.textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: darkColor,
-                          ),
+                  child: GradientButton(
+                    onPressed: onTapOder,
+                    height: kSizeXXL,
+                    child: AnimatedSwitcher(
+                      duration: Duration(milliseconds: 500),
+                      switchInCurve: Curves.easeIn,
+                      switchOutCurve: Curves.easeOut,
+                      child: Text(
+                        tabController.index == 0
+                            ? "Proses Order"
+                            : "Buat Order",
+                        style: context.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: darkColor,
                         ),
                       ),
                     ),

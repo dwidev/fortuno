@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:fortuno/core/utils/formatter.dart';
 import 'package:fortuno/features/products/domain/entities/category.dart';
 import 'package:fortuno/features/products/domain/entities/product.dart';
 
@@ -12,6 +13,7 @@ class Package extends Equatable {
   final List<Product> items;
 
   String get contents => items.map((e) => e.name).join(", ");
+  String get priceFormated => moneyFormatter(price);
 
   const Package({
     required this.id,

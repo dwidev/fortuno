@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
@@ -73,5 +75,11 @@ class AuthBloc extends BaseAppBloc<AuthEvent, AuthState> {
         }
       },
     );
+  }
+
+  @override
+  Future<void> close() {
+    log("DISPOSING AUTH BLOC");
+    return super.close();
   }
 }

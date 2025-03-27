@@ -63,8 +63,12 @@ import 'package:fortuno/features/payments/data/repository/payment_repository_imp
     as _i1063;
 import 'package:fortuno/features/payments/domain/repository/payment_repository.dart'
     as _i721;
+import 'package:fortuno/features/payments/domain/usecase/get_invoice_number.dart'
+    as _i922;
+import 'package:fortuno/features/payments/domain/usecase/save_payment.dart'
+    as _i931;
 import 'package:fortuno/features/payments/domain/usecase/show_invoice.dart'
-    as _i888;
+    as _i837;
 import 'package:fortuno/features/products/data/datasources/product_nosql_datasource.dart'
     as _i294;
 import 'package:fortuno/features/products/data/datasources/products_datasource.dart'
@@ -79,6 +83,10 @@ import 'package:fortuno/features/products/domain/usecases/get_package_by_categor
     as _i359;
 import 'package:fortuno/features/products/domain/usecases/get_products_by_categoryid.dart'
     as _i852;
+import 'package:fortuno/features/products/domain/usecases/get_products_by_company.dart'
+    as _i189;
+import 'package:fortuno/features/products/presentation/bloc/product_bloc.dart'
+    as _i722;
 import 'package:fortuno/features/profile/data/datasource/company_datasource.dart'
     as _i536;
 import 'package:fortuno/features/profile/data/datasource/company_local_datasource.dart'
@@ -123,11 +131,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i401.PaymentDatasource>(
       () => _i233.PaymentNosqlDatasource(client: gh<_i454.SupabaseClient>()),
     );
-    gh.lazySingleton<_i721.PaymentRepostiroy>(
-      () => _i1063.PaymentRepostiroyImpl(
-        paymentDatasource: gh<_i401.PaymentDatasource>(),
-      ),
-    );
     gh.lazySingleton<_i1028.ProductsRepository>(
       () => _i587.ProductsRepositoryImpl(
         productsDatasource: gh<_i79.ProductsDatasource>(),
@@ -158,11 +161,6 @@ extension GetItInjectableX on _i174.GetIt {
         preference: gh<_i968.ILocalStorage>(instanceName: 'shared-pref'),
       ),
     );
-    gh.lazySingleton<_i436.GetCategoryByCompanyId>(
-      () => _i436.GetCategoryByCompanyId(
-        productsRepository: gh<_i1028.ProductsRepository>(),
-      ),
-    );
     gh.lazySingleton<_i852.GetProductsByCategoryId>(
       () => _i852.GetProductsByCategoryId(
         productsRepository: gh<_i1028.ProductsRepository>(),
@@ -173,18 +171,13 @@ extension GetItInjectableX on _i174.GetIt {
         productsRepository: gh<_i1028.ProductsRepository>(),
       ),
     );
-    gh.lazySingleton<_i888.ShowInvoice>(
-      () => _i888.ShowInvoice(paymentRepostiroy: gh<_i721.PaymentRepostiroy>()),
-    );
     gh.lazySingleton<_i968.ILocalStorage>(
       () => _i13.SharedPrefStorage(preferences: gh<_i460.SharedPreferences>()),
       instanceName: 'shared-pref',
     );
-    gh.factory<_i886.OrderBloc>(
-      () => _i886.OrderBloc(
-        getCategoryByCompanyId: gh<_i436.GetCategoryByCompanyId>(),
-        getProductsByCategoryId: gh<_i852.GetProductsByCategoryId>(),
-        getPackageByCategoryid: gh<_i359.GetPackageByCategoryid>(),
+    gh.lazySingleton<_i721.PaymentRepository>(
+      () => _i1063.PaymentRepositoryImpl(
+        paymentDatasource: gh<_i401.PaymentDatasource>(),
       ),
     );
     gh.lazySingleton<_i536.CompanyDatasource>(
@@ -218,8 +211,21 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.lazySingleton<_i211.UpdateStatusOrder>(
-      () =>
-          _i211.UpdateStatusOrder(orderRepository: gh<_i996.OrderRepository>()),
+      () => _i211.UpdateStatusOrder(
+        orderRepository: gh<_i996.OrderRepository>(),
+        paymentRepository: gh<_i721.PaymentRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i837.ShowInvoice>(
+      () => _i837.ShowInvoice(paymentRepository: gh<_i721.PaymentRepository>()),
+    );
+    gh.lazySingleton<_i922.GetInvoiceNumber>(
+      () => _i922.GetInvoiceNumber(
+        paymentRepository: gh<_i721.PaymentRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i931.SavePayment>(
+      () => _i931.SavePayment(paymentRepository: gh<_i721.PaymentRepository>()),
     );
     gh.lazySingleton<_i1028.GetOrdersByCompanyId>(
       () => _i1028.GetOrdersByCompanyId(
@@ -237,14 +243,41 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i617.CartProcessingBloc>(
       () => _i617.CartProcessingBloc(createOrder: gh<_i242.CreateOrder>()),
     );
-    gh.factory<_i184.CartBloc>(
-      () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
+    gh.lazySingleton<_i436.GetCategoryByCompanyId>(
+      () => _i436.GetCategoryByCompanyId(
+        companyRepository: gh<_i1060.CompanyRepository>(),
+        productsRepository: gh<_i1028.ProductsRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i189.GetProductsByCompany>(
+      () => _i189.GetProductsByCompany(
+        productsRepository: gh<_i1028.ProductsRepository>(),
+        companyRepository: gh<_i1060.CompanyRepository>(),
+      ),
     );
     gh.factory<_i955.OrderProcessBloc>(
       () => _i955.OrderProcessBloc(
         getOrdersByCompanyId: gh<_i1028.GetOrdersByCompanyId>(),
         updateStatusOrder: gh<_i211.UpdateStatusOrder>(),
-        showInvoice: gh<_i888.ShowInvoice>(),
+        showInvoice: gh<_i837.ShowInvoice>(),
+      ),
+    );
+    gh.factory<_i886.OrderBloc>(
+      () => _i886.OrderBloc(
+        getCategoryByCompanyId: gh<_i436.GetCategoryByCompanyId>(),
+        getProductsByCategoryId: gh<_i852.GetProductsByCategoryId>(),
+        getPackageByCategoryid: gh<_i359.GetPackageByCategoryid>(),
+      ),
+    );
+    gh.factory<_i184.CartBloc>(
+      () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
+    );
+    gh.factory<_i722.ProductsBloc>(
+      () => _i722.ProductsBloc(
+        getCategoryByCompanyId: gh<_i436.GetCategoryByCompanyId>(),
+        getProductsByCompany: gh<_i189.GetProductsByCompany>(),
+        getProductsByCategoryId: gh<_i852.GetProductsByCategoryId>(),
+        getPackageByCategoryid: gh<_i359.GetPackageByCategoryid>(),
       ),
     );
     return this;

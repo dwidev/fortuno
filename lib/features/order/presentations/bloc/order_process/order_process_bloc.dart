@@ -1,9 +1,9 @@
-import 'package:fortuno/features/payments/domain/usecase/show_invoice.dart';
-
 import '../../../../../core/core.dart';
+import '../../../../payments/domain/entities/payment.dart';
+import '../../../../payments/domain/usecase/show_invoice.dart';
+import '../../../../payments/presentation/widgets/process_order_dialog.dart';
 import '../../../domain/entities/order.dart';
 import '../../../domain/enums/order_status.dart';
-import '../../../domain/enums/payment_option.dart';
 import '../../../domain/usecases/get_orders_by_company_id.dart';
 import '../../../domain/usecases/update_status_order.dart';
 
@@ -45,10 +45,19 @@ class OrderProcessBloc
 
   Future<void> _onUpdateStatus(OnUpdateStatusOrder event, Emitter emit) async {
     final response = await runUsecase(() {
+      final payment = Payment(
+        id: "",
+        invoiceId: event.invoiceId,
+        amount: event.result.amount,
+        paymentMethod: event.result.option,
+        paymentDate: DateTime.now(),
+      );
+
       final params = UpdateStatusOrderParams(
         newStatus: event.newStatus,
         orderID: event.orderID,
-        paymentOption: event.paymentOption,
+        result: event.result,
+        payment: payment,
       );
       return updateStatusOrder(params);
     }, emit);

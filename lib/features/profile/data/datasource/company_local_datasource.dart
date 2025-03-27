@@ -1,3 +1,5 @@
+import '../../domain/failures/company_failure.dart';
+
 import '../../../../core/local_storage/local_storage.dart';
 import '../../../auth/domain/entities/user_authenticated.dart';
 import 'company_datasource.dart';
@@ -12,7 +14,12 @@ class CompanyLocalDatasource implements CompanyDatasource {
   @override
   Future<String> getCompanyID() async {
     final result = await preference.getData(companyIdKey);
-    final companyId = (result as String?) ?? "";
+    final companyId = result as String?;
+
+    if (companyId == null || companyId.isEmpty) {
+      throw NotFoundCompanyID();
+    }
+
     return companyId;
   }
 }

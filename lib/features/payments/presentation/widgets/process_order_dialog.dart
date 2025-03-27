@@ -3,15 +3,20 @@ import 'package:flutter_swipe_button/flutter_swipe_button.dart';
 import 'package:fortuno/features/order/domain/enums/order_status.dart';
 
 import '../../../../core/core.dart';
-import '../../../../core/widgets/form/text_form_field_widget.dart';
+import '../../../../core/widgets/form/currency_form_field_widget.dart';
 import '../../../order/domain/entities/order.dart';
 import '../../../order/domain/enums/payment_option.dart';
 
 class ProcessOrderDialogResult {
   final PaymentOption option;
   final bool paylatter;
+  final double amount;
 
-  ProcessOrderDialogResult({required this.option, required this.paylatter});
+  ProcessOrderDialogResult({
+    required this.option,
+    required this.paylatter,
+    required this.amount,
+  });
 }
 
 Future<T?> showProcessDialog<T>({
@@ -44,7 +49,7 @@ class ProcessOrderViewPage extends StatefulWidget {
 }
 
 class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
-  late TextEditingController controller;
+  late TextEditingIDRController controller;
   final formKey = GlobalKey<FormState>();
   bool paylatter = false;
 
@@ -56,9 +61,7 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
 
   @override
   void initState() {
-    controller = TextEditingController(
-      text: widget.order.downPayment.toString(),
-    );
+    controller = TextEditingIDRController(initialValue: widget.order.pay);
     super.initState();
   }
 
@@ -69,10 +72,13 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
 
     context.pop(); // pop this dialog
 
+    final amount = controller.getDoubleValue();
     final result = ProcessOrderDialogResult(
       option: value,
       paylatter: paylatter,
+      amount: paylatter == false ? amount : 0.0,
     );
+
     widget.onSwipe(result);
   }
 
@@ -136,18 +142,27 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: TextFormFieldWidget(
+                        child: CurrencyFormFieldWidget(
                           controller: controller,
                           title: "",
                           hintText: "Masukan Nomial bayar",
                           validator: (value) {
-                            if (value.isEmpty) {
-                              return "Masukan nilai bayar";
+                            final data = value;
+
+                            if (widget.order.orderStatus.iswaiting) {
+                              if (data < widget.order.pay) {
+                                return "Kurang dari nilai DP 30% (${moneyFormatter(widget.order.pay)})";
+                              }
                             }
 
-                            final data = double.tryParse(value) ?? 0;
-                            if (data < widget.order.downPayment) {
-                              return "Kurang dari nilai DP 10%";
+                            if (widget.order.orderStatus.isprocess) {
+                              if (data < widget.order.remainingPayment) {
+                                return "Kurang dari sisa pembayaran ${moneyFormatter(widget.order.remainingPayment)}";
+                              }
+                            }
+
+                            if (data > widget.order.totalPrice) {
+                              return "Tidak boleh melebihi total bayar ${moneyFormatter(widget.order.totalPrice)}";
                             }
 
                             return null;
@@ -190,7 +205,7 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
             alignment: Alignment.center,
             child: SwipeButton.expand(
                   onSwipe: onSwipe,
-                  activeThumbColor: softLimeColor,
+                  activeThumbColor: primaryColor,
                   activeTrackColor: darkLightColor,
                   borderRadius: BorderRadius.circular(kDefaultRadius),
                   thumb: Icon(Icons.double_arrow_rounded),
@@ -209,18 +224,17 @@ class _ProcessOrderViewPageState extends State<ProcessOrderViewPage> {
                 ),
           ),
           SizedBox(height: kSizeM),
-          Padding(
-            padding: EdgeInsets.only(left: 10),
-            child: Text(
-              (isPaylatter && value.isCash)
-                  ? "Bayar nanti setelah pesanan diproses"
-                  : "Minimal down payment adalah 10%",
-              style: context.textTheme.bodySmall?.copyWith(
-                fontStyle: FontStyle.italic,
-                color: bronzeYellow,
+          if (widget.order.orderStatus.iswaiting)
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                "Minimal down payment adalah 30%",
+                style: context.textTheme.bodySmall?.copyWith(
+                  fontStyle: FontStyle.italic,
+                  color: warningButtonColor,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

@@ -26,8 +26,7 @@ class OrderProcessItemListWidget extends StatelessWidget {
       padding: EdgeInsets.all(kDefaultPadding).copyWith(bottom: 0),
       child: Material(
         borderRadius: BorderRadius.circular(kDefaultRadius),
-        color:
-            isDetail && index == activeIndex ? lemonChiffonColor : whiteColor,
+        color: isDetail && index == activeIndex ? secondaryColor : whiteColor,
         child: InkWell(
           borderRadius: BorderRadius.circular(kDefaultRadius),
           onTap: () {

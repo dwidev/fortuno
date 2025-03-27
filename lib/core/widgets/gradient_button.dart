@@ -1,15 +1,18 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import '../core.dart';
 
 class GradientButton extends StatelessWidget {
   const GradientButton({
-    super.key,
-    required this.onPressed,
-    required this.child,
+    Key? key,
     this.width,
     this.height,
+    required this.child,
+    required this.onPressed,
     this.gradient,
     this.noShadow = false,
-  });
+    this.isGradient = false,
+    this.backgroundColor = primaryColor,
+  }) : super(key: key);
 
   final double? width;
   final double? height;
@@ -17,44 +20,39 @@ class GradientButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Gradient? gradient;
   final bool noShadow;
+  final bool isGradient;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final radius = BorderRadius.circular(kDefaultRadius * 0.5);
 
     return AnimatedContainer(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       padding: EdgeInsets.zero,
+      margin: EdgeInsets.zero,
       duration: const Duration(milliseconds: 200),
-      width: width ?? size.width / 1.3,
-      height: height ?? 48,
+      width: width,
+      height: height ?? 40,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50),
-        boxShadow:
-            !noShadow
-                ? const [
-                  BoxShadow(
-                    color: Color.fromARGB(128, 143, 143, 143),
-                    blurRadius: 10.0,
-                    offset: Offset(0.0, 4.0),
-                  ),
-                ]
-                : null,
+        borderRadius: radius,
+        boxShadow: !noShadow ? defaultShadowButton : null,
+        color: backgroundColor,
         gradient:
-            gradient ??
-            LinearGradient(colors: [mutedLemonColor, sageGreenColor]),
+            isGradient
+                ? (gradient ??
+                    LinearGradient(colors: [primaryColor, secondaryColor]))
+                : null,
       ),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
+          backgroundColor: isGradient ? Colors.transparent : backgroundColor,
           shadowColor: Colors.transparent,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
+          padding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(borderRadius: radius),
         ),
-        child: child,
+        child: Center(child: child),
       ),
     );
   }

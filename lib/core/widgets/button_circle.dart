@@ -10,11 +10,11 @@ class ButtonCircleWidget extends StatelessWidget {
     required this.icon,
     required this.onPressed,
     this.buttonSize = _defaultButtonSize,
-    this.backgroundColor = Colors.white,
+    this.backgroundColor = primaryColor,
     this.isGradientBackground = false,
     this.gradiendBackgroundColor = const [],
     this.iconColor = Colors.white,
-    this.noShadow = false,
+    this.noShadow = true,
   });
 
   factory ButtonCircleWidget.gradient({
@@ -30,7 +30,7 @@ class ButtonCircleWidget extends StatelessWidget {
       iconColor: iconColor,
       isGradientBackground: true,
       gradiendBackgroundColor:
-          gradiendBackgroundColor ?? [mutedLemonColor, sageGreenColor],
+          gradiendBackgroundColor ?? [primaryColor, secondaryColor],
       onPressed: onPressed,
       buttonSize: buttonSize,
       noShadow: noShadow,
@@ -53,12 +53,13 @@ class ButtonCircleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primary = isGradientBackground ? Colors.transparent : backgroundColor;
+    final radius = BorderRadius.circular(5);
 
     return Container(
       width: buttonSize,
       height: buttonSize,
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
+        borderRadius: radius,
         gradient:
             isGradientBackground && onPressed != null
                 ? LinearGradient(colors: gradiendBackgroundColor)
@@ -79,7 +80,7 @@ class ButtonCircleWidget extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           shadowColor: Colors.transparent,
           backgroundColor: primary,
-          shape: const CircleBorder(),
+          shape: RoundedRectangleBorder(borderRadius: radius),
           padding: EdgeInsets.all(buttonSize / 4),
         ),
         child:

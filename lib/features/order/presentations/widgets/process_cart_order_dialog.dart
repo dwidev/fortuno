@@ -64,7 +64,7 @@ class ProcessOrderViewPage extends StatelessWidget {
                   onSwipe: () {
                     onSwipe();
                   },
-                  activeThumbColor: softLimeColor,
+                  activeThumbColor: primaryColor,
                   activeTrackColor: darkLightColor,
                   borderRadius: BorderRadius.circular(kDefaultRadius),
                   thumb: Icon(Icons.double_arrow_rounded),

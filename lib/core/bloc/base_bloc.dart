@@ -1,8 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:fortuno/core/dialogs/error_dialog.dart';
-import '../core.dart';
 
+import '../../features/auth/presentations/bloc/auth_bloc.dart';
+import '../../features/profile/domain/failures/company_failure.dart';
+import '../core.dart';
+import '../dialogs/error_dialog.dart';
 import '../usecases/base_usecase.dart';
 
 part 'base_event.dart';

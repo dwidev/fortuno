@@ -63,7 +63,7 @@ class OrderRepositoryImpl implements OrderRepository {
       companyId: companyID,
       clientId: client.id,
       totalPrice: order.totalPrice,
-      shippingCost: order.discount,
+      shippingCost: order.shippingCost,
       discount: order.discount,
       paymentOption: order.paymentOption,
       orderStatus: order.orderStatus.name,

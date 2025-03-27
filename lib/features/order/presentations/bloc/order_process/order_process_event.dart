@@ -19,19 +19,17 @@ final class GoToOrderDetails extends OrderProcessEvent {
   const GoToOrderDetails({required this.order});
 }
 
-final class OnUpdateStatusOrder extends OrderProcessEvent
-    implements UpdateStatusOrderParams {
-  @override
+final class OnUpdateStatusOrder extends OrderProcessEvent {
   final String orderID;
-  @override
+  final String invoiceId;
   final OrderStatus newStatus;
-  @override
-  final PaymentOption paymentOption;
+  final ProcessOrderDialogResult result;
 
   const OnUpdateStatusOrder({
     required this.orderID,
+    required this.invoiceId,
     required this.newStatus,
-    required this.paymentOption,
+    required this.result,
   });
 }
 

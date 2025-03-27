@@ -65,6 +65,11 @@ class BaseListenerWidget<P extends BaseAppBloc, S extends BaseState>
   }
 
   static void handlerError(BuildContext context, BaseState state) {
+    if (state.error is NotFoundCompanyID) {
+      context.read<AuthBloc>().add(OnSignOutEvent());
+      return;
+    }
+
     if (state.error != null) {
       showErrorDialog(
         context: context,

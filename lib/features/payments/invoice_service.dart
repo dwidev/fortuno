@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:fortuno/core/utils/formatter.dart';
-import 'package:fortuno/features/payments/domain/entities/inovice.dart';
+import '../../core/utils/formatter.dart';
+import 'domain/entities/inovice.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -143,9 +143,12 @@ class InvoiceService {
                 ),
               ),
               pw.SizedBox(height: 0.2 * PdfPageFormat.cm),
-              // TODO: client data invoice
               pw.Text(
-                "Pesanan Nasi Box - SMK Adi sanggoro",
+                invoice.clientOrder.name,
+                style: pw.TextStyle(fontSize: 8),
+              ),
+              pw.Text(
+                invoice.clientOrder.addressDisplay,
                 style: pw.TextStyle(fontSize: 8),
               ),
               pw.SizedBox(height: 0.2 * PdfPageFormat.cm),
@@ -175,7 +178,7 @@ class InvoiceService {
     final data =
         order.items.map((item) {
           return [
-            item.title,
+            "${item.title}\n${item.contents}",
             item.quantity,
             item.priceString,
             item.totalPriceString,
@@ -204,13 +207,6 @@ class InvoiceService {
   }
 
   static pw.Widget _buildTotal(Order order, Invoice invoice) {
-    // final netTotal = order.items
-    //     .map((item) => 10 * item.quantity)
-    //     .reduce((item1, item2) => item1 + item2);
-    // final vatPercent = order.items.first;
-    // final vat = netTotal * 0;
-    // final total = netTotal + vat;
-
     return pw.Container(
       alignment: pw.Alignment.centerRight,
       child: pw.Column(
@@ -219,69 +215,71 @@ class InvoiceService {
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
-              pw.Container(
-                decoration: pw.BoxDecoration(color: PdfColors.grey50),
-                padding: pw.EdgeInsets.all(kSizeS),
-                child: pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  mainAxisAlignment: pw.MainAxisAlignment.start,
-                  children: [
-                    pw.Text(
-                      "Payment Method : ",
-                      style: pw.TextStyle(fontSize: 8),
-                    ),
-                    pw.SizedBox(height: PdfPageFormat.cm * 0.3),
-                    pw.Row(
-                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        pw.Column(
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          children: [
-                            pw.Text(
-                              "Account Number",
-                              style: pw.TextStyle(fontSize: 8),
-                            ),
-                            pw.SizedBox(height: 3),
-                            pw.Text(
-                              "Account Name",
-                              style: pw.TextStyle(fontSize: 8),
-                            ),
-                            pw.SizedBox(height: 3),
-                            pw.Text(
-                              "Bank name",
-                              style: pw.TextStyle(fontSize: 8),
-                            ),
-                          ],
-                        ),
-                        pw.SizedBox(width: PdfPageFormat.cm * 2),
-                        pw.Column(
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          children: [
-                            pw.Text(
-                              "6820705279",
-                              style: pw.TextStyle(
-                                fontSize: 8,
-                                fontWeight: pw.FontWeight.bold,
+              if (invoice.remainingPayment > 0) ...[
+                pw.Container(
+                  decoration: pw.BoxDecoration(color: PdfColors.grey50),
+                  padding: pw.EdgeInsets.all(kSizeS),
+                  child: pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    mainAxisAlignment: pw.MainAxisAlignment.start,
+                    children: [
+                      pw.Text(
+                        "Payment Method : ",
+                        style: pw.TextStyle(fontSize: 8),
+                      ),
+                      pw.SizedBox(height: PdfPageFormat.cm * 0.3),
+                      pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: [
+                          pw.Column(
+                            crossAxisAlignment: pw.CrossAxisAlignment.start,
+                            children: [
+                              pw.Text(
+                                "Account Number",
+                                style: pw.TextStyle(fontSize: 8),
                               ),
-                            ),
-                            pw.SizedBox(height: 3),
-                            pw.Text(
-                              "Fahmi Dwi Syahputra",
-                              style: pw.TextStyle(fontSize: 8),
-                            ),
-                            pw.SizedBox(height: 3),
-                            pw.Text(
-                              "Bank Central Asia (BCA)",
-                              style: pw.TextStyle(fontSize: 8),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+                              pw.SizedBox(height: 3),
+                              pw.Text(
+                                "Account Name",
+                                style: pw.TextStyle(fontSize: 8),
+                              ),
+                              pw.SizedBox(height: 3),
+                              pw.Text(
+                                "Bank name",
+                                style: pw.TextStyle(fontSize: 8),
+                              ),
+                            ],
+                          ),
+                          pw.SizedBox(width: PdfPageFormat.cm * 2),
+                          pw.Column(
+                            crossAxisAlignment: pw.CrossAxisAlignment.start,
+                            children: [
+                              pw.Text(
+                                "6820705279",
+                                style: pw.TextStyle(
+                                  fontSize: 8,
+                                  fontWeight: pw.FontWeight.bold,
+                                ),
+                              ),
+                              pw.SizedBox(height: 3),
+                              pw.Text(
+                                "Fahmi Dwi Syahputra",
+                                style: pw.TextStyle(fontSize: 8),
+                              ),
+                              pw.SizedBox(height: 3),
+                              pw.Text(
+                                "Bank Central Asia (BCA)",
+                                style: pw.TextStyle(fontSize: 8),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+              ],
               pw.Spacer(),
               pw.Expanded(
                 child: pw.Column(
@@ -334,36 +332,36 @@ class InvoiceService {
                       height: PdfPageFormat.cm * 0.5,
                       color: PdfColors.grey200,
                     ),
-                    pw.Row(
-                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        pw.Column(
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          children: [
-                            pw.Text(
-                              "Paid down payment",
-                              style: pw.TextStyle(fontSize: 8),
-                            ),
-                          ],
-                        ),
-                        pw.Column(
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          children: [
-                            pw.Text(
-                              "Rp. 500.000",
-                              textAlign: pw.TextAlign.right,
-                              style: pw.TextStyle(fontSize: 8),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    pw.SizedBox(height: PdfPageFormat.cm * 0.5),
-                    pw.Divider(
-                      height: PdfPageFormat.cm * 0.5,
-                      color: PdfColors.grey200,
-                    ),
+                    if (invoice.payments.isNotEmpty)
+                      ...List.generate(invoice.payments.length, (index) {
+                        final payment = invoice.payments[index];
+                        return pw.Padding(
+                          padding: pw.EdgeInsets.only(bottom: 10),
+                          child: pw.Row(
+                            mainAxisAlignment:
+                                pw.MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: pw.CrossAxisAlignment.start,
+                            children: [
+                              pw.Text(
+                                "Paid at ${payment.paymentDateDisplay}",
+                                style: pw.TextStyle(fontSize: 8),
+                              ),
+                              pw.Text(
+                                payment.amountDisplay,
+                                textAlign: pw.TextAlign.right,
+                                style: pw.TextStyle(fontSize: 8),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                    if (invoice.payments.isNotEmpty) ...[
+                      pw.SizedBox(height: PdfPageFormat.cm * 0.3),
+                      pw.Divider(
+                        height: PdfPageFormat.cm * 0.5,
+                        color: PdfColors.grey200,
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -375,6 +373,7 @@ class InvoiceService {
             children: [
               pw.Spacer(),
               pw.Row(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
                   pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -387,16 +386,29 @@ class InvoiceService {
                   ),
                   pw.SizedBox(width: PdfPageFormat.cm * 0.5),
                   pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    crossAxisAlignment: pw.CrossAxisAlignment.end,
                     children: [
                       pw.Text(
-                        "Rp. 830.000",
+                        invoice.remainingPaymentDisplay,
                         textAlign: pw.TextAlign.right,
                         style: pw.TextStyle(
                           fontSize: 13,
                           fontWeight: pw.FontWeight.bold,
                         ),
                       ),
+                      pw.SizedBox(height: PdfPageFormat.cm * 0.2),
+                      if (invoice.remainingPayment <= 0)
+                        pw.Text(
+                          "LUNAS",
+                          textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontSize: 13,
+                            fontWeight: pw.FontWeight.bold,
+                            color: PdfColors.green,
+                            letterSpacing: 5,
+                            decoration: pw.TextDecoration.underline,
+                          ),
+                        ),
                     ],
                   ),
                 ],

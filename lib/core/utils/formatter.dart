@@ -32,8 +32,9 @@ DateTime parseToTime(String time) {
   return parsed;
 }
 
-String formatToDateTime(DateTime dateTime) {
-  final formated = DateFormat('EEE, dd MMM yyyy HH:mm').format(dateTime);
+String formatToDateTime(DateTime dateTime, {bool toLocal = true}) {
+  final dt = toLocal ? dateTime.toLocal() : dateTime;
+  final formated = DateFormat('EEE, dd MMM yyyy HH:mm').format(dt);
   return "$formated WIB";
 }
 

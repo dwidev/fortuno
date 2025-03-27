@@ -46,7 +46,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
 
   Future<void> _onInit(OnInitOrderPageEvent event, Emitter emit) async {
     final responses = await runUsecases([
-      () => getCategoryByCompanyId(event.companyId),
+      () => getCategoryByCompanyId(null),
     ], emit);
 
     final resCat = responses[0];

@@ -35,8 +35,9 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
         bloc.add(
           OnUpdateStatusOrder(
             orderID: order.id,
+            invoiceId: order.invoice.id,
             newStatus: order.orderStatus.moveStatus,
-            paymentOption: result.option,
+            result: result,
           ),
         );
       },
@@ -45,6 +46,8 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.widthAnimation == null) return Offstage();
+
     return AnimatedBuilder(
       animation: widget.widthAnimation!,
       builder: (context, _) {
@@ -56,12 +59,11 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
         return SizedBox(
           height: context.height,
           width: wAnimation.value,
-          child: Container(
-            padding: EdgeInsets.all(kDefaultPadding),
-            color: whiteColor,
-            child:
-                wAnimation.value >= (widget.maxWidthDetail ?? 0)
-                    ? BlocBuilder<OrderProcessBloc, OrderProcessState>(
+          child:
+              wAnimation.value >= (widget.maxWidthDetail ?? 0)
+                  ? Container(
+                    margin: anchorRightContent,
+                    child: BlocBuilder<OrderProcessBloc, OrderProcessState>(
                       builder: (context, state) {
                         final order = state.order;
                         final client = state.order.client;
@@ -120,14 +122,16 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
                               ],
                             ),
                             Positioned(
-                              bottom: 0,
-                              right: 0,
+                              bottom: kSizeMS,
+                              right: 5,
                               child: Row(
                                 children: [
                                   if (order.orderStatus ==
                                           OrderStatus.waiting ||
                                       order.orderStatus == OrderStatus.process)
                                     GradientButton(
+                                      backgroundColor:
+                                          order.orderStatus.colorAction,
                                       height: 35,
                                       width: 130,
                                       onPressed: () => onTap(order),
@@ -143,9 +147,9 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
                           ],
                         );
                       },
-                    )
-                    : Offstage(),
-          ),
+                    ),
+                  )
+                  : Offstage(),
         );
       },
     );

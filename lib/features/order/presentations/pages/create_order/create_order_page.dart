@@ -1,5 +1,7 @@
-import 'package:fortuno/features/order/presentations/bloc/cart/cart_bloc.dart';
-import 'package:fortuno/features/order/presentations/pages/create_order/cart/cart_order_page.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fortuno/core/widgets/custom_tab.dart';
+import '../../bloc/cart/cart_bloc.dart';
+import 'cart/cart_order_page.dart';
 
 import '../../../../../core/core.dart';
 import '../../bloc/order/order_bloc.dart';
@@ -12,7 +14,7 @@ import '../../widgets/product_card_widget.dart';
 class CreateOrderPage extends StatefulWidget {
   static const path = '/create-order';
 
-  static const crossMaxItem = 5;
+  static const crossMaxItem = 4;
 
   const CreateOrderPage({super.key});
 
@@ -21,12 +23,21 @@ class CreateOrderPage extends StatefulWidget {
 }
 
 class _CreateOrderPageState extends State<CreateOrderPage> {
+  var activeMenu = 0;
+  var menus = ["Package", "Product"];
+
   @override
   void initState() {
     super.initState();
     context.read<OrderBloc>().add(
       OnInitOrderPageEvent(companyId: "898a70b4-0758-4eda-bf73-b469db14eb50"),
     );
+  }
+
+  void changeMenu(int index) {
+    setState(() {
+      activeMenu = index;
+    });
   }
 
   @override
@@ -36,53 +47,59 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
         return Row(
           children: [
             Expanded(
-              flex: 3,
+              flex: 2,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   /// HEADER APP
                   HeaderCreateOrderWidget(),
 
-                  /// PACKAGE LIST
-                  PackageListWidget(),
+                  if (state is AtProductPage)
+                    Padding(
+                      padding: anchorLeftContent,
+                      child: CustomTab(
+                        currentIndex: activeMenu,
+                        menus: menus,
+                        changeMenu: changeMenu,
+                      ),
+                    ),
 
-                  SizedBox(height: kSizeS),
+                  if (activeMenu == "Package" && state is AtProductPage)
+                    /// PACKAGE LIST
+                    Expanded(child: PackageListWidget()),
 
-                  /// CATEGORY & PRODUCT LIST
-                  Expanded(
-                    child: BlocBuilder<OrderBloc, OrderState>(
-                      builder: (context, state) {
-                        if (state.loading.active) {
-                          return LoadingProductWidget();
-                        }
+                  if (activeMenu == "Product" || state is! AtProductPage)
+                    /// CATEGORY & PRODUCT LIST
+                    Expanded(
+                      child: BlocBuilder<OrderBloc, OrderState>(
+                        builder: (context, state) {
+                          if (state.loading.active) {
+                            return LoadingProductWidget();
+                          }
 
-                        if (state.categories.isEmpty) {
-                          return Offstage();
-                        }
+                          if (state.categories.isEmpty) {
+                            return Offstage();
+                          }
 
-                        var itemCount = 0;
+                          var itemCount = 0;
 
-                        if (state is AtProductPage) {
-                          itemCount = state.products.length;
-                        } else {
-                          itemCount = state.categories.length;
-                        }
+                          if (state is AtProductPage) {
+                            itemCount = state.products.length;
+                          } else {
+                            itemCount = state.categories.length;
+                          }
 
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: kDefaultPadding,
-                          ).copyWith(top: kSizeS),
-                          child: GridView.builder(
-                            shrinkWrap: true,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: CreateOrderPage.crossMaxItem,
-                                  crossAxisSpacing: 2,
-                                  mainAxisSpacing: 2,
-                                  childAspectRatio: 0.85,
-                                ),
+                          return MasonryGridView.builder(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: kDefaultPadding,
+                            ),
+                            crossAxisSpacing: kSizeMS,
+                            mainAxisSpacing: kSizeMS,
                             itemCount: itemCount,
-                            // padding: EdgeInsets.all(kDefaultPadding),
+                            gridDelegate:
+                                SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: CreateOrderPage.crossMaxItem,
+                                ),
                             itemBuilder: (context, index) {
                               final cp =
                                   state is AtProductPage
@@ -95,6 +112,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                               }
 
                               return ProductCardWidget(
+                                isDisable: state.finishSelected,
                                 product: cp,
                                 quantity: quantity,
                                 onTap: () {
@@ -107,6 +125,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                                       ),
                                     );
                                   } else {
+                                    changeMenu(0);
                                     final cp = state.categories[index];
                                     orderBloc.add(
                                       OnClickCategory(categoryProduct: cp),
@@ -115,15 +134,15 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                                 },
                               );
                             },
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
-            Expanded(flex: 2, child: CartOrderPage.init()),
+            SizedBox(width: kSizeL),
+            Expanded(child: CartOrderPage.init()),
           ],
         );
       },

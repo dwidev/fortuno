@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:either_dart/either.dart';
 import 'package:injectable/injectable.dart';
 
@@ -30,5 +32,11 @@ class SignWithGoogle extends BaseAuthenticateUsecase<bool, void> {
 
     await super.storeAuthenticatedData(requestToken);
     return Right(true);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    log("CHILD $runtimeType");
   }
 }

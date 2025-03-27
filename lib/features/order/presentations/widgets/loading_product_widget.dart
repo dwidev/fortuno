@@ -1,14 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import '../../../../core/core.dart';
 import '../pages/create_order/create_order_page.dart';
 
 class LoadingProductWidget extends StatelessWidget {
-  const LoadingProductWidget({super.key});
+  final int? crossAxisCount;
+  const LoadingProductWidget({super.key, this.crossAxisCount});
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: CreateOrderPage.crossMaxItem,
+        crossAxisCount: crossAxisCount ?? CreateOrderPage.crossMaxItem,
         crossAxisSpacing: 15,
         mainAxisSpacing: 15,
         childAspectRatio: 0.8,

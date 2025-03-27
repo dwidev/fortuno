@@ -24,7 +24,7 @@ Future<void> mainApp(EnvApp env) async {
   // easy loading config style
   EasyLoading.instance
     ..loadingStyle = EasyLoadingStyle.light
-    ..indicatorColor = lemonChiffonColor
+    ..indicatorColor = primaryColor
     ..animationStyle = EasyLoadingAnimationStyle.opacity
     ..toastPosition = EasyLoadingToastPosition.bottom;
 

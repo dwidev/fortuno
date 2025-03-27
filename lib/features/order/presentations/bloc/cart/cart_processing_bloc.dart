@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:fortuno/core/widgets/form/currency_form_field_widget.dart';
+
 import '../../../../../core/core.dart';
 import '../../../domain/entities/client_order.dart';
 import '../../../domain/entities/order.dart';
@@ -23,7 +25,7 @@ class CartProcessingBloc
   late TextEditingController rtController;
   late TextEditingController rwController;
   late TextEditingController detailAddressController;
-  late TextEditingController shippingCostController;
+  late TextEditingIDRController shippingCostController;
 
   double firstTotalPrice = 0.0;
 
@@ -41,7 +43,7 @@ class CartProcessingBloc
     rtController = TextEditingController();
     rwController = TextEditingController();
     detailAddressController = TextEditingController();
-    shippingCostController = TextEditingController();
+    shippingCostController = TextEditingIDRController();
 
     on<OnAddOrderItemsEvent>(_onAddOrderItems);
     on<OnChangeShippingConstEvent>(_onChangeShippingCost);
@@ -76,7 +78,7 @@ class CartProcessingBloc
     // create price
     final itemTotalPrice = event.items.totalPrice;
     final shippingCost = double.tryParse(shippingCostController.text) ?? 0;
-    final discount = 0.0; // currencty cannot setup for this
+    final discount = 0.0; // cuurently cannot setup for this
     final totalPrice = itemTotalPrice + shippingCost + discount;
 
     // set total price
@@ -96,7 +98,7 @@ class CartProcessingBloc
   }
 
   void _onChangeShippingCost(OnChangeShippingConstEvent event, Emitter emit) {
-    final shippingCost = double.tryParse(shippingCostController.text) ?? 0;
+    final shippingCost = shippingCostController.getDoubleValue();
     final newTotal = firstTotalPrice + shippingCost;
 
     final newShipping = state.order.copyWith(

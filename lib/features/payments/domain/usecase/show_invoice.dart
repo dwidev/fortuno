@@ -8,13 +8,13 @@ import '../repository/payment_repository.dart';
 
 @lazySingleton
 class ShowInvoice extends BaseUsecase<void, Order> {
-  final PaymentRepostiroy paymentRepostiroy;
+  final PaymentRepository paymentRepository;
 
-  ShowInvoice({required this.paymentRepostiroy});
+  ShowInvoice({required this.paymentRepository});
 
   @override
   FutureReturn<void> calling(Order params) async {
-    final invoice = await paymentRepostiroy.getInvoice(orderID: params.id);
+    final invoice = await paymentRepository.getInvoice(orderID: params.id);
     await InvoiceService.showPdf(params, invoice);
     return Right(null);
   }
