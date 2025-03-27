@@ -11,7 +11,7 @@ class GradientButton extends StatelessWidget {
     this.gradient,
     this.noShadow = false,
     this.isGradient = false,
-    this.backgroundColor = lightGrey4,
+    this.backgroundColor = primaryColor,
   }) : super(key: key);
 
   final double? width;
@@ -25,7 +25,6 @@ class GradientButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final radius = BorderRadius.circular(kDefaultRadius * 0.5);
 
     return AnimatedContainer(

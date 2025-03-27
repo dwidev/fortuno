@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fortuno/features/products/presentation/widgets/selected_product_widget.dart';
 
 import '../../../../core/core.dart';
 import '../../../products/domain/entities/product.dart';
@@ -18,21 +19,24 @@ class ProductCardWidget extends StatefulWidget {
     this.height,
     this.isPreview = false,
     this.imagePreview,
+    this.isPicker = false,
   });
 
-  const ProductCardWidget.preview({
-    super.key,
-    this.quantity = 0,
-    required this.product,
-    required this.onTap,
-    this.isDisable = false,
-    this.isInventory = false,
-    this.onNonActive,
-    this.width,
-    this.height,
-    this.isPreview = true,
-    this.imagePreview,
-  });
+  factory ProductCardWidget.preview({
+    required Product product,
+    required VoidCallback onTap,
+    required Uint8List? imagePreview,
+  }) => ProductCardWidget(
+    product: product,
+    onTap: onTap,
+    imagePreview: imagePreview,
+    isPreview: true,
+  );
+
+  factory ProductCardWidget.picker({
+    required Product product,
+    required VoidCallback onTap,
+  }) => ProductCardWidget(product: product, onTap: onTap, isPicker: true);
 
   final double? width;
   final double? height;
@@ -44,6 +48,7 @@ class ProductCardWidget extends StatefulWidget {
   final Function(bool value)? onNonActive;
   final bool isPreview;
   final Uint8List? imagePreview;
+  final bool isPicker;
 
   @override
   State<ProductCardWidget> createState() => _ProductCardWidgetState();
@@ -78,6 +83,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
       child: CustomCard(
         width: widget.width,
         height: widget.height,
+        border: widget.isPicker ? Border.all(color: primaryColor) : null,
         padding: anchorAllContent.min(10),
         constraints: BoxConstraints(minHeight: 100),
         child: Column(
@@ -152,6 +158,13 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                 color: whiteColor,
                               ),
                     ),
+                  ),
+
+                if (widget.isPicker)
+                  Positioned(
+                    top: 5,
+                    right: 5,
+                    child: CheckListWidget(checked: true),
                   ),
               ],
             ),

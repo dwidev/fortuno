@@ -31,6 +31,7 @@ class ProductPreviewWidget extends StatelessWidget {
               price: price,
               createAt: DateTime.now().toString(),
             ),
+            imagePreview: null,
             onTap: () {},
           );
         }
