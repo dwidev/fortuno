@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../../../core/core.dart';
@@ -20,6 +22,8 @@ class AddProductPage extends StatefulWidget {
 }
 
 class _AddProductPageState extends State<AddProductPage> {
+  late StreamController<Product> productPreviewController;
+
   final formKey = GlobalKey<FormState>();
   var isActive = true;
   var isCategory = true;
@@ -32,6 +36,8 @@ class _AddProductPageState extends State<AddProductPage> {
     super.initState();
     nameController = TextEditingController();
     priceController = TextEditingIDRController();
+    productPreviewController = StreamController.broadcast();
+    productPreviewController.add(Product.dummy());
   }
 
   @override
@@ -39,6 +45,7 @@ class _AddProductPageState extends State<AddProductPage> {
     super.dispose();
     nameController.dispose();
     priceController.dispose();
+    productPreviewController.close();
   }
 
   void onSaveForm() {
@@ -80,12 +87,26 @@ class _AddProductPageState extends State<AddProductPage> {
                       TextFormFieldWidget(
                         controller: nameController,
                         title: "Nama Produk",
+                        onChanged: (value) {
+                          final preview = Product.init().copyWith(
+                            name: value,
+                            price: priceController.getDoubleValue(),
+                          );
+                          productPreviewController.add(preview);
+                        },
                       ),
                       SizedBox(height: kSizeM),
                       CurrencyFormFieldWidget(
                         controller: priceController,
                         title: "Harga",
                         hintText: "Masukan",
+                        onChanged: (value) {
+                          final preview = Product.init().copyWith(
+                            name: nameController.text,
+                            price: priceController.getDoubleValue(),
+                          );
+                          productPreviewController.add(preview);
+                        },
                       ),
                       SizedBox(height: kSizeM),
                       Row(
@@ -167,9 +188,23 @@ class _AddProductPageState extends State<AddProductPage> {
                       ),
                     ),
                     SizedBox(height: kSizeM),
-                    ProductPreviewWidget(
-                      name: nameController.text,
-                      price: priceController.getDoubleValue(),
+                    StreamBuilder<Product>(
+                      stream: productPreviewController.stream,
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return ProductPreviewWidget(
+                            name: "Nama product",
+                            price: 0,
+                          );
+                        }
+
+                        final preview = snapshot.data;
+
+                        return ProductPreviewWidget(
+                          name: preview?.name ?? "",
+                          price: preview?.price ?? 0.0,
+                        );
+                      },
                     ),
                   ],
                 ),

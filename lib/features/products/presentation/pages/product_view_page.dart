@@ -33,7 +33,7 @@ class _ProductViewPageState extends State<ProductViewPage> {
           mainAxisSpacing: kSizeMS,
           itemCount: state.products.length + 1,
           gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 5,
+            crossAxisCount: 6,
           ),
           itemBuilder: (_, index) {
             if (index == 0) {
