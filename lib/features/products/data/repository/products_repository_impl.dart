@@ -74,6 +74,7 @@ class ProductsRepositoryImpl implements ProductsRepository {
   }) {
     final productModel = ProductModel(
       id: Uuid().v4(),
+      companyId: companyId,
       name: product.name,
       code: product.code,
       price: product.price,
@@ -85,7 +86,7 @@ class ProductsRepositoryImpl implements ProductsRepository {
 
     if (category != null) {
       categoryModel = CategoryModel(
-        id: Uuid().v4(),
+        id: category.id,
         name: category.name,
         code: category.code,
         haveProduct: category.haveProduct,

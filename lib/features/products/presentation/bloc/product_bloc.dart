@@ -92,7 +92,7 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
       emit(
         OnSavedForm(
           categories: state.categories,
-          products: state.products,
+          products: [...state.products, event.product],
           packages: state.packages,
         ),
       );

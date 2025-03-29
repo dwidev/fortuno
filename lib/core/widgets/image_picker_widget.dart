@@ -43,7 +43,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   Future<void> selectImageFromGallery() async {
     final file = await imagePicker.pickImage(source: ImageSource.gallery);
     if (file == null) {
-      EasyLoading.showInfo("Gagal mengambil gambar");
+      EasyLoading.showToast("Batal mengambil gambar");
       return;
     }
 

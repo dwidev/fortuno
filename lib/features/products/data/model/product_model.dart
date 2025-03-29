@@ -8,6 +8,7 @@ import '../../domain/entities/product.dart';
 
 class ProductModel extends BaseModel<Product> {
   final String id;
+  final String companyId;
   final String name;
   final String code;
   final double price;
@@ -16,6 +17,7 @@ class ProductModel extends BaseModel<Product> {
 
   ProductModel({
     required this.id,
+    required this.companyId,
     required this.name,
     required this.code,
     required this.price,
@@ -28,6 +30,7 @@ class ProductModel extends BaseModel<Product> {
 
     return <String, dynamic>{
       'ID': id,
+      'company_id': companyId,
       'product_name': name,
       'product_code': code,
       'price': price,
@@ -41,6 +44,7 @@ class ProductModel extends BaseModel<Product> {
 
     return ProductModel(
       id: map["ID"] as String? ?? "",
+      companyId: map["company_id"] as String? ?? "",
       name: map["product_name"] as String? ?? "",
       code: map["product_code"] as String? ?? "",
       price: price,
@@ -56,7 +60,7 @@ class ProductModel extends BaseModel<Product> {
 
   @override
   String toString() {
-    return 'ProductModel(id: $id, name: $name, code: $code,  price: $price, createAt: $createAt)';
+    return 'ProductModel(id: $id, companyId: $companyId, name: $name, code: $code, price: $price, isActive: $isActive, createAt: $createAt)';
   }
 
   @override

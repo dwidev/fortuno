@@ -54,6 +54,7 @@ class CategoryModel extends BaseModel<CategoryProduct> {
       haveProduct: map["have_product"] as bool? ?? false,
       price: price,
       createAt: map["create_at"]?.toString() ?? "",
+      isActive: map['is_active'] as bool? ?? false,
     );
   }
 
