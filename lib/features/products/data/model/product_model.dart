@@ -1,4 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
+import 'package:fortuno/core/utils/code_gen.dart';
 
 import '../../../../core/models/base_model.dart';
 import '../../domain/entities/product.dart';
@@ -8,6 +11,7 @@ class ProductModel extends BaseModel<Product> {
   final String name;
   final String code;
   final double price;
+  final bool isActive;
   final String createAt;
 
   ProductModel({
@@ -15,16 +19,20 @@ class ProductModel extends BaseModel<Product> {
     required this.name,
     required this.code,
     required this.price,
+    required this.isActive,
     required this.createAt,
   });
 
   Map<String, dynamic> toMap() {
+    final code = codeGen(name);
+
     return <String, dynamic>{
       'ID': id,
       'product_name': name,
       'product_code': code,
       'price': price,
-      'create_at': createAt,
+      'created_at': createAt,
+      'is_active': isActive,
     };
   }
 
@@ -36,7 +44,8 @@ class ProductModel extends BaseModel<Product> {
       name: map["product_name"] as String? ?? "",
       code: map["product_code"] as String? ?? "",
       price: price,
-      createAt: map["create_at"]?.toString() ?? "",
+      isActive: map["is_active"] as bool? ?? false,
+      createAt: map["created_at"]?.toString() ?? "",
     );
   }
 

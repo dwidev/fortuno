@@ -1,11 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../../../../core/core.dart';
 import '../../../../core/widgets/form/currency_form_field_widget.dart';
 import '../../../../core/widgets/form/text_form_field_widget.dart';
+import '../../domain/entities/category.dart';
 import '../../domain/entities/product.dart';
 import '../bloc/product_bloc.dart';
 import '../widgets/inventory_form_view_page.dart';
@@ -28,9 +28,10 @@ class _AddProductPageState extends State<AddProductPage> {
   final formKey = GlobalKey<FormState>();
   var isActive = true;
   var isCategory = true;
-  List<Product> selectedCategory = [];
+  List<CategoryProduct> selectedCategory = [];
   late TextEditingController nameController;
   late TextEditingIDRController priceController;
+  XFile? file;
 
   @override
   void initState() {
@@ -55,14 +56,26 @@ class _AddProductPageState extends State<AddProductPage> {
       EasyLoading.showToast("Silahkan pilih category");
     }
 
+    CategoryProduct? category;
+
+    if (isCategory) {
+      category = selectedCategory.first;
+    }
+
     final product = Product(
-      id: '',
+      id: "", // generate at repository
       name: nameController.text,
-      code: "",
+      code: "", // generate at model
       price: priceController.getDoubleValue(),
       createAt: DateTime.now().toUtc().toString(),
     );
-    context.read<ProductsBloc>().add(OnAddProduct(product));
+
+    final event = OnAddProduct(
+      product: product,
+      category: category,
+      productImage: file,
+    );
+    context.read<ProductsBloc>().add(event);
   }
 
   @override
@@ -84,6 +97,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     children: [
                       ImagePickerWidget(
                         onChange: (ImagePickerResult image) async {
+                          file = image.file;
                           final preview =
                               await productPreviewController.stream.first;
                           final n = preview.copyWith(
@@ -172,7 +186,9 @@ class _AddProductPageState extends State<AddProductPage> {
                                 selectedData: selectedCategory,
                                 onChange: (product) {
                                   setState(() {
-                                    selectedCategory = [product];
+                                    selectedCategory = [
+                                      product as CategoryProduct,
+                                    ];
                                   });
                                 },
                               ),

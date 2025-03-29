@@ -7,10 +7,16 @@ import '../datasource/company_datasource.dart';
 class CompanyRepositoryImpl implements CompanyRepository {
   final CompanyDatasource datasource;
 
+  String _companyID = '';
+
   CompanyRepositoryImpl({required this.datasource});
 
   @override
   Future<String> getCompanyID() async {
-    return datasource.getCompanyID();
+    if (_companyID.isNotEmpty) return _companyID;
+
+    final companyId = await datasource.getCompanyID();
+    _companyID = companyId;
+    return companyId;
   }
 }

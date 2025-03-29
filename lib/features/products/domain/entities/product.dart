@@ -2,7 +2,6 @@
 import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/utils/formatter.dart';
 
@@ -13,6 +12,7 @@ class Product extends Equatable {
   final double price;
   final String createAt;
   final Uint8List? imageByte;
+  final bool isActive;
 
   String get kDisplayPrice => "${(price / 1000).toStringAsFixed(0)}K";
   String get priceFormated => moneyFormatter(price);
@@ -24,6 +24,7 @@ class Product extends Equatable {
     required this.price,
     required this.createAt,
     this.imageByte,
+    this.isActive = false,
   });
 
   factory Product.init() => Product(
@@ -51,7 +52,9 @@ class Product extends Equatable {
   );
 
   @override
-  List<Object?> get props => [id, name, code, price, createAt, imageByte];
+  List<Object?> get props {
+    return [id, name, code, price, createAt, imageByte, isActive];
+  }
 
   Product copyWith({
     String? id,
@@ -60,6 +63,7 @@ class Product extends Equatable {
     double? price,
     String? createAt,
     Uint8List? imageByte,
+    bool? isActive,
   }) {
     return Product(
       id: id ?? this.id,
@@ -68,6 +72,10 @@ class Product extends Equatable {
       price: price ?? this.price,
       createAt: createAt ?? this.createAt,
       imageByte: imageByte ?? this.imageByte,
+      isActive: isActive ?? this.isActive,
     );
   }
+
+  @override
+  bool get stringify => true;
 }

@@ -11,6 +11,8 @@ class CategoryProduct extends Product {
     required super.code,
     required super.price,
     required super.createAt,
+    required super.imageByte,
+    required super.isActive,
     required this.haveProduct,
   });
 
@@ -35,6 +37,7 @@ class CategoryProduct extends Product {
     String? createAt,
     bool? haveProduct,
     Uint8List? imageByte,
+    bool? isActive,
   }) {
     return CategoryProduct(
       id: id ?? this.id,
@@ -43,6 +46,8 @@ class CategoryProduct extends Product {
       price: price ?? this.price,
       createAt: createAt ?? this.createAt,
       haveProduct: haveProduct ?? this.haveProduct,
+      imageByte: imageByte ?? this.imageByte,
+      isActive: isActive ?? this.isActive,
     );
   }
 }

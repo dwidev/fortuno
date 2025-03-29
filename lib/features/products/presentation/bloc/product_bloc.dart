@@ -1,19 +1,20 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortuno/core/usecases/base_usecase.dart';
-import 'package:fortuno/features/products/domain/usecases/get_packages_by_company.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/bloc/base_bloc.dart';
 import '../../../../core/failures/failure.dart';
+import '../../../../core/usecases/base_usecase.dart';
 import '../../domain/entities/category.dart';
 import '../../domain/entities/package.dart';
 import '../../domain/entities/product.dart';
 import '../../domain/usecases/get_category_by_companyid.dart';
+import '../../domain/usecases/get_packages_by_company.dart';
 import '../../domain/usecases/get_products_by_company.dart';
+import '../../domain/usecases/save_insert_product.dart';
 
 part 'product_event.dart';
 part 'product_state.dart';
@@ -24,10 +25,14 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
   final GetProductsByCompany getProductsByCompany;
   final GetPackagesByCompany getPackagesByCompany;
 
+  // insert
+  final SaveInsertProduct saveInsertProduct;
+
   ProductsBloc({
     required this.getCategoryByCompanyId,
     required this.getProductsByCompany,
     required this.getPackagesByCompany,
+    required this.saveInsertProduct,
   }) : super(ProductInitial()) {
     on<OnInitInvetoryPageEvent>(_onInit);
     on<OnAddProduct>(_onAddProduct);
@@ -74,7 +79,25 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
     emit(newState);
   }
 
-  Future<void> _onAddProduct(OnAddProduct event, Emitter emit) async {}
+  Future<void> _onAddProduct(OnAddProduct event, Emitter emit) async {
+    final result = await runUsecase(() {
+      final params = SaveInsertProductParams(
+        product: event.product,
+        category: event.category,
+      );
+      return saveInsertProduct(params);
+    }, emit);
+
+    result.fold((error) => this.error(emit, error), (right) {
+      emit(
+        OnSavedForm(
+          categories: state.categories,
+          products: state.products,
+          packages: state.packages,
+        ),
+      );
+    });
+  }
 
   @override
   Future<void> close() {

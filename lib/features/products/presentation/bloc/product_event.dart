@@ -14,5 +14,8 @@ class OnInitInvetoryPageEvent extends ProductEvent {
 
 class OnAddProduct extends ProductEvent {
   final Product product;
-  const OnAddProduct(this.product);
+  final CategoryProduct? category;
+  final XFile? productImage;
+
+  const OnAddProduct({required this.product, this.category, this.productImage});
 }

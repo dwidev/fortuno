@@ -90,4 +90,23 @@ class ProductNosqlDatasource extends ProductsDatasource {
     final result = response.map((e) => PackageModel.fromMap(e)).toList();
     return result;
   }
+
+  @override
+  Future<void> insertProduct({
+    required String companyId,
+    required ProductModel product,
+    required CategoryModel? category,
+  }) async {
+    final map = product.toMap();
+    await client.from('products').insert(map);
+
+    if (category != null) {
+      final catProdMap = {
+        "category_id": category.id,
+        "product_id": product.id,
+        "created_at": DateTime.now().toString(),
+      };
+      await client.from('category_product').insert(catProdMap);
+    }
+  }
 }

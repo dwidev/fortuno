@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import '../../../../core/models/base_model.dart';
@@ -10,6 +11,7 @@ class CategoryModel extends BaseModel<CategoryProduct> {
   final bool haveProduct;
   final double price;
   final String createAt;
+  final bool isActive;
 
   CategoryModel({
     required this.id,
@@ -18,6 +20,7 @@ class CategoryModel extends BaseModel<CategoryProduct> {
     required this.haveProduct,
     required this.price,
     required this.createAt,
+    this.isActive = false,
   });
 
   CategoryModel.submitOrder({
@@ -27,6 +30,7 @@ class CategoryModel extends BaseModel<CategoryProduct> {
     this.haveProduct = false,
     this.price = 0.0,
     this.createAt = '',
+    this.isActive = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -72,6 +76,8 @@ class CategoryModel extends BaseModel<CategoryProduct> {
       haveProduct: haveProduct,
       price: price,
       createAt: createAt,
+      imageByte: null,
+      isActive: isActive,
     );
   }
 }

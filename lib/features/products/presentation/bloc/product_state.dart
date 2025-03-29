@@ -37,3 +37,13 @@ class ProductState extends BaseState {
 final class ProductInitial extends ProductState {
   const ProductInitial({super.categories = const []});
 }
+
+class OnSavedForm extends ProductState {
+  const OnSavedForm({
+    required super.categories,
+    required super.products,
+    required super.packages,
+    super.loading,
+    super.error,
+  });
+}
