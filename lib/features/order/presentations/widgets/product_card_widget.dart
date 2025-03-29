@@ -18,20 +18,13 @@ class ProductCardWidget extends StatefulWidget {
     this.width,
     this.height,
     this.isPreview = false,
-    this.imagePreview,
     this.isPicker = false,
   });
 
   factory ProductCardWidget.preview({
     required Product product,
     required VoidCallback onTap,
-    required Uint8List? imagePreview,
-  }) => ProductCardWidget(
-    product: product,
-    onTap: onTap,
-    imagePreview: imagePreview,
-    isPreview: true,
-  );
+  }) => ProductCardWidget(product: product, onTap: onTap, isPreview: true);
 
   factory ProductCardWidget.picker({
     required Product product,
@@ -47,7 +40,6 @@ class ProductCardWidget extends StatefulWidget {
   final bool isInventory;
   final Function(bool value)? onNonActive;
   final bool isPreview;
-  final Uint8List? imagePreview;
   final bool isPicker;
 
   @override
@@ -59,7 +51,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
 
   bool get isDisable => widget.isDisable || !active;
 
-  bool get isImagePreview => widget.imagePreview == null && widget.isPreview;
+  bool get isImagePreview => widget.isPreview;
 
   @override
   void initState() {
@@ -98,27 +90,27 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     color: isImagePreview ? lightGrey8 : null,
                     borderRadius: BorderRadius.circular(kSizeMS),
                   ),
-                  child:
-                      isImagePreview
-                          ? Offstage()
-                          : ClipRRect(
-                            borderRadius: BorderRadius.circular(kSizeMS),
-                            child: ColorFiltered(
-                              colorFilter: ColorFilter.mode(
-                                isDisable ? Colors.grey : Colors.transparent,
-                                isDisable
-                                    ? BlendMode.saturation
-                                    : BlendMode.dst,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(kSizeMS),
+                    child: ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                        isDisable ? Colors.grey : Colors.transparent,
+                        isDisable ? BlendMode.saturation : BlendMode.dst,
+                      ),
+                      child:
+                          isImagePreview
+                              ? widget.product.imageByte != null
+                                  ? Image.memory(
+                                    widget.product.imageByte!,
+                                    fit: BoxFit.cover,
+                                  )
+                                  : Offstage()
+                              : Image.network(
+                                "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
+                                fit: BoxFit.cover,
                               ),
-                              child:
-                                  isImagePreview
-                                      ? Image.memory(widget.imagePreview!)
-                                      : Image.network(
-                                        "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
-                                        fit: BoxFit.cover,
-                                      ),
-                            ),
-                          ),
+                    ),
+                  ),
                 ),
                 if (widget.isInventory)
                   Positioned(

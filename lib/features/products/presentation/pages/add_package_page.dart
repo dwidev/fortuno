@@ -38,7 +38,9 @@ class _AddPackagePageState extends State<AddPackagePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ImagePickerWidget(),
+                    ImagePickerWidget(
+                      onChange: (ImagePickerResult image) async {},
+                    ),
                     SizedBox(height: kSizeM),
                     TextFormFieldWidget(
                       controller: TextEditingController(),

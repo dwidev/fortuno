@@ -1,4 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:typed_data';
+
 import 'product.dart';
 
 class CategoryProduct extends Product {
@@ -33,6 +34,7 @@ class CategoryProduct extends Product {
     double? price,
     String? createAt,
     bool? haveProduct,
+    Uint8List? imageByte,
   }) {
     return CategoryProduct(
       id: id ?? this.id,

@@ -1,3 +1,5 @@
+import 'package:fortuno/features/products/domain/entities/product.dart';
+
 import '../../../../core/core.dart';
 import '../../../../core/widgets/form/text_form_field_widget.dart';
 import '../widgets/inventory_form_view_page.dart';
@@ -27,7 +29,7 @@ class _AddCategoryProductPageState extends State<AddCategoryProductPage> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ImagePickerWidget(),
+              ImagePickerWidget(onChange: (ImagePickerResult image) async {}),
               SizedBox(width: kSizeM),
               Expanded(
                 child: Column(
@@ -74,7 +76,7 @@ class _AddCategoryProductPageState extends State<AddCategoryProductPage> {
                       ),
                     ),
                     SizedBox(height: kSizeM),
-                    ProductPreviewWidget(name: "Nama Product", price: -1),
+                    ProductPreviewWidget(product: Product.preview()),
                   ],
                 ),
               ),

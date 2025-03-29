@@ -1,13 +1,13 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fortuno/core/core.dart';
 import 'package:fortuno/features/order/presentations/widgets/product_card_widget.dart';
 import 'package:fortuno/features/products/domain/entities/product.dart';
 
 class ProductPreviewWidget extends StatelessWidget {
-  const ProductPreviewWidget({super.key, this.name = '', this.price = 0.0});
+  const ProductPreviewWidget({super.key, required this.product});
 
-  final String name;
-  final double price;
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +23,7 @@ class ProductPreviewWidget extends StatelessWidget {
       ),
       itemBuilder: (context, index) {
         if (index == 0) {
-          return ProductCardWidget.preview(
-            product: Product(
-              id: "",
-              name: name,
-              code: "",
-              price: price,
-              createAt: DateTime.now().toString(),
-            ),
-            imagePreview: null,
-            onTap: () {},
-          );
+          return ProductCardWidget.preview(product: product, onTap: () {});
         }
 
         return CustomCard(

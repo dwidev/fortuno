@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:rxdart/subjects.dart';
 
 import '../../../../core/core.dart';
 import '../../../../core/widgets/form/currency_form_field_widget.dart';
@@ -22,7 +23,7 @@ class AddProductPage extends StatefulWidget {
 }
 
 class _AddProductPageState extends State<AddProductPage> {
-  late StreamController<Product> productPreviewController;
+  late BehaviorSubject<Product> productPreviewController;
 
   final formKey = GlobalKey<FormState>();
   var isActive = true;
@@ -36,8 +37,7 @@ class _AddProductPageState extends State<AddProductPage> {
     super.initState();
     nameController = TextEditingController();
     priceController = TextEditingIDRController();
-    productPreviewController = StreamController.broadcast();
-    productPreviewController.add(Product.dummy());
+    productPreviewController = BehaviorSubject.seeded(Product.preview());
   }
 
   @override
@@ -82,17 +82,25 @@ class _AddProductPageState extends State<AddProductPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ImagePickerWidget(),
+                      ImagePickerWidget(
+                        onChange: (ImagePickerResult image) async {
+                          final preview =
+                              await productPreviewController.stream.first;
+                          final n = preview.copyWith(
+                            imageByte: image.imageByte,
+                          );
+                          productPreviewController.add(n);
+                        },
+                      ),
                       SizedBox(height: kSizeM),
                       TextFormFieldWidget(
                         controller: nameController,
                         title: "Nama Produk",
-                        onChanged: (value) {
-                          final preview = Product.init().copyWith(
-                            name: value,
-                            price: priceController.getDoubleValue(),
-                          );
-                          productPreviewController.add(preview);
+                        onChanged: (value) async {
+                          final preview =
+                              await productPreviewController.stream.first;
+                          final n = preview.copyWith(name: value);
+                          productPreviewController.add(n);
                         },
                       ),
                       SizedBox(height: kSizeM),
@@ -100,12 +108,13 @@ class _AddProductPageState extends State<AddProductPage> {
                         controller: priceController,
                         title: "Harga",
                         hintText: "Masukan",
-                        onChanged: (value) {
-                          final preview = Product.init().copyWith(
-                            name: nameController.text,
+                        onChanged: (value) async {
+                          final preview =
+                              await productPreviewController.stream.first;
+                          final n = preview.copyWith(
                             price: priceController.getDoubleValue(),
                           );
-                          productPreviewController.add(preview);
+                          productPreviewController.add(n);
                         },
                       ),
                       SizedBox(height: kSizeM),
@@ -192,18 +201,11 @@ class _AddProductPageState extends State<AddProductPage> {
                       stream: productPreviewController.stream,
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
-                          return ProductPreviewWidget(
-                            name: "Nama product",
-                            price: 0,
-                          );
+                          return ProductPreviewWidget(product: Product.dummy());
                         }
 
                         final preview = snapshot.data;
-
-                        return ProductPreviewWidget(
-                          name: preview?.name ?? "",
-                          price: preview?.price ?? 0.0,
-                        );
+                        return ProductPreviewWidget(product: preview!);
                       },
                     ),
                   ],
