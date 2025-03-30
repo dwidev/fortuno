@@ -1,4 +1,5 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fortuno/features/order/presentations/widgets/delete_product_dialog.dart';
 
 import '../../../../core/core.dart';
 import '../../../products/domain/entities/product.dart';
@@ -72,6 +73,15 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
   void initState() {
     active = widget.isActive;
     super.initState();
+  }
+
+  void onDelete() {
+    showDeleteProductDialog(
+      context: context,
+      onDelete: () {
+        widget.onDelete?.call();
+      },
+    );
   }
 
   @override
@@ -225,16 +235,19 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                   ),
                   if (widget.quantity != 0 || widget.isInventory) ...[
                     SizedBox(width: kSizeMS),
-                    Container(
-                      padding: EdgeInsets.all(kSizeS),
-                      decoration: BoxDecoration(
-                        color:
-                            isDisable && !widget.isInventory
-                                ? disabledButtonColor
-                                : deleteButtonColor,
-                        borderRadius: BorderRadius.circular(10),
+                    GestureDetector(
+                      onTap: onDelete,
+                      child: Container(
+                        padding: EdgeInsets.all(kSizeS),
+                        decoration: BoxDecoration(
+                          color:
+                              isDisable && !widget.isInventory
+                                  ? disabledButtonColor
+                                  : deleteButtonColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(CupertinoIcons.delete, color: whiteColor),
                       ),
-                      child: Icon(CupertinoIcons.delete, color: whiteColor),
                     ),
                   ],
                 ],
