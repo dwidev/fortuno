@@ -69,6 +69,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
 
   bool get isImagePreview => widget.isPreview;
 
+  String get catName => widget.product.category?.name ?? "";
+
   @override
   void initState() {
     active = widget.isActive;
@@ -152,12 +154,17 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     ),
                   ),
 
-                if (widget.isInventory)
+                if (widget.isInventory && catName.isNotEmpty)
                   Positioned(
-                    right: kSizeSS,
-                    child: TextBadgeWidget(
-                      text: widget.product.category?.name ?? "",
-                      color: getValueColor(widget.product.category?.name ?? ""),
+                    bottom: kSizeSS,
+                    left: kSizeSS,
+                    child: Container(
+                      constraints: BoxConstraints(maxWidth: 100),
+                      child: TextBadgeWidget(
+                        text: catName,
+                        color: getValueColor(catName),
+                        opactiy: 0.8,
+                      ),
                     ),
                   ),
 

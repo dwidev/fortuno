@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+
 import 'package:fortuno/features/products/domain/entities/category.dart';
 
 import '../../../../core/utils/formatter.dart';
@@ -57,7 +58,7 @@ class Product extends Equatable {
 
   @override
   List<Object?> get props {
-    return [id, name, code, price, createAt, imageByte, isActive];
+    return [id, name, code, price, createAt, imageByte, isActive, category];
   }
 
   Product copyWith({
