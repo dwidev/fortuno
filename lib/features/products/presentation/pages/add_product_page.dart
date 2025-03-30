@@ -68,6 +68,8 @@ class _AddProductPageState extends State<AddProductPage> {
       code: "", // generate at model
       price: priceController.getDoubleValue(),
       createAt: DateTime.now().toUtc().toString(),
+      isActive: isActive,
+      category: category,
     );
 
     final event = OnAddProduct(

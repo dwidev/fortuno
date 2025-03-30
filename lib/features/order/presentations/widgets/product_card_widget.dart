@@ -20,6 +20,7 @@ class ProductCardWidget extends StatefulWidget {
     this.isPreview = false,
     this.isPicker = false,
     this.isActive = true,
+    this.isPicked = false,
   });
 
   factory ProductCardWidget.inventory({
@@ -43,7 +44,13 @@ class ProductCardWidget extends StatefulWidget {
   factory ProductCardWidget.picker({
     required Product product,
     required VoidCallback onTap,
-  }) => ProductCardWidget(product: product, onTap: onTap, isPicker: true);
+    required bool isPicked,
+  }) => ProductCardWidget(
+    product: product,
+    onTap: onTap,
+    isPicked: isPicked,
+    isPicker: true,
+  );
 
   final double? width;
   final double? height;
@@ -57,6 +64,7 @@ class ProductCardWidget extends StatefulWidget {
   final Function(bool value)? onNonActive;
   final bool isPreview;
   final bool isPicker;
+  final bool isPicked;
 
   @override
   State<ProductCardWidget> createState() => _ProductCardWidgetState();
@@ -102,7 +110,10 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
       child: CustomCard(
         width: widget.width,
         height: widget.height,
-        border: widget.isPicker ? Border.all(color: primaryColor) : null,
+        border:
+            widget.isPicker && widget.isPicked
+                ? Border.all(color: successButtonColor)
+                : null,
         padding: anchorAllContent.min(10),
         constraints: BoxConstraints(minHeight: 100),
         child: Column(
@@ -201,7 +212,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                   Positioned(
                     top: 5,
                     right: 5,
-                    child: CheckListWidget(checked: true),
+                    child: CheckListWidget(checked: widget.isPicked),
                   ),
               ],
             ),

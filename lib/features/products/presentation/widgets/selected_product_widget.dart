@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dotted_border/dotted_border.dart';
 
 import '../../../../core/core.dart';
@@ -9,6 +8,12 @@ class SelectedProductWidget extends StatelessWidget {
 
   const SelectedProductWidget({super.key, required this.opts});
 
+  int get _maxShow => 5;
+
+  void onSelectOther(BuildContext context) {
+    showPickProductDialog(context: context, opts: opts);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -16,18 +21,19 @@ class SelectedProductWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: List.generate(
-          opts.data.length > 5 ? opts.data.length + 1 : opts.data.length,
+          opts.data.length > _maxShow ? _maxShow + 1 : opts.data.length,
           (index) {
-            if (index == 5) {
+            final sliceData = opts.data.sublist(0, 5);
+
+            if (index + 1 == _maxShow + 1) {
               return DottedBorder(
                 borderType: BorderType.RRect,
+
                 padding: EdgeInsets.all(5),
                 radius: Radius.circular(kDefaultRadius * 0.5),
                 color: greyColor,
                 child: GestureDetector(
-                  onTap: () {
-                    showPickProductDialog(context: context, opts: opts);
-                  },
+                  onTap: () => onSelectOther(context),
                   child: Container(
                     constraints: BoxConstraints(maxWidth: 90),
                     padding: EdgeInsets.symmetric(
@@ -61,9 +67,10 @@ class SelectedProductWidget extends StatelessWidget {
                 ),
               );
             }
-
-            final product = opts.data[index];
-
+            final product =
+                opts.data.length > _maxShow
+                    ? sliceData[index]
+                    : opts.data[index];
             return GestureDetector(
               onTap: () {
                 opts.onChange?.call(product);
