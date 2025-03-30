@@ -156,14 +156,17 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
 
                 if (widget.isInventory && catName.isNotEmpty)
                   Positioned(
-                    bottom: kSizeSS,
-                    left: kSizeSS,
-                    child: Container(
-                      constraints: BoxConstraints(maxWidth: 100),
-                      child: TextBadgeWidget(
-                        text: catName,
-                        color: getValueColor(catName),
-                        opactiy: 0.8,
+                    bottom: 0,
+                    left: 0,
+                    child: Transform.scale(
+                      scale: 0.8,
+                      child: Container(
+                        constraints: BoxConstraints(maxWidth: 100),
+                        child: TextBadgeWidget(
+                          text: catName,
+                          color: getValueColor(catName),
+                          opactiy: 0.8,
+                        ),
                       ),
                     ),
                   ),
