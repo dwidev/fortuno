@@ -115,10 +115,10 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
       return saveInsertCategory(params);
     }, emit);
 
-    result.fold((error) => this.error(emit, error), (right) {
+    result.fold((error) => this.error(emit, error), (category) {
       emit(
         OnSavedForm(
-          categories: [...state.categories, event.category],
+          categories: [...state.categories, category],
           products: state.products,
           packages: state.packages,
         ),
@@ -132,10 +132,10 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
     }, emit);
 
     result.fold((error) => this.error(emit, error), (right) {
-      final newProduct = state.products.toList();
-      newProduct.removeWhere((e) => e.id == event.id);
+      final newCat = state.categories.toList();
+      newCat.removeWhere((e) => e.id == event.id);
 
-      final newState = state.copyWith(products: newProduct);
+      final newState = state.copyWith(categories: newCat);
       emit(newState);
     });
   }

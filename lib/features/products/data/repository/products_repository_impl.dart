@@ -104,25 +104,28 @@ class ProductsRepositoryImpl implements ProductsRepository {
   }
 
   @override
-  Future<void> insertCategory({
+  Future<CategoryProduct> insertCategory({
     required String companyId,
     required CategoryProduct category,
-  }) {
+  }) async {
+    final cat = category.copyWith(id: Uuid().v4());
     final categoryModel = CategoryModel(
-      id: Uuid().v4(),
+      id: cat.id,
       companyId: companyId,
-      name: category.name,
-      code: category.code,
-      haveProduct: category.haveProduct,
-      price: category.price,
-      isActive: category.isActive,
-      createAt: category.createAt,
+      name: cat.name,
+      code: cat.code,
+      haveProduct: cat.haveProduct,
+      price: cat.price,
+      isActive: cat.isActive,
+      createAt: cat.createAt,
     );
 
-    return productsDatasource.insertCategory(
+    await productsDatasource.insertCategory(
       companyId: companyId,
       category: categoryModel,
     );
+
+    return cat;
   }
 
   @override

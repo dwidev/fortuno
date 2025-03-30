@@ -7,7 +7,8 @@ import '../entities/category.dart';
 import '../repository/products_repository.dart';
 
 @lazySingleton
-class SaveInsertCategory extends BaseUsecase<void, SaveInsertCategoryParams> {
+class SaveInsertCategory
+    extends BaseUsecase<CategoryProduct, SaveInsertCategoryParams> {
   final CompanyRepository companyRepository;
   final ProductsRepository productsRepository;
 
@@ -17,13 +18,15 @@ class SaveInsertCategory extends BaseUsecase<void, SaveInsertCategoryParams> {
   });
 
   @override
-  Future<ReturnFailure<void>> calling(SaveInsertCategoryParams params) async {
+  Future<ReturnFailure<CategoryProduct>> calling(
+    SaveInsertCategoryParams params,
+  ) async {
     final companyId = await companyRepository.getCompanyID();
-    await productsRepository.insertCategory(
+    final cat = await productsRepository.insertCategory(
       companyId: companyId,
       category: params.category,
     );
-    return Right(null);
+    return Right(cat);
   }
 }
 
