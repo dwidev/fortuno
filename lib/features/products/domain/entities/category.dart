@@ -11,9 +11,9 @@ class CategoryProduct extends Product {
     required super.code,
     required super.price,
     required super.createAt,
-    required super.imageByte,
     required super.isActive,
     required this.haveProduct,
+    super.imageByte,
   });
 
   const CategoryProduct.initial({
@@ -21,6 +21,15 @@ class CategoryProduct extends Product {
     super.name = '',
     super.code = '',
     super.price = 0.0,
+    super.createAt = '',
+    this.haveProduct = false,
+  });
+
+  const CategoryProduct.preview({
+    super.id = '',
+    super.name = 'Nama Product',
+    super.code = '',
+    super.price = -1,
     super.createAt = '',
     this.haveProduct = false,
   });
@@ -38,6 +47,7 @@ class CategoryProduct extends Product {
     bool? haveProduct,
     Uint8List? imageByte,
     bool? isActive,
+    CategoryProduct? category,
   }) {
     return CategoryProduct(
       id: id ?? this.id,

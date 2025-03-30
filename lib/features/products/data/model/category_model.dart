@@ -1,11 +1,13 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
+import 'package:fortuno/core/utils/code_gen.dart';
 
 import '../../../../core/models/base_model.dart';
 import '../../domain/entities/category.dart';
 
 class CategoryModel extends BaseModel<CategoryProduct> {
   final String id;
+  final String companyId;
   final String name;
   final String code;
   final bool haveProduct;
@@ -15,6 +17,7 @@ class CategoryModel extends BaseModel<CategoryProduct> {
 
   CategoryModel({
     required this.id,
+    required this.companyId,
     required this.name,
     required this.code,
     required this.haveProduct,
@@ -25,6 +28,7 @@ class CategoryModel extends BaseModel<CategoryProduct> {
 
   CategoryModel.submitOrder({
     required this.id,
+    this.companyId = "",
     this.name = '',
     this.code = '',
     this.haveProduct = false,
@@ -34,12 +38,16 @@ class CategoryModel extends BaseModel<CategoryProduct> {
   });
 
   Map<String, dynamic> toMap() {
+    final code = codeGen(name);
+
     return <String, dynamic>{
       'ID': id,
+      'company_id': companyId,
       'category_name': name,
       'category_code': code,
       'have_product': haveProduct,
       'price': price,
+      'is_active': isActive.toString(),
       'create_at': createAt,
     };
   }
@@ -49,6 +57,7 @@ class CategoryModel extends BaseModel<CategoryProduct> {
 
     return CategoryModel(
       id: map["ID"] as String? ?? "",
+      companyId: map["company_id"] as String? ?? "",
       name: map["category_name"] as String? ?? "",
       code: map["category_code"] as String? ?? "",
       haveProduct: map["have_product"] as bool? ?? false,

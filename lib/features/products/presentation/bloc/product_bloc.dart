@@ -14,6 +14,7 @@ import '../../domain/entities/product.dart';
 import '../../domain/usecases/get_category_by_companyid.dart';
 import '../../domain/usecases/get_packages_by_company.dart';
 import '../../domain/usecases/get_products_by_company.dart';
+import '../../domain/usecases/save_insert_category.dart';
 import '../../domain/usecases/save_insert_product.dart';
 
 part 'product_event.dart';
@@ -27,15 +28,18 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
 
   // insert
   final SaveInsertProduct saveInsertProduct;
+  final SaveInsertCategory saveInsertCategory;
 
   ProductsBloc({
     required this.getCategoryByCompanyId,
     required this.getProductsByCompany,
     required this.getPackagesByCompany,
     required this.saveInsertProduct,
+    required this.saveInsertCategory,
   }) : super(ProductInitial()) {
     on<OnInitInvetoryPageEvent>(_onInit);
     on<OnAddProduct>(_onAddProduct);
+    on<OnAddCategory>(_onAddCategory);
   }
 
   Future<void> _onInit(OnInitInvetoryPageEvent event, Emitter emit) async {
@@ -93,6 +97,23 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
         OnSavedForm(
           categories: state.categories,
           products: [...state.products, event.product],
+          packages: state.packages,
+        ),
+      );
+    });
+  }
+
+  Future<void> _onAddCategory(OnAddCategory event, Emitter emit) async {
+    final result = await runUsecase(() {
+      final params = SaveInsertCategoryParams(category: event.category);
+      return saveInsertCategory(params);
+    }, emit);
+
+    result.fold((error) => this.error(emit, error), (right) {
+      emit(
+        OnSavedForm(
+          categories: [...state.categories, event.category],
+          products: state.products,
           packages: state.packages,
         ),
       );

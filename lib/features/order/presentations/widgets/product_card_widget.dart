@@ -1,10 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:fortuno/features/products/presentation/widgets/selected_product_widget.dart';
 
 import '../../../../core/core.dart';
 import '../../../products/domain/entities/product.dart';
+import '../../../products/presentation/widgets/selected_product_widget.dart';
 
 class ProductCardWidget extends StatefulWidget {
   const ProductCardWidget({
@@ -12,6 +10,7 @@ class ProductCardWidget extends StatefulWidget {
     this.quantity = 0,
     required this.product,
     required this.onTap,
+    this.onDelete,
     this.isDisable = false,
     this.isInventory = false,
     this.onNonActive,
@@ -19,7 +18,21 @@ class ProductCardWidget extends StatefulWidget {
     this.height,
     this.isPreview = false,
     this.isPicker = false,
+    this.isActive = true,
   });
+
+  factory ProductCardWidget.inventory({
+    required Product product,
+    required VoidCallback onTap,
+    required VoidCallback onDelete,
+  }) => ProductCardWidget(
+    product: product,
+    onTap: onTap,
+    onDelete: onDelete,
+    isDisable: false,
+    isActive: product.isActive,
+    isInventory: true,
+  );
 
   factory ProductCardWidget.preview({
     required Product product,
@@ -36,7 +49,9 @@ class ProductCardWidget extends StatefulWidget {
   final int quantity;
   final Product product;
   final VoidCallback onTap;
+  final VoidCallback? onDelete;
   final bool isDisable;
+  final bool isActive;
   final bool isInventory;
   final Function(bool value)? onNonActive;
   final bool isPreview;
@@ -55,7 +70,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
 
   @override
   void initState() {
-    active = !widget.isDisable;
+    active = widget.isActive;
     super.initState();
   }
 
@@ -126,6 +141,16 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                       },
                     ),
                   ),
+
+                if (widget.isInventory)
+                  Positioned(
+                    right: kSizeSS,
+                    child: TextBadgeWidget(
+                      text: widget.product.category?.name ?? "",
+                      color: getValueColor(widget.product.category?.name ?? ""),
+                    ),
+                  ),
+
                 if (widget.quantity != 0 && !widget.isInventory)
                   Positioned(
                     top: 0,
@@ -198,13 +223,15 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                       ],
                     ),
                   ),
-                  if (widget.quantity != 0) ...[
+                  if (widget.quantity != 0 || widget.isInventory) ...[
                     SizedBox(width: kSizeMS),
                     Container(
                       padding: EdgeInsets.all(kSizeS),
                       decoration: BoxDecoration(
                         color:
-                            isDisable ? disabledButtonColor : deleteButtonColor,
+                            isDisable && !widget.isInventory
+                                ? disabledButtonColor
+                                : deleteButtonColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Icon(CupertinoIcons.delete, color: whiteColor),

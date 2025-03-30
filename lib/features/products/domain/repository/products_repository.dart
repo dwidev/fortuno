@@ -11,6 +11,10 @@ abstract class ProductsRepository {
   Future<List<Package>> getPackageByCompany({required String companyId});
 
   // INSERT
+  Future<void> insertCategory({
+    required String companyId,
+    required CategoryProduct category,
+  });
   Future<void> insertProduct({
     required String companyId,
     required Product product,

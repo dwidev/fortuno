@@ -2,6 +2,8 @@
 import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
+import 'package:fortuno/features/products/domain/entities/category.dart';
 
 import '../../../../core/utils/formatter.dart';
 
@@ -13,6 +15,7 @@ class Product extends Equatable {
   final String createAt;
   final Uint8List? imageByte;
   final bool isActive;
+  final CategoryProduct? category;
 
   String get kDisplayPrice => "${(price / 1000).toStringAsFixed(0)}K";
   String get priceFormated => moneyFormatter(price);
@@ -25,6 +28,7 @@ class Product extends Equatable {
     required this.createAt,
     this.imageByte,
     this.isActive = false,
+    this.category,
   });
 
   factory Product.init() => Product(
@@ -64,6 +68,7 @@ class Product extends Equatable {
     String? createAt,
     Uint8List? imageByte,
     bool? isActive,
+    CategoryProduct? category,
   }) {
     return Product(
       id: id ?? this.id,
@@ -73,6 +78,7 @@ class Product extends Equatable {
       createAt: createAt ?? this.createAt,
       imageByte: imageByte ?? this.imageByte,
       isActive: isActive ?? this.isActive,
+      category: category ?? this.category,
     );
   }
 

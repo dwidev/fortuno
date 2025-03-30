@@ -17,7 +17,8 @@ class ProductNosqlDatasource extends ProductsDatasource {
     final response = await client
         .from('category')
         .select()
-        .eq('company_id', companyId);
+        .eq('company_id', companyId)
+        .eq('is_active', true);
 
     final result = response.map((e) => CategoryModel.fromMap(e)).toList();
     return result;
@@ -30,12 +31,14 @@ class ProductNosqlDatasource extends ProductsDatasource {
     final response = await client
         .from('category_product')
         .select('*, products!left(*), category!inner(*)')
-        .eq('category.ID', categoryId);
+        .eq('category.ID', categoryId)
+        .eq('products.is_active', true);
 
     final catProduct = <String, dynamic>{};
     final List<Map<String, dynamic>> productsListRaw = [];
 
     for (var raw in response) {
+      if (raw["products"] == null) continue;
       final categoryRaw = raw["category"];
       final productRaw = raw["products"];
 
@@ -108,5 +111,14 @@ class ProductNosqlDatasource extends ProductsDatasource {
       };
       await client.from('category_product').insert(catProdMap);
     }
+  }
+
+  @override
+  Future<void> insertCategory({
+    required String companyId,
+    required CategoryModel category,
+  }) async {
+    final map = category.toMap();
+    await client.from('category').insert(map);
   }
 }

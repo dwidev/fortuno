@@ -87,6 +87,8 @@ import 'package:fortuno/features/products/domain/usecases/get_products_by_catego
     as _i852;
 import 'package:fortuno/features/products/domain/usecases/get_products_by_company.dart'
     as _i189;
+import 'package:fortuno/features/products/domain/usecases/save_insert_category.dart'
+    as _i388;
 import 'package:fortuno/features/products/domain/usecases/save_insert_product.dart'
     as _i116;
 import 'package:fortuno/features/products/presentation/bloc/product_bloc.dart'
@@ -259,6 +261,12 @@ extension GetItInjectableX on _i174.GetIt {
         productsRepository: gh<_i1028.ProductsRepository>(),
       ),
     );
+    gh.lazySingleton<_i388.SaveInsertCategory>(
+      () => _i388.SaveInsertCategory(
+        companyRepository: gh<_i1060.CompanyRepository>(),
+        productsRepository: gh<_i1028.ProductsRepository>(),
+      ),
+    );
     gh.lazySingleton<_i850.GetPackagesByCompany>(
       () => _i850.GetPackagesByCompany(
         productsRepository: gh<_i1028.ProductsRepository>(),
@@ -294,6 +302,7 @@ extension GetItInjectableX on _i174.GetIt {
         getProductsByCompany: gh<_i189.GetProductsByCompany>(),
         getPackagesByCompany: gh<_i850.GetPackagesByCompany>(),
         saveInsertProduct: gh<_i116.SaveInsertProduct>(),
+        saveInsertCategory: gh<_i388.SaveInsertCategory>(),
       ),
     );
     return this;

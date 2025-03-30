@@ -1,7 +1,11 @@
 import 'dart:math';
 
 String codeGen(String string) {
-  var data = string.split(" ").map((e) => e[0]).join();
+  var data =
+      string
+          .split(" ")
+          .map((e) => e.isNotEmpty ? e[0].toUpperCase() : "")
+          .join();
 
   DateTime now = DateTime.now();
   String timeCode =

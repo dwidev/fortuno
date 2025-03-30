@@ -12,6 +12,10 @@ abstract class ProductsDatasource {
   Future<List<PackageModel>> getPackageByCompany({required String companyId});
 
   // INSERT DATA
+  Future<void> insertCategory({
+    required String companyId,
+    required CategoryModel category,
+  });
   Future<void> insertProduct({
     required String companyId,
     required ProductModel product,

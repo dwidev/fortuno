@@ -19,3 +19,10 @@ class OnAddProduct extends ProductEvent {
 
   const OnAddProduct({required this.product, this.category, this.productImage});
 }
+
+class OnAddCategory extends ProductEvent {
+  final CategoryProduct category;
+  final XFile? image;
+
+  const OnAddCategory({required this.category, this.image});
+}

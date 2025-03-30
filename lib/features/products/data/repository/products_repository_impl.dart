@@ -86,6 +86,7 @@ class ProductsRepositoryImpl implements ProductsRepository {
 
     if (category != null) {
       categoryModel = CategoryModel(
+        companyId: companyId,
         id: category.id,
         name: category.name,
         code: category.code,
@@ -98,6 +99,28 @@ class ProductsRepositoryImpl implements ProductsRepository {
     return productsDatasource.insertProduct(
       companyId: companyId,
       product: productModel,
+      category: categoryModel,
+    );
+  }
+
+  @override
+  Future<void> insertCategory({
+    required String companyId,
+    required CategoryProduct category,
+  }) {
+    final categoryModel = CategoryModel(
+      id: Uuid().v4(),
+      companyId: companyId,
+      name: category.name,
+      code: category.code,
+      haveProduct: category.haveProduct,
+      price: category.price,
+      isActive: category.isActive,
+      createAt: category.createAt,
+    );
+
+    return productsDatasource.insertCategory(
+      companyId: companyId,
       category: categoryModel,
     );
   }

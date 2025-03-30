@@ -33,7 +33,7 @@ class _ProductViewPageState extends State<ProductViewPage> {
           mainAxisSpacing: kSizeMS,
           itemCount: state.products.length + 1,
           gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 6,
+            crossAxisCount: 5,
           ),
           itemBuilder: (_, index) {
             if (index == 0) {
@@ -45,11 +45,12 @@ class _ProductViewPageState extends State<ProductViewPage> {
             }
 
             final product = state.products[index - 1];
-            return ProductCardWidget(
+            return ProductCardWidget.inventory(
               product: product,
-              quantity: 0,
-              onTap: () {},
-              isInventory: true,
+              onTap: () {
+                context.pushNamed(AddProductPage.path);
+              },
+              onDelete: () {},
             );
           },
         );

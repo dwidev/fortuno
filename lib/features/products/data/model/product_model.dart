@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:fortuno/core/utils/code_gen.dart';
+import 'package:fortuno/features/products/data/model/category_model.dart';
 
 import '../../../../core/models/base_model.dart';
 import '../../domain/entities/product.dart';
@@ -14,6 +15,7 @@ class ProductModel extends BaseModel<Product> {
   final double price;
   final bool isActive;
   final String createAt;
+  final CategoryModel? categoryModel;
 
   ProductModel({
     required this.id,
@@ -23,6 +25,7 @@ class ProductModel extends BaseModel<Product> {
     required this.price,
     required this.isActive,
     required this.createAt,
+    this.categoryModel,
   });
 
   Map<String, dynamic> toMap() {
@@ -50,6 +53,10 @@ class ProductModel extends BaseModel<Product> {
       price: price,
       isActive: map["is_active"] as bool? ?? false,
       createAt: map["created_at"]?.toString() ?? "",
+      categoryModel:
+          map['category'] != null
+              ? CategoryModel.fromMap(map['category'])
+              : null,
     );
   }
 
@@ -70,7 +77,9 @@ class ProductModel extends BaseModel<Product> {
       name: name,
       code: code,
       price: price,
+      isActive: isActive,
       createAt: createAt,
+      category: categoryModel?.toEntity(),
     );
   }
 }

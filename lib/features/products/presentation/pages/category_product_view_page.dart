@@ -1,12 +1,11 @@
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:fortuno/features/products/presentation/pages/add_category_product_page.dart';
-import 'package:fortuno/features/products/presentation/pages/add_product_page.dart';
 
 import '../../../../core/core.dart';
 import '../../../order/presentations/widgets/loading_product_widget.dart';
 import '../../../order/presentations/widgets/product_card_widget.dart';
 import '../bloc/product_bloc.dart';
 import '../widgets/add_inventory_widget.dart';
+import 'add_category_product_page.dart';
 
 class CategoryProductViewPage extends StatefulWidget {
   const CategoryProductViewPage({super.key});
@@ -46,11 +45,12 @@ class _CategoryProductViewPageState extends State<CategoryProductViewPage> {
               );
             }
             final category = state.categories[index - 1];
-            return ProductCardWidget(
+            return ProductCardWidget.inventory(
               product: category,
-              quantity: 0,
-              onTap: () {},
-              isInventory: true,
+              onTap: () {
+                context.pushNamed(AddCategoryProductPage.path);
+              },
+              onDelete: () {},
             );
           },
         );
