@@ -121,4 +121,10 @@ class ProductNosqlDatasource extends ProductsDatasource {
     final map = category.toMap();
     await client.from('category').insert(map);
   }
+
+  @override
+  Future<void> deleteCategory({required String id}) async {
+    await client.from('category').delete().eq('ID', id);
+    await client.from('category_product').delete().eq('category_id', id);
+  }
 }

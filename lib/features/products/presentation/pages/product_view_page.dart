@@ -50,7 +50,7 @@ class _ProductViewPageState extends State<ProductViewPage> {
               onTap: () {
                 context.pushNamed(AddProductPage.path);
               },
-              onDelete: () {},
+              onDelete: (id) {},
             );
           },
         );

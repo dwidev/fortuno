@@ -25,7 +25,7 @@ class ProductCardWidget extends StatefulWidget {
   factory ProductCardWidget.inventory({
     required Product product,
     required VoidCallback onTap,
-    required VoidCallback onDelete,
+    required Function(String id) onDelete,
   }) => ProductCardWidget(
     product: product,
     onTap: onTap,
@@ -50,7 +50,7 @@ class ProductCardWidget extends StatefulWidget {
   final int quantity;
   final Product product;
   final VoidCallback onTap;
-  final VoidCallback? onDelete;
+  final Function(String id)? onDelete;
   final bool isDisable;
   final bool isActive;
   final bool isInventory;
@@ -79,7 +79,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
     showDeleteProductDialog(
       context: context,
       onDelete: () {
-        widget.onDelete?.call();
+        widget.onDelete?.call(widget.product.id);
       },
     );
   }

@@ -20,4 +20,7 @@ abstract class ProductsRepository {
     required Product product,
     required CategoryProduct? category,
   });
+
+  // DELETE DATA
+  Future<void> deleteCategory({required String id});
 }

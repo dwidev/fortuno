@@ -26,3 +26,13 @@ class OnAddCategory extends ProductEvent {
 
   const OnAddCategory({required this.category, this.image});
 }
+
+abstract class OnDelete extends ProductEvent {
+  final String id;
+
+  const OnDelete({required this.id});
+}
+
+class OnDeleteCategory extends OnDelete {
+  const OnDeleteCategory({required super.id});
+}

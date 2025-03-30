@@ -11,6 +11,7 @@ import '../../../../core/usecases/base_usecase.dart';
 import '../../domain/entities/category.dart';
 import '../../domain/entities/package.dart';
 import '../../domain/entities/product.dart';
+import '../../domain/usecases/delete_category.dart';
 import '../../domain/usecases/get_category_by_companyid.dart';
 import '../../domain/usecases/get_packages_by_company.dart';
 import '../../domain/usecases/get_products_by_company.dart';
@@ -30,16 +31,21 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
   final SaveInsertProduct saveInsertProduct;
   final SaveInsertCategory saveInsertCategory;
 
+  // delete
+  final DeleteCategory deleteCategory;
+
   ProductsBloc({
     required this.getCategoryByCompanyId,
     required this.getProductsByCompany,
     required this.getPackagesByCompany,
     required this.saveInsertProduct,
     required this.saveInsertCategory,
+    required this.deleteCategory,
   }) : super(ProductInitial()) {
     on<OnInitInvetoryPageEvent>(_onInit);
     on<OnAddProduct>(_onAddProduct);
     on<OnAddCategory>(_onAddCategory);
+    on<OnDeleteCategory>(_onDeleteCategory);
   }
 
   Future<void> _onInit(OnInitInvetoryPageEvent event, Emitter emit) async {
@@ -117,6 +123,20 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
           packages: state.packages,
         ),
       );
+    });
+  }
+
+  Future<void> _onDeleteCategory(OnDeleteCategory event, Emitter emit) async {
+    final result = await runUsecase(() {
+      return deleteCategory(event.id);
+    }, emit);
+
+    result.fold((error) => this.error(emit, error), (right) {
+      final newProduct = state.products.toList();
+      newProduct.removeWhere((e) => e.id == event.id);
+
+      final newState = state.copyWith(products: newProduct);
+      emit(newState);
     });
   }
 

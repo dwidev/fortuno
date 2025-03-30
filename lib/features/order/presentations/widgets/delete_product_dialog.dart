@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:rxdart/subjects.dart';
 
@@ -119,7 +118,10 @@ class _DeleteProductDialogState extends State<_DeleteProductDialog> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: deleteButtonColor,
                   ),
-                  onPressed: widget.onDelete,
+                  onPressed: () {
+                    context.pop();
+                    widget.onDelete();
+                  },
                   child: Text("Hapus", style: TextStyle(color: whiteColor)),
                 ),
               ),

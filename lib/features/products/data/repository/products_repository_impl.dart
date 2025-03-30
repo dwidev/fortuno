@@ -124,4 +124,9 @@ class ProductsRepositoryImpl implements ProductsRepository {
       category: categoryModel,
     );
   }
+
+  @override
+  Future<void> deleteCategory({required String id}) {
+    return productsDatasource.deleteCategory(id: id);
+  }
 }

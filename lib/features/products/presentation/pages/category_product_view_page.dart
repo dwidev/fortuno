@@ -7,15 +7,9 @@ import '../bloc/product_bloc.dart';
 import '../widgets/add_inventory_widget.dart';
 import 'add_category_product_page.dart';
 
-class CategoryProductViewPage extends StatefulWidget {
+class CategoryProductViewPage extends StatelessWidget {
   const CategoryProductViewPage({super.key});
 
-  @override
-  State<CategoryProductViewPage> createState() =>
-      _CategoryProductViewPageState();
-}
-
-class _CategoryProductViewPageState extends State<CategoryProductViewPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductsBloc, ProductState>(
@@ -50,7 +44,9 @@ class _CategoryProductViewPageState extends State<CategoryProductViewPage> {
               onTap: () {
                 context.pushNamed(AddCategoryProductPage.path);
               },
-              onDelete: () {},
+              onDelete: (id) {
+                context.read<ProductsBloc>().add(OnDeleteCategory(id: id));
+              },
             );
           },
         );
