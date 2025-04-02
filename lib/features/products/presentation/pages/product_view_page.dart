@@ -50,7 +50,9 @@ class _ProductViewPageState extends State<ProductViewPage> {
               onTap: () {
                 context.pushNamed(AddProductPage.path);
               },
-              onDelete: (id) {},
+              onDelete: (id) {
+                context.read<ProductsBloc>().add(OnDeleteProduct(id: id));
+              },
             );
           },
         );

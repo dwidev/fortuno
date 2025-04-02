@@ -1,9 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
+
+import 'package:fortuno/features/products/domain/usecases/delete_product.dart';
 
 import '../../../../core/bloc/base_bloc.dart';
 import '../../../../core/failures/failure.dart';
@@ -33,6 +36,7 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
 
   // delete
   final DeleteCategory deleteCategory;
+  final DeleteProduct deleteProduct;
 
   ProductsBloc({
     required this.getCategoryByCompanyId,
@@ -41,11 +45,13 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
     required this.saveInsertProduct,
     required this.saveInsertCategory,
     required this.deleteCategory,
+    required this.deleteProduct,
   }) : super(ProductInitial()) {
     on<OnInitInvetoryPageEvent>(_onInit);
     on<OnAddProduct>(_onAddProduct);
     on<OnAddCategory>(_onAddCategory);
     on<OnDeleteCategory>(_onDeleteCategory);
+    on<OnDeleteProduct>(_onDeleteProduct);
   }
 
   Future<void> _onInit(OnInitInvetoryPageEvent event, Emitter emit) async {
@@ -136,6 +142,20 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
       newCat.removeWhere((e) => e.id == event.id);
 
       final newState = state.copyWith(categories: newCat);
+      emit(newState);
+    });
+  }
+
+  Future<void> _onDeleteProduct(OnDeleteProduct event, Emitter emit) async {
+    final result = await runUsecase(() {
+      return deleteProduct(event.id);
+    }, emit);
+
+    result.fold((error) => this.error(emit, error), (right) {
+      final newProd = state.products.toList();
+      newProd.removeWhere((e) => e.id == event.id);
+
+      final newState = state.copyWith(products: newProd);
       emit(newState);
     });
   }

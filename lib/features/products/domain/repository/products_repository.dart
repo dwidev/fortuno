@@ -23,4 +23,5 @@ abstract class ProductsRepository {
 
   // DELETE DATA
   Future<void> deleteCategory({required String id});
+  Future<void> deleteProduct({required String id});
 }

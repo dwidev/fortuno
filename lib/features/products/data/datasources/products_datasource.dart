@@ -24,4 +24,5 @@ abstract class ProductsDatasource {
 
   // DELETE DATA
   Future<void> deleteCategory({required String id});
+  Future<void> deleteProduct({required String id});
 }

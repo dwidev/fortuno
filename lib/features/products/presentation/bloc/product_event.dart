@@ -36,3 +36,7 @@ abstract class OnDelete extends ProductEvent {
 class OnDeleteCategory extends OnDelete {
   const OnDeleteCategory({required super.id});
 }
+
+class OnDeleteProduct extends OnDelete {
+  const OnDeleteProduct({required super.id});
+}

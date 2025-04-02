@@ -14,7 +14,7 @@ import 'package:fortuno/core/depedency_injection/register_module.dart' as _i852;
 import 'package:fortuno/core/firebase/auth_service.dart' as _i592;
 import 'package:fortuno/core/firebase/firebase.dart' as _i512;
 import 'package:fortuno/core/local_storage/local_storage.dart' as _i968;
-import 'package:fortuno/core/local_storage/secure_storage.dart';
+import 'package:fortuno/core/local_storage/secure_storage.dart' as _i121;
 import 'package:fortuno/core/local_storage/shared_pref_storage.dart';
 import 'package:fortuno/features/auth/data/datasource/auth_nosql_datasource.dart'
     as _i787;
@@ -79,6 +79,8 @@ import 'package:fortuno/features/products/domain/repository/products_repository.
     as _i1028;
 import 'package:fortuno/features/products/domain/usecases/delete_category.dart'
     as _i844;
+import 'package:fortuno/features/products/domain/usecases/delete_product.dart'
+    as _i65;
 import 'package:fortuno/features/products/domain/usecases/get_category_by_companyid.dart'
     as _i436;
 import 'package:fortuno/features/products/domain/usecases/get_package_by_categoryid.dart'
@@ -155,11 +157,10 @@ extension GetItInjectableX on _i174.GetIt {
         authRemoteDataource: gh<_i720.AuthRemoteDataource>(),
       ),
     );
-    gh.lazySingleton<_i605.CheckAuthorize>(
-      () => _i605.CheckAuthorize(
-        authRepository: gh<_i948.AuthRepository>(),
-        secStorage: gh<_i968.ILocalStorage>(instanceName: 'secure-storage'),
-      ),
+    gh.lazySingleton<_i968.ILocalStorage>(
+      () =>
+          _i121.SecureStorage(secureStorage: gh<_i558.FlutterSecureStorage>()),
+      instanceName: 'secure-storage',
     );
     gh.lazySingleton<_i870.SignWithGoogle>(
       () => _i870.SignWithGoogle(
@@ -178,10 +179,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i968.ILocalStorage>(
       () => SharedPrefStorage(preferences: gh<_i460.SharedPreferences>()),
       instanceName: 'shared-pref',
-    );
-    gh.lazySingleton<_i968.ILocalStorage>(
-      () => SecureStorage(secureStorage: gh<_i558.FlutterSecureStorage>()),
-      instanceName: 'secure-storage',
     );
     gh.lazySingleton<_i996.OrderRepository>(
       () => _i562.OrderRepositoryImpl(
@@ -205,16 +202,14 @@ extension GetItInjectableX on _i174.GetIt {
         productsRepository: gh<_i1028.ProductsRepository>(),
       ),
     );
+    gh.lazySingleton<_i65.DeleteProduct>(
+      () => _i65.DeleteProduct(
+        productsRepository: gh<_i1028.ProductsRepository>(),
+      ),
+    );
     gh.lazySingleton<_i1060.CompanyRepository>(
       () => _i743.CompanyRepositoryImpl(
         datasource: gh<_i536.CompanyDatasource>(),
-      ),
-    );
-    gh.factory<_i279.AuthBloc>(
-      () => _i279.AuthBloc(
-        signWithGoogle: gh<_i870.SignWithGoogle>(),
-        signOut: gh<_i101.SignOut>(),
-        checkAuthorize: gh<_i605.CheckAuthorize>(),
       ),
     );
     gh.lazySingleton<_i721.PaymentRepository>(
@@ -233,6 +228,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i258.CacheOrderFromCart>(
       () => _i258.CacheOrderFromCart(
         orderRepository: gh<_i996.OrderRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i605.CheckAuthorize>(
+      () => _i605.CheckAuthorize(
+        authRepository: gh<_i948.AuthRepository>(),
+        secStorage: gh<_i968.ILocalStorage>(instanceName: 'secure-storage'),
       ),
     );
     gh.factory<_i617.CartProcessingBloc>(
@@ -268,6 +269,13 @@ extension GetItInjectableX on _i174.GetIt {
         companyRepository: gh<_i1060.CompanyRepository>(),
       ),
     );
+    gh.factory<_i279.AuthBloc>(
+      () => _i279.AuthBloc(
+        signWithGoogle: gh<_i870.SignWithGoogle>(),
+        signOut: gh<_i101.SignOut>(),
+        checkAuthorize: gh<_i605.CheckAuthorize>(),
+      ),
+    );
     gh.lazySingleton<_i211.UpdateStatusOrder>(
       () => _i211.UpdateStatusOrder(
         orderRepository: gh<_i996.OrderRepository>(),
@@ -292,9 +300,6 @@ extension GetItInjectableX on _i174.GetIt {
         getPackageByCategoryid: gh<_i359.GetPackageByCategoryid>(),
       ),
     );
-    gh.factory<_i184.CartBloc>(
-      () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
-    );
     gh.factory<_i722.ProductsBloc>(
       () => _i722.ProductsBloc(
         getCategoryByCompanyId: gh<_i436.GetCategoryByCompanyId>(),
@@ -303,7 +308,11 @@ extension GetItInjectableX on _i174.GetIt {
         saveInsertProduct: gh<_i116.SaveInsertProduct>(),
         saveInsertCategory: gh<_i388.SaveInsertCategory>(),
         deleteCategory: gh<_i844.DeleteCategory>(),
+        deleteProduct: gh<_i65.DeleteProduct>(),
       ),
+    );
+    gh.factory<_i184.CartBloc>(
+      () => _i184.CartBloc(cacheOrderFromCart: gh<_i258.CacheOrderFromCart>()),
     );
     gh.factory<_i955.OrderProcessBloc>(
       () => _i955.OrderProcessBloc(

@@ -134,7 +134,13 @@ class ProductNosqlDatasource extends ProductsDatasource {
 
   @override
   Future<void> deleteCategory({required String id}) async {
-    await client.from('category').delete().eq('ID', id);
     await client.from('category_product').delete().eq('category_id', id);
+    await client.from('category').delete().eq('ID', id);
+  }
+
+  @override
+  Future<void> deleteProduct({required String id}) async {
+    await client.from('category_product').delete().eq('product_id', id);
+    await client.from('products').delete().eq('ID', id);
   }
 }
