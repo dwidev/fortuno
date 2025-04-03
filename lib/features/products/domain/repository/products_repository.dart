@@ -15,7 +15,7 @@ abstract class ProductsRepository {
     required String companyId,
     required CategoryProduct category,
   });
-  Future<void> insertProduct({
+  Future<Product> insertProduct({
     required String companyId,
     required Product product,
     required CategoryProduct? category,

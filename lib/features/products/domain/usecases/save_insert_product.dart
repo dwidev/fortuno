@@ -9,7 +9,7 @@ import '../entities/category.dart';
 import '../repository/products_repository.dart';
 
 @lazySingleton
-class SaveInsertProduct extends BaseUsecase<void, SaveInsertProductParams> {
+class SaveInsertProduct extends BaseUsecase<Product, SaveInsertProductParams> {
   final CompanyRepository companyRepository;
   final ProductsRepository productsRepository;
 
@@ -19,14 +19,14 @@ class SaveInsertProduct extends BaseUsecase<void, SaveInsertProductParams> {
   });
 
   @override
-  Future<ReturnFailure<void>> calling(SaveInsertProductParams params) async {
+  Future<ReturnFailure<Product>> calling(SaveInsertProductParams params) async {
     final companyId = await companyRepository.getCompanyID();
-    await productsRepository.insertProduct(
+    final product = await productsRepository.insertProduct(
       companyId: companyId,
       product: params.product,
       category: params.category,
     );
-    return Right(null);
+    return Right(product);
   }
 }
 

@@ -67,19 +67,20 @@ class ProductsRepositoryImpl implements ProductsRepository {
   }
 
   @override
-  Future<void> insertProduct({
+  Future<Product> insertProduct({
     required String companyId,
     required Product product,
     required CategoryProduct? category,
-  }) {
+  }) async {
+    final prod = product.copyWith(id: Uuid().v4());
     final productModel = ProductModel(
-      id: Uuid().v4(),
+      id: prod.id,
       companyId: companyId,
-      name: product.name,
-      code: product.code,
-      price: product.price,
-      createAt: product.createAt,
-      isActive: product.isActive,
+      name: prod.name,
+      code: prod.code,
+      price: prod.price,
+      createAt: prod.createAt,
+      isActive: prod.isActive,
     );
 
     CategoryModel? categoryModel;
@@ -96,11 +97,13 @@ class ProductsRepositoryImpl implements ProductsRepository {
       );
     }
 
-    return productsDatasource.insertProduct(
+    await productsDatasource.insertProduct(
       companyId: companyId,
       product: productModel,
       category: categoryModel,
     );
+
+    return prod;
   }
 
   @override

@@ -104,11 +104,11 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
       return saveInsertProduct(params);
     }, emit);
 
-    result.fold((error) => this.error(emit, error), (right) {
+    result.fold((error) => this.error(emit, error), (product) {
       emit(
         OnSavedForm(
           categories: state.categories,
-          products: [...state.products, event.product],
+          products: [...state.products, product],
           packages: state.packages,
         ),
       );

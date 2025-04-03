@@ -53,7 +53,8 @@ class _AddProductPageState extends State<AddProductPage> {
     if (formKey.currentState?.validate() == false) return;
 
     if (isCategory && selectedCategory.isEmpty) {
-      EasyLoading.showToast("Silahkan pilih category");
+      EasyLoading.showToast("Silahkan pilih / Tanpa Kategori");
+      return;
     }
 
     CategoryProduct? category;
