@@ -74,18 +74,22 @@ class ProductNosqlDatasource extends ProductsDatasource {
     required String companyId,
   }) async {
     final response = await client
-        .from('category_product')
-        .select('*, products!left(*), category!left(*)')
-        .eq('products.company_id', companyId);
+        .from('products')
+        .select('*, category_product!left(*, category!left(*))')
+        .eq('company_id', companyId)
+        .limit(1, referencedTable: 'category_product');
 
     final List<Map<String, dynamic>> productsListRaw = [];
 
     for (var raw in response) {
-      final productRaw = raw["products"];
-      if (raw['category'] != null) {
-        productRaw['category'] = raw['category'];
+      final cat = raw['category_product'] as List?;
+      if (cat != null && cat.isNotEmpty) {
+        raw['category'] = cat.first['category'];
+      } else {
+        raw['category'] = null;
       }
-      productsListRaw.add(productRaw);
+
+      productsListRaw.add(raw);
     }
 
     final result = productsListRaw.map((e) => ProductModel.fromMap(e)).toList();
