@@ -40,3 +40,9 @@ class OnDeleteCategory extends OnDelete {
 class OnDeleteProduct extends OnDelete {
   const OnDeleteProduct({required super.id});
 }
+
+class OnActivateData extends ProductEvent {
+  final ActivateDataParams params;
+
+  const OnActivateData(this.params);
+}

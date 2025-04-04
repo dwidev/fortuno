@@ -1,12 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
+import 'package:collection/collection.dart';
+import 'package:either_dart/either.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortuno/features/products/domain/usecases/activate_data.dart';
+import 'package:fortuno/features/products/domain/usecases/delete_product.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
-
-import 'package:fortuno/features/products/domain/usecases/delete_product.dart';
 
 import '../../../../core/bloc/base_bloc.dart';
 import '../../../../core/failures/failure.dart';
@@ -38,6 +40,9 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
   final DeleteCategory deleteCategory;
   final DeleteProduct deleteProduct;
 
+  // activate
+  final ActivateData activateData;
+
   ProductsBloc({
     required this.getCategoryByCompanyId,
     required this.getProductsByCompany,
@@ -46,12 +51,14 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
     required this.saveInsertCategory,
     required this.deleteCategory,
     required this.deleteProduct,
+    required this.activateData,
   }) : super(ProductInitial()) {
     on<OnInitInvetoryPageEvent>(_onInit);
     on<OnAddProduct>(_onAddProduct);
     on<OnAddCategory>(_onAddCategory);
     on<OnDeleteCategory>(_onDeleteCategory);
     on<OnDeleteProduct>(_onDeleteProduct);
+    on<OnActivateData>(_onActivateData);
   }
 
   Future<void> _onInit(OnInitInvetoryPageEvent event, Emitter emit) async {
@@ -158,6 +165,46 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
       final newState = state.copyWith(products: newProd);
       emit(newState);
     });
+  }
+
+  Future<void> _onActivateData(OnActivateData event, Emitter emit) async {
+    final result = await activateData(event.params);
+
+    final updatedProd = List<Product>.from(state.products);
+    final index = updatedProd.indexWhere((e) => e.id == event.params.id);
+    final product = updatedProd[index];
+
+    if (event.params.type.iscategory) {
+      final updatedCat = handleActiveCategory(result, event);
+      emit(state.copyWith(products: updatedProd, categories: updatedCat));
+    }
+  }
+
+  List<CategoryProduct>? handleActiveProduct(
+    Either<Failure, bool> result,
+    OnActivateData event,
+  ) {
+    final updatedCat = List<CategoryProduct>.from(state.categories);
+    final indexCat = updatedCat.indexWhere((e) => e.id == event.params.id);
+
+    final category = updatedCat[indexCat];
+    result.fold(
+      (error) {
+        if (indexCat != -1) {
+          updatedCat[indexCat] = category.copyWith(
+            isActive: event.params.value,
+          );
+        }
+      },
+      (right) {
+        if (indexCat != -1) {
+          final updated = category.copyWith(isActive: !event.params.value);
+          updatedCat[indexCat] = updated;
+        }
+      },
+    );
+
+    return updatedCat;
   }
 
   @override

@@ -13,6 +13,32 @@ class ProductState extends BaseState {
     super.error,
   });
 
+  List<CategoryProduct> updateActiveCategory(
+    Either<Failure, bool> result,
+    String id,
+  ) {
+    final updatedCat = List<CategoryProduct>.from(categories);
+    final indexCat = updatedCat.indexWhere((e) => e.id == event.params.id);
+
+    final category = updatedCat[indexCat];
+    result.fold(
+      (error) {
+        if (indexCat != -1) {
+          updatedCat[indexCat] = category.copyWith(
+            isActive: event.params.value,
+          );
+        }
+      },
+      (right) {
+        if (indexCat != -1) {
+          final updated = category.copyWith(isActive: !event.params.value);
+          updatedCat[indexCat] = updated;
+        }
+      },
+    );
+    return updatedCat;
+  }
+
   @override
   List<Object?> get props => [categories, products, packages, ...super.props];
 

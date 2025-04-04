@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../domain/enums/inventory_type.dart';
 import '../model/category_model.dart';
 import '../model/package_model.dart';
 import '../model/product_model.dart';
@@ -146,5 +147,14 @@ class ProductNosqlDatasource extends ProductsDatasource {
   Future<void> deleteProduct({required String id}) async {
     await client.from('category_product').delete().eq('product_id', id);
     await client.from('products').delete().eq('ID', id);
+  }
+
+  @override
+  Future<void> activateData({
+    required String id,
+    required bool value,
+    required InventoryType type,
+  }) async {
+    await client.from(type.table).update({'is_active': value}).eq('ID', id);
   }
 }

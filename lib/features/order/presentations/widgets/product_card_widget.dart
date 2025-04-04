@@ -14,7 +14,7 @@ class ProductCardWidget extends StatefulWidget {
     this.onDelete,
     this.isDisable = false,
     this.isInventory = false,
-    this.onNonActive,
+    this.onActivate,
     this.width,
     this.height,
     this.isPreview = false,
@@ -27,10 +27,12 @@ class ProductCardWidget extends StatefulWidget {
     required Product product,
     required VoidCallback onTap,
     required Function(String id) onDelete,
+    required Function(bool value, String id)? onActivate,
   }) => ProductCardWidget(
     product: product,
     onTap: onTap,
     onDelete: onDelete,
+    onActivate: onActivate,
     isDisable: false,
     isActive: product.isActive,
     isInventory: true,
@@ -61,7 +63,7 @@ class ProductCardWidget extends StatefulWidget {
   final bool isDisable;
   final bool isActive;
   final bool isInventory;
-  final Function(bool value)? onNonActive;
+  final Function(bool value, String id)? onActivate;
   final bool isPreview;
   final bool isPicker;
   final bool isPicked;
@@ -160,7 +162,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           active = value;
                         });
 
-                        widget.onNonActive?.call(value);
+                        widget.onActivate?.call(value, widget.product.id);
                       },
                     ),
                   ),

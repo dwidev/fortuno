@@ -47,6 +47,7 @@ class CategoryProductViewPage extends StatelessWidget {
               onDelete: (id) {
                 context.read<ProductsBloc>().add(OnDeleteCategory(id: id));
               },
+              onActivate: (value, id) {},
             );
           },
         );

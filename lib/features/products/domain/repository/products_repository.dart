@@ -1,3 +1,5 @@
+import 'package:fortuno/features/products/domain/enums/inventory_type.dart';
+
 import '../entities/category.dart';
 import '../entities/package.dart';
 import '../entities/product.dart';
@@ -24,4 +26,11 @@ abstract class ProductsRepository {
   // DELETE DATA
   Future<void> deleteCategory({required String id});
   Future<void> deleteProduct({required String id});
+
+  // ACTIVATE DATA
+  Future<void> activateData({
+    required String id,
+    required bool value,
+    required InventoryType type,
+  });
 }

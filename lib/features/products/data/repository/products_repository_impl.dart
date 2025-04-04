@@ -1,3 +1,4 @@
+import 'package:fortuno/features/products/domain/enums/inventory_type.dart';
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
 
@@ -139,5 +140,14 @@ class ProductsRepositoryImpl implements ProductsRepository {
   @override
   Future<void> deleteProduct({required String id}) {
     return productsDatasource.deleteProduct(id: id);
+  }
+
+  @override
+  Future<void> activateData({
+    required String id,
+    required bool value,
+    required InventoryType type,
+  }) async {
+    return productsDatasource.activateData(id: id, value: value, type: type);
   }
 }

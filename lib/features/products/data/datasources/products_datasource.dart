@@ -1,5 +1,6 @@
 import 'package:fortuno/features/products/data/model/package_model.dart';
 import 'package:fortuno/features/products/data/model/product_model.dart';
+import 'package:fortuno/features/products/domain/enums/inventory_type.dart';
 
 import '../model/category_model.dart';
 
@@ -25,4 +26,11 @@ abstract class ProductsDatasource {
   // DELETE DATA
   Future<void> deleteCategory({required String id});
   Future<void> deleteProduct({required String id});
+
+  // ACTIVATE DATA
+  Future<void> activateData({
+    required String id,
+    required bool value,
+    required InventoryType type,
+  });
 }
