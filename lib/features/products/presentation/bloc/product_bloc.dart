@@ -1,8 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
-import 'package:collection/collection.dart';
-import 'package:either_dart/either.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortuno/features/products/domain/usecases/activate_data.dart';
@@ -16,6 +14,7 @@ import '../../../../core/usecases/base_usecase.dart';
 import '../../domain/entities/category.dart';
 import '../../domain/entities/package.dart';
 import '../../domain/entities/product.dart';
+import '../../domain/enums/inventory_type.dart';
 import '../../domain/usecases/delete_category.dart';
 import '../../domain/usecases/get_category_by_companyid.dart';
 import '../../domain/usecases/get_packages_by_company.dart';
@@ -170,41 +169,17 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
   Future<void> _onActivateData(OnActivateData event, Emitter emit) async {
     final result = await activateData(event.params);
 
-    final updatedProd = List<Product>.from(state.products);
-    final index = updatedProd.indexWhere((e) => e.id == event.params.id);
-    final product = updatedProd[index];
-
-    if (event.params.type.iscategory) {
-      final updatedCat = handleActiveCategory(result, event);
-      emit(state.copyWith(products: updatedProd, categories: updatedCat));
-    }
-  }
-
-  List<CategoryProduct>? handleActiveProduct(
-    Either<Failure, bool> result,
-    OnActivateData event,
-  ) {
-    final updatedCat = List<CategoryProduct>.from(state.categories);
-    final indexCat = updatedCat.indexWhere((e) => e.id == event.params.id);
-
-    final category = updatedCat[indexCat];
     result.fold(
       (error) {
-        if (indexCat != -1) {
-          updatedCat[indexCat] = category.copyWith(
-            isActive: event.params.value,
-          );
-        }
+        state.updateActive(event.params, event.params.value);
+        emit(state);
+        this.error(emit, error);
       },
       (right) {
-        if (indexCat != -1) {
-          final updated = category.copyWith(isActive: !event.params.value);
-          updatedCat[indexCat] = updated;
-        }
+        state.updateActive(event.params, event.params.value);
+        emit(state);
       },
     );
-
-    return updatedCat;
   }
 
   @override

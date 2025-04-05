@@ -13,30 +13,27 @@ class ProductState extends BaseState {
     super.error,
   });
 
-  List<CategoryProduct> updateActiveCategory(
-    Either<Failure, bool> result,
-    String id,
-  ) {
-    final updatedCat = List<CategoryProduct>.from(categories);
-    final indexCat = updatedCat.indexWhere((e) => e.id == event.params.id);
+  void updateActive(ActivateDataParams params, bool value) {
+    final updated = switch (params.type) {
+      InventoryType.category => List.from(categories),
+      InventoryType.product => List.from(products),
+      InventoryType.package => List.from(packages),
+    };
+    final index = updated.indexWhere((e) => e.id == params.id);
+    final data = updated[index];
+    updated[index] = data.copyWith(isActive: value);
 
-    final category = updatedCat[indexCat];
-    result.fold(
-      (error) {
-        if (indexCat != -1) {
-          updatedCat[indexCat] = category.copyWith(
-            isActive: event.params.value,
-          );
-        }
-      },
-      (right) {
-        if (indexCat != -1) {
-          final updated = category.copyWith(isActive: !event.params.value);
-          updatedCat[indexCat] = updated;
-        }
-      },
-    );
-    return updatedCat;
+    if (params.type.iscategory) {
+      copyWith(categories: List<CategoryProduct>.from(updated));
+    }
+
+    if (params.type.isproduct) {
+      copyWith(products: List<Product>.from(updated));
+    }
+
+    if (params.type.ispackage) {
+      copyWith(packages: List<Package>.from(updated));
+    }
   }
 
   @override

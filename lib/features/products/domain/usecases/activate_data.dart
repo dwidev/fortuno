@@ -14,7 +14,6 @@ class ActivateData extends BaseUsecase<bool, ActivateDataParams> {
 
   @override
   Future<ReturnFailure<bool>> calling(ActivateDataParams params) async {
-    throw UnknownFailure("message");
     await productsRepository.activateData(
       id: params.id,
       value: params.value,

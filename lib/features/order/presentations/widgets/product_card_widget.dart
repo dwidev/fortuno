@@ -87,6 +87,23 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
     super.initState();
   }
 
+  @override
+  void didUpdateWidget(covariant ProductCardWidget oldWidget) {
+    if (widget.product.isActive) {
+      setState(() {
+        active = true;
+      });
+    }
+
+    if (!widget.product.isActive) {
+      setState(() {
+        active = false;
+      });
+    }
+
+    super.didUpdateWidget(oldWidget);
+  }
+
   void onDelete() {
     showDeleteProductDialog(
       context: context,

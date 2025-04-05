@@ -1,4 +1,6 @@
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import '../../domain/enums/inventory_type.dart';
+import '../../domain/usecases/activate_data.dart';
 
 import '../../../../core/core.dart';
 import '../../../order/presentations/widgets/loading_product_widget.dart';
@@ -47,7 +49,14 @@ class CategoryProductViewPage extends StatelessWidget {
               onDelete: (id) {
                 context.read<ProductsBloc>().add(OnDeleteCategory(id: id));
               },
-              onActivate: (value, id) {},
+              onActivate: (value, id) {
+                final params = ActivateDataParams(
+                  id: id,
+                  value: value,
+                  type: InventoryType.category,
+                );
+                context.read<ProductsBloc>().add(OnActivateData(params));
+              },
             );
           },
         );
