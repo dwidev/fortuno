@@ -1,22 +1,17 @@
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:fortuno/features/products/presentation/pages/add_category_product_page.dart';
-import 'package:fortuno/features/products/presentation/pages/add_product_page.dart';
+import '../../domain/enums/inventory_type.dart';
+import '../../domain/usecases/activate_data.dart';
 
 import '../../../../core/core.dart';
 import '../../../order/presentations/widgets/loading_product_widget.dart';
 import '../../../order/presentations/widgets/product_card_widget.dart';
 import '../bloc/product_bloc.dart';
 import '../widgets/add_inventory_widget.dart';
+import 'add_category_product_page.dart';
 
-class CategoryProductViewPage extends StatefulWidget {
+class CategoryProductViewPage extends StatelessWidget {
   const CategoryProductViewPage({super.key});
 
-  @override
-  State<CategoryProductViewPage> createState() =>
-      _CategoryProductViewPageState();
-}
-
-class _CategoryProductViewPageState extends State<CategoryProductViewPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductsBloc, ProductState>(
@@ -41,16 +36,27 @@ class _CategoryProductViewPageState extends State<CategoryProductViewPage> {
             if (index == 0) {
               return AddInventoryWidget(
                 onTap: () {
-                  context.push(AddCategoryProductPage.path);
+                  context.pushNamed(AddCategoryProductPage.path);
                 },
               );
             }
             final category = state.categories[index - 1];
-            return ProductCardWidget(
+            return ProductCardWidget.inventory(
               product: category,
-              quantity: 0,
-              onTap: () {},
-              isInventory: true,
+              onTap: () {
+                context.pushNamed(AddCategoryProductPage.path);
+              },
+              onDelete: (id) {
+                context.read<ProductsBloc>().add(OnDeleteCategory(id: id));
+              },
+              onActivate: (value, id) {
+                final params = ActivateDataParams(
+                  id: id,
+                  value: value,
+                  type: InventoryType.category,
+                );
+                context.read<ProductsBloc>().add(OnActivateData(params));
+              },
             );
           },
         );

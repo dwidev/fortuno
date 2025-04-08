@@ -1,10 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:fortuno/features/products/presentation/widgets/selected_product_widget.dart';
+import 'package:fortuno/features/order/presentations/widgets/delete_product_dialog.dart';
 
 import '../../../../core/core.dart';
 import '../../../products/domain/entities/product.dart';
+import '../../../products/presentation/widgets/selected_product_widget.dart';
 
 class ProductCardWidget extends StatefulWidget {
   const ProductCardWidget({
@@ -12,43 +11,62 @@ class ProductCardWidget extends StatefulWidget {
     this.quantity = 0,
     required this.product,
     required this.onTap,
+    this.onDelete,
     this.isDisable = false,
     this.isInventory = false,
-    this.onNonActive,
+    this.onActivate,
     this.width,
     this.height,
     this.isPreview = false,
-    this.imagePreview,
     this.isPicker = false,
+    this.isActive = true,
+    this.isPicked = false,
   });
+
+  factory ProductCardWidget.inventory({
+    required Product product,
+    required VoidCallback onTap,
+    required Function(String id) onDelete,
+    required Function(bool value, String id)? onActivate,
+  }) => ProductCardWidget(
+    product: product,
+    onTap: onTap,
+    onDelete: onDelete,
+    onActivate: onActivate,
+    isDisable: false,
+    isActive: product.isActive,
+    isInventory: true,
+  );
 
   factory ProductCardWidget.preview({
     required Product product,
     required VoidCallback onTap,
-    required Uint8List? imagePreview,
-  }) => ProductCardWidget(
-    product: product,
-    onTap: onTap,
-    imagePreview: imagePreview,
-    isPreview: true,
-  );
+  }) => ProductCardWidget(product: product, onTap: onTap, isPreview: true);
 
   factory ProductCardWidget.picker({
     required Product product,
     required VoidCallback onTap,
-  }) => ProductCardWidget(product: product, onTap: onTap, isPicker: true);
+    required bool isPicked,
+  }) => ProductCardWidget(
+    product: product,
+    onTap: onTap,
+    isPicked: isPicked,
+    isPicker: true,
+  );
 
   final double? width;
   final double? height;
   final int quantity;
   final Product product;
   final VoidCallback onTap;
+  final Function(String id)? onDelete;
   final bool isDisable;
+  final bool isActive;
   final bool isInventory;
-  final Function(bool value)? onNonActive;
+  final Function(bool value, String id)? onActivate;
   final bool isPreview;
-  final Uint8List? imagePreview;
   final bool isPicker;
+  final bool isPicked;
 
   @override
   State<ProductCardWidget> createState() => _ProductCardWidgetState();
@@ -59,12 +77,40 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
 
   bool get isDisable => widget.isDisable || !active;
 
-  bool get isImagePreview => widget.imagePreview == null && widget.isPreview;
+  bool get isImagePreview => widget.isPreview;
+
+  String get catName => widget.product.category?.name ?? "";
 
   @override
   void initState() {
-    active = !widget.isDisable;
+    active = widget.isActive;
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant ProductCardWidget oldWidget) {
+    if (widget.product.isActive) {
+      setState(() {
+        active = true;
+      });
+    }
+
+    if (!widget.product.isActive) {
+      setState(() {
+        active = false;
+      });
+    }
+
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void onDelete() {
+    showDeleteProductDialog(
+      context: context,
+      onDelete: () {
+        widget.onDelete?.call(widget.product.id);
+      },
+    );
   }
 
   @override
@@ -83,7 +129,10 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
       child: CustomCard(
         width: widget.width,
         height: widget.height,
-        border: widget.isPicker ? Border.all(color: primaryColor) : null,
+        border:
+            widget.isPicker && widget.isPicked
+                ? Border.all(color: successButtonColor)
+                : null,
         padding: anchorAllContent.min(10),
         constraints: BoxConstraints(minHeight: 100),
         child: Column(
@@ -98,27 +147,27 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     color: isImagePreview ? lightGrey8 : null,
                     borderRadius: BorderRadius.circular(kSizeMS),
                   ),
-                  child:
-                      isImagePreview
-                          ? Offstage()
-                          : ClipRRect(
-                            borderRadius: BorderRadius.circular(kSizeMS),
-                            child: ColorFiltered(
-                              colorFilter: ColorFilter.mode(
-                                isDisable ? Colors.grey : Colors.transparent,
-                                isDisable
-                                    ? BlendMode.saturation
-                                    : BlendMode.dst,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(kSizeMS),
+                    child: ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                        isDisable ? Colors.grey : Colors.transparent,
+                        isDisable ? BlendMode.saturation : BlendMode.dst,
+                      ),
+                      child:
+                          isImagePreview
+                              ? widget.product.imageByte != null
+                                  ? Image.memory(
+                                    widget.product.imageByte!,
+                                    fit: BoxFit.cover,
+                                  )
+                                  : Offstage()
+                              : Image.network(
+                                "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
+                                fit: BoxFit.cover,
                               ),
-                              child:
-                                  isImagePreview
-                                      ? Image.memory(widget.imagePreview!)
-                                      : Image.network(
-                                        "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
-                                        fit: BoxFit.cover,
-                                      ),
-                            ),
-                          ),
+                    ),
+                  ),
                 ),
                 if (widget.isInventory)
                   Positioned(
@@ -130,10 +179,28 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           active = value;
                         });
 
-                        widget.onNonActive?.call(value);
+                        widget.onActivate?.call(value, widget.product.id);
                       },
                     ),
                   ),
+
+                if (widget.isInventory && catName.isNotEmpty)
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: Transform.scale(
+                      scale: 0.8,
+                      child: Container(
+                        constraints: BoxConstraints(maxWidth: 100),
+                        child: TextBadgeWidget(
+                          text: catName,
+                          color: getValueColor(catName),
+                          opactiy: 0.8,
+                        ),
+                      ),
+                    ),
+                  ),
+
                 if (widget.quantity != 0 && !widget.isInventory)
                   Positioned(
                     top: 0,
@@ -164,7 +231,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                   Positioned(
                     top: 5,
                     right: 5,
-                    child: CheckListWidget(checked: true),
+                    child: CheckListWidget(checked: widget.isPicked),
                   ),
               ],
             ),
@@ -206,16 +273,21 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                       ],
                     ),
                   ),
-                  if (widget.quantity != 0) ...[
+                  if (widget.quantity != 0 || widget.isInventory) ...[
                     SizedBox(width: kSizeMS),
-                    Container(
-                      padding: EdgeInsets.all(kSizeS),
-                      decoration: BoxDecoration(
-                        color:
-                            isDisable ? disabledButtonColor : deleteButtonColor,
-                        borderRadius: BorderRadius.circular(10),
+                    GestureDetector(
+                      onTap: onDelete,
+                      child: Container(
+                        padding: EdgeInsets.all(kSizeS),
+                        decoration: BoxDecoration(
+                          color:
+                              isDisable && !widget.isInventory
+                                  ? disabledButtonColor
+                                  : deleteButtonColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(CupertinoIcons.delete, color: whiteColor),
                       ),
-                      child: Icon(CupertinoIcons.delete, color: whiteColor),
                     ),
                   ],
                 ],

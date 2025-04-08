@@ -1,4 +1,6 @@
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fortuno/features/products/domain/enums/inventory_type.dart';
+import 'package:fortuno/features/products/domain/usecases/activate_data.dart';
 
 import '../../../../core/core.dart';
 import '../../../order/presentations/widgets/loading_product_widget.dart';
@@ -35,20 +37,32 @@ class _ProductViewPageState extends State<ProductViewPage> {
           gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 5,
           ),
-          itemBuilder: (context, index) {
+          itemBuilder: (_, index) {
             if (index == 0) {
               return AddInventoryWidget(
                 onTap: () {
-                  context.push(AddProductPage.path);
+                  context.pushNamed(AddProductPage.path);
                 },
               );
             }
-            final category = state.products[index - 1];
-            return ProductCardWidget(
-              product: category,
-              quantity: 0,
-              onTap: () {},
-              isInventory: true,
+
+            final product = state.products[index - 1];
+            return ProductCardWidget.inventory(
+              product: product,
+              onTap: () {
+                context.pushNamed(AddProductPage.path);
+              },
+              onDelete: (id) {
+                context.read<ProductsBloc>().add(OnDeleteProduct(id: id));
+              },
+              onActivate: (value, id) {
+                final params = ActivateDataParams(
+                  id: id,
+                  value: value,
+                  type: InventoryType.product,
+                );
+                context.read<ProductsBloc>().add(OnActivateData(params));
+              },
             );
           },
         );

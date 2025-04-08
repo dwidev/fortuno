@@ -13,6 +13,29 @@ class ProductState extends BaseState {
     super.error,
   });
 
+  void updateActive(ActivateDataParams params, bool value) {
+    final updated = switch (params.type) {
+      InventoryType.category => List.from(categories),
+      InventoryType.product => List.from(products),
+      InventoryType.package => List.from(packages),
+    };
+    final index = updated.indexWhere((e) => e.id == params.id);
+    final data = updated[index];
+    updated[index] = data.copyWith(isActive: value);
+
+    if (params.type.iscategory) {
+      copyWith(categories: List<CategoryProduct>.from(updated));
+    }
+
+    if (params.type.isproduct) {
+      copyWith(products: List<Product>.from(updated));
+    }
+
+    if (params.type.ispackage) {
+      copyWith(packages: List<Package>.from(updated));
+    }
+  }
+
   @override
   List<Object?> get props => [categories, products, packages, ...super.props];
 
@@ -36,4 +59,14 @@ class ProductState extends BaseState {
 
 final class ProductInitial extends ProductState {
   const ProductInitial({super.categories = const []});
+}
+
+class OnSavedForm extends ProductState {
+  const OnSavedForm({
+    required super.categories,
+    required super.products,
+    required super.packages,
+    super.loading,
+    super.error,
+  });
 }

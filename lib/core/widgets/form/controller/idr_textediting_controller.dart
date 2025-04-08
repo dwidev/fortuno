@@ -24,6 +24,7 @@ class TextEditingIDRController extends TextEditingController {
   }
 
   void _initialValueFormated(doub) {
+    if (initialValue == 0) return;
     text = formatter.formatDouble(initialValue);
     value = TextEditingValue(text: text);
   }

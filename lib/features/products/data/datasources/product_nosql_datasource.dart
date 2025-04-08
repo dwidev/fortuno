@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../domain/enums/inventory_type.dart';
 import '../model/category_model.dart';
 import '../model/package_model.dart';
 import '../model/product_model.dart';
@@ -17,7 +18,8 @@ class ProductNosqlDatasource extends ProductsDatasource {
     final response = await client
         .from('category')
         .select()
-        .eq('company_id', companyId);
+        .eq('company_id', companyId)
+        .eq('is_active', true);
 
     final result = response.map((e) => CategoryModel.fromMap(e)).toList();
     return result;
@@ -30,12 +32,14 @@ class ProductNosqlDatasource extends ProductsDatasource {
     final response = await client
         .from('category_product')
         .select('*, products!left(*), category!inner(*)')
-        .eq('category.ID', categoryId);
+        .eq('category.ID', categoryId)
+        .eq('products.is_active', true);
 
     final catProduct = <String, dynamic>{};
     final List<Map<String, dynamic>> productsListRaw = [];
 
     for (var raw in response) {
+      if (raw["products"] == null) continue;
       final categoryRaw = raw["category"];
       final productRaw = raw["products"];
 
@@ -72,10 +76,85 @@ class ProductNosqlDatasource extends ProductsDatasource {
   }) async {
     final response = await client
         .from('products')
-        .select()
-        .eq('company_id', companyId);
+        .select('*, category_product!left(*, category!left(*))')
+        .eq('company_id', companyId)
+        .limit(1, referencedTable: 'category_product');
 
-    final result = response.map((e) => ProductModel.fromMap(e)).toList();
+    final List<Map<String, dynamic>> productsListRaw = [];
+
+    for (var raw in response) {
+      final cat = raw['category_product'] as List?;
+      if (cat != null && cat.isNotEmpty) {
+        raw['category'] = cat.first['category'];
+      } else {
+        raw['category'] = null;
+      }
+
+      productsListRaw.add(raw);
+    }
+
+    final result = productsListRaw.map((e) => ProductModel.fromMap(e)).toList();
     return result;
+  }
+
+  @override
+  Future<List<PackageModel>> getPackageByCompany({
+    required String companyId,
+  }) async {
+    final params = <String, String>{"company_uuid": companyId};
+    final response =
+        await client.rpc('get_packages_by_company', params: params).select();
+
+    final result = response.map((e) => PackageModel.fromMap(e)).toList();
+    return result;
+  }
+
+  @override
+  Future<void> insertProduct({
+    required String companyId,
+    required ProductModel product,
+    required CategoryModel? category,
+  }) async {
+    final map = product.toMap();
+    await client.from('products').insert(map);
+
+    if (category != null) {
+      final catProdMap = {
+        "category_id": category.id,
+        "product_id": product.id,
+        "created_at": DateTime.now().toString(),
+      };
+      await client.from('category_product').insert(catProdMap);
+    }
+  }
+
+  @override
+  Future<void> insertCategory({
+    required String companyId,
+    required CategoryModel category,
+  }) async {
+    final map = category.toMap();
+    await client.from('category').insert(map);
+  }
+
+  @override
+  Future<void> deleteCategory({required String id}) async {
+    await client.from('category_product').delete().eq('category_id', id);
+    await client.from('category').delete().eq('ID', id);
+  }
+
+  @override
+  Future<void> deleteProduct({required String id}) async {
+    await client.from('category_product').delete().eq('product_id', id);
+    await client.from('products').delete().eq('ID', id);
+  }
+
+  @override
+  Future<void> activateData({
+    required String id,
+    required bool value,
+    required InventoryType type,
+  }) async {
+    await client.from(type.table).update({'is_active': value}).eq('ID', id);
   }
 }

@@ -11,6 +11,7 @@ class AddInventoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return DottedBorder(
       borderType: BorderType.RRect,
+      dashPattern: [10, 5],
       radius: Radius.circular(12),
       padding: EdgeInsets.all(6),
       color: lightGrey4,

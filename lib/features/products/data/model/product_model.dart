@@ -1,30 +1,44 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
+import 'package:fortuno/core/utils/code_gen.dart';
+import 'package:fortuno/features/products/data/model/category_model.dart';
 
 import '../../../../core/models/base_model.dart';
 import '../../domain/entities/product.dart';
 
 class ProductModel extends BaseModel<Product> {
   final String id;
+  final String companyId;
   final String name;
   final String code;
   final double price;
+  final bool isActive;
   final String createAt;
+  final CategoryModel? categoryModel;
 
   ProductModel({
     required this.id,
+    required this.companyId,
     required this.name,
     required this.code,
     required this.price,
+    required this.isActive,
     required this.createAt,
+    this.categoryModel,
   });
 
   Map<String, dynamic> toMap() {
+    final code = codeGen(name);
+
     return <String, dynamic>{
       'ID': id,
+      'company_id': companyId,
       'product_name': name,
       'product_code': code,
       'price': price,
-      'create_at': createAt,
+      'created_at': createAt,
+      'is_active': isActive,
     };
   }
 
@@ -33,10 +47,16 @@ class ProductModel extends BaseModel<Product> {
 
     return ProductModel(
       id: map["ID"] as String? ?? "",
+      companyId: map["company_id"] as String? ?? "",
       name: map["product_name"] as String? ?? "",
       code: map["product_code"] as String? ?? "",
       price: price,
-      createAt: map["create_at"]?.toString() ?? "",
+      isActive: map["is_active"] as bool? ?? false,
+      createAt: map["created_at"]?.toString() ?? "",
+      categoryModel:
+          map['category'] != null
+              ? CategoryModel.fromMap(map['category'])
+              : null,
     );
   }
 
@@ -47,7 +67,7 @@ class ProductModel extends BaseModel<Product> {
 
   @override
   String toString() {
-    return 'ProductModel(id: $id, name: $name, code: $code,  price: $price, createAt: $createAt)';
+    return 'ProductModel(id: $id, companyId: $companyId, name: $name, code: $code, price: $price, isActive: $isActive, createAt: $createAt)';
   }
 
   @override
@@ -57,7 +77,9 @@ class ProductModel extends BaseModel<Product> {
       name: name,
       code: code,
       price: price,
+      isActive: isActive,
       createAt: createAt,
+      category: categoryModel?.toEntity(),
     );
   }
 }

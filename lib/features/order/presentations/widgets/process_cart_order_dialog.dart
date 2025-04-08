@@ -56,7 +56,10 @@ class ProcessOrderViewPage extends StatelessWidget {
             ],
           ),
           SizedBox(height: kSizeM),
-          Text("Pesanan sudah sesuai? cek kembali jika belum yakin!"),
+          Text(
+            "Pesanan sudah sesuai? cek kembali jika belum yakin!",
+            textAlign: TextAlign.center,
+          ),
           SizedBox(height: kSizeM),
           Align(
             alignment: Alignment.center,

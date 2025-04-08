@@ -4,6 +4,7 @@ import '../../features/auth/presentations/bloc/auth_bloc.dart';
 import '../../features/auth/presentations/pages/splash_page.dart';
 import '../../features/auth/presentations/widgets/auth_listener_widget.dart';
 import '../../features/main_page.dart';
+import '../../features/products/presentation/bloc/product_bloc.dart';
 import '../core.dart';
 import '../depedency_injection/injection.dart';
 import 'auth_route.dart';
@@ -42,7 +43,10 @@ final router = GoRouter(
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return MultiBlocProvider(
-          providers: [BlocProvider(create: (context) => getIt<AuthBloc>())],
+          providers: [
+            BlocProvider(create: (context) => getIt<AuthBloc>()),
+            BlocProvider(create: (context) => getIt<ProductsBloc>()),
+          ],
           child: AuthListener(
             builder: (context, bloc, state) {
               return MainPage(navigationShell: navigationShell);

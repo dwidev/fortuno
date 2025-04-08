@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:equatable/equatable.dart';
-import 'package:fortuno/core/utils/formatter.dart';
-import 'package:fortuno/features/products/domain/entities/category.dart';
-import 'package:fortuno/features/products/domain/entities/product.dart';
+
+import '../../../../core/utils/formatter.dart';
+import 'category.dart';
+import 'product.dart';
 
 class Package extends Equatable {
   final String id;
@@ -10,7 +13,9 @@ class Package extends Equatable {
   final double price;
   final bool isActive;
   final String createAt;
+  final CategoryProduct? category;
   final List<Product> items;
+  final Uint8List? imageByte;
 
   String get contents => items.map((e) => e.name).join(", ");
   String get priceFormated => moneyFormatter(price);
@@ -22,8 +27,32 @@ class Package extends Equatable {
     required this.price,
     required this.isActive,
     required this.createAt,
+    required this.category,
     required this.items,
+    this.imageByte,
   });
+
+  factory Package.dummy() => Package(
+    id: "id",
+    name: "Nama Package",
+    code: "code",
+    price: 16000,
+    isActive: true,
+    createAt: DateTime.now().toString(),
+    items: [Product.dummy(), Product.dummy(), Product.dummy(), Product.dummy()],
+    category: CategoryProduct.initial(name: "Category"),
+  );
+
+  factory Package.preview() => Package(
+    id: "id",
+    name: "Nama Product",
+    code: "",
+    price: 0,
+    createAt: DateTime.now().toString(),
+    isActive: true,
+    category: CategoryProduct.preview(),
+    items: [Product.dummy(), Product.dummy(), Product.dummy(), Product.dummy()],
+  );
 
   Package copyWith({
     String? id,
@@ -34,6 +63,7 @@ class Package extends Equatable {
     String? createAt,
     CategoryProduct? category,
     List<Product>? items,
+    Uint8List? imageByte,
   }) {
     return Package(
       id: id ?? this.id,
@@ -42,13 +72,25 @@ class Package extends Equatable {
       price: price ?? this.price,
       isActive: isActive ?? this.isActive,
       createAt: createAt ?? this.createAt,
+      category: category ?? this.category,
       items: items ?? this.items,
+      imageByte: imageByte ?? this.imageByte,
     );
   }
 
   @override
-  List<Object> get props {
-    return [id, name, code, price, isActive, createAt, items];
+  List<Object?> get props {
+    return [
+      id,
+      name,
+      code,
+      price,
+      isActive,
+      createAt,
+      category,
+      items,
+      imageByte,
+    ];
   }
 
   @override

@@ -1,6 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:typed_data';
+
 import 'package:equatable/equatable.dart';
-import 'package:fortuno/core/utils/formatter.dart';
+import 'package:flutter/foundation.dart';
+
+import 'package:fortuno/features/products/domain/entities/category.dart';
+
+import '../../../../core/utils/formatter.dart';
 
 class Product extends Equatable {
   final String id;
@@ -8,6 +14,9 @@ class Product extends Equatable {
   final String code;
   final double price;
   final String createAt;
+  final Uint8List? imageByte;
+  final bool isActive;
+  final CategoryProduct? category;
 
   String get kDisplayPrice => "${(price / 1000).toStringAsFixed(0)}K";
   String get priceFormated => moneyFormatter(price);
@@ -18,6 +27,9 @@ class Product extends Equatable {
     required this.code,
     required this.price,
     required this.createAt,
+    this.imageByte,
+    this.isActive = false,
+    this.category,
   });
 
   factory Product.init() => Product(
@@ -36,8 +48,18 @@ class Product extends Equatable {
     createAt: DateTime.now().toString(),
   );
 
+  factory Product.preview() => Product(
+    id: "id",
+    name: "Nama Product",
+    code: "",
+    price: 0,
+    createAt: DateTime.now().toString(),
+  );
+
   @override
-  List<Object?> get props => [id, name, code, price, createAt];
+  List<Object?> get props {
+    return [id, name, code, price, createAt, imageByte, isActive, category];
+  }
 
   Product copyWith({
     String? id,
@@ -45,6 +67,9 @@ class Product extends Equatable {
     String? code,
     double? price,
     String? createAt,
+    Uint8List? imageByte,
+    bool? isActive,
+    CategoryProduct? category,
   }) {
     return Product(
       id: id ?? this.id,
@@ -52,6 +77,12 @@ class Product extends Equatable {
       code: code ?? this.code,
       price: price ?? this.price,
       createAt: createAt ?? this.createAt,
+      imageByte: imageByte ?? this.imageByte,
+      isActive: isActive ?? this.isActive,
+      category: category ?? this.category,
     );
   }
+
+  @override
+  bool get stringify => true;
 }

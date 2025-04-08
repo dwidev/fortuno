@@ -1,14 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:equatable/equatable.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../../../../core/core.dart';
 import '../../../order/presentations/widgets/product_card_widget.dart';
 import '../../domain/entities/product.dart';
-
-class PickProductDialogOpts {
-  final String title;
-
-  PickProductDialogOpts({required this.title});
-}
 
 Future<T?> showPickProductDialog<T>({
   required BuildContext context,
@@ -32,21 +28,24 @@ class _PickProductDialog extends StatefulWidget {
 }
 
 class _PickProductDialogState extends State<_PickProductDialog> {
+  List<Product> pickedProduct = [];
+
   @override
   void initState() {
     super.initState();
+    pickedProduct = widget.opts.selectedData.toList();
   }
 
   @override
   void dispose() {
     super.dispose();
+    pickedProduct.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: context.width / 1.5,
-      // height: context.height / 3,
       padding: EdgeInsets.all(kDefaultPadding),
       decoration: BoxDecoration(
         color: whiteColor,
@@ -80,14 +79,21 @@ class _PickProductDialogState extends State<_PickProductDialog> {
                   padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
                   crossAxisSpacing: kSizeMS,
                   mainAxisSpacing: kSizeMS,
-                  itemCount: 25,
+                  itemCount: widget.opts.data.length,
                   gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 5,
                   ),
                   itemBuilder: (context, index) {
+                    final product = widget.opts.data[index];
+
                     return ProductCardWidget.picker(
-                      product: Product.dummy(),
-                      onTap: () {},
+                      product: product,
+                      isPicked: pickedProduct.contains(product),
+                      onTap: () {
+                        pickedProduct = [product];
+                        widget.opts.onChange?.call(product);
+                        setState(() {});
+                      },
                     );
                   },
                 ),
@@ -99,7 +105,9 @@ class _PickProductDialogState extends State<_PickProductDialog> {
             right: kSizeM,
             child: GradientButton(
               width: 100,
-              onPressed: () {},
+              onPressed: () {
+                context.pop();
+              },
               child: Text("Pilih"),
             ),
           ),
@@ -107,4 +115,38 @@ class _PickProductDialogState extends State<_PickProductDialog> {
       ),
     );
   }
+}
+
+class PickProductDialogOpts extends Equatable {
+  final String title;
+  final List<Product> data;
+  final List<Product> selectedData;
+  final Function(Product product)? onChange;
+
+  const PickProductDialogOpts({
+    required this.title,
+    required this.data,
+    required this.selectedData,
+    this.onChange,
+  });
+
+  PickProductDialogOpts copyWith({
+    String? title,
+    List<Product>? data,
+    List<Product>? selectedData,
+    Function(Product product)? onChange,
+  }) {
+    return PickProductDialogOpts(
+      title: title ?? this.title,
+      data: data ?? this.data,
+      selectedData: selectedData ?? this.selectedData,
+      onChange: onChange ?? this.onChange,
+    );
+  }
+
+  @override
+  List<Object?> get props => [title, data, selectedData, onChange];
+
+  @override
+  bool get stringify => true;
 }
