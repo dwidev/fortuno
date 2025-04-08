@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../../../../core/core.dart';
@@ -5,10 +6,9 @@ import '../../../order/presentations/widgets/package_card_widget.dart';
 import '../../domain/entities/package.dart';
 
 class PackagePreviewWidget extends StatelessWidget {
-  const PackagePreviewWidget({super.key, this.name = '', this.price = 0.0});
+  const PackagePreviewWidget({super.key, required this.package});
 
-  final String name;
-  final double price;
+  final Package package;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +24,7 @@ class PackagePreviewWidget extends StatelessWidget {
       ),
       itemBuilder: (context, index) {
         if (index == 0) {
-          return PackageCardWidget(
-            onTap: () {},
-            package: Package.dummy(),
-            quantity: 0,
-            disable: false,
-          );
+          return PackageCardWidget.preview(package: package);
         }
 
         return CustomCard(

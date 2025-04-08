@@ -8,12 +8,23 @@ class PackageCardWidget extends StatelessWidget {
     required this.quantity,
     required this.disable,
     required this.onTap,
+    this.isPreview = false,
   });
 
   final Package package;
   final int quantity;
   final bool disable;
+  final bool isPreview;
   final VoidCallback onTap;
+
+  factory PackageCardWidget.preview({required Package package}) =>
+      PackageCardWidget(
+        package: package,
+        quantity: 0,
+        disable: false,
+        onTap: () {},
+        isPreview: true,
+      );
 
   bool get finishSelected => disable;
 
@@ -47,10 +58,18 @@ class PackageCardWidget extends StatelessWidget {
                                 ? BlendMode.saturation
                                 : BlendMode.dst,
                           ),
-                          child: Image.network(
-                            "https://www.lalamove.com/hubfs/catering%20lunch%20box%20%284%29.jpg",
-                            fit: BoxFit.cover,
-                          ),
+                          child:
+                              isPreview
+                                  ? package.imageByte != null
+                                      ? Image.memory(
+                                        package.imageByte!,
+                                        fit: BoxFit.cover,
+                                      )
+                                      : Offstage()
+                                  : Image.network(
+                                    "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
+                                    fit: BoxFit.cover,
+                                  ),
                         ),
                       ),
                     ),

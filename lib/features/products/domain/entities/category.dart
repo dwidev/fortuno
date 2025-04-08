@@ -27,7 +27,7 @@ class CategoryProduct extends Product {
 
   const CategoryProduct.preview({
     super.id = '',
-    super.name = 'Nama Product',
+    super.name = 'Nama Category',
     super.code = '',
     super.price = -1,
     super.createAt = '',
