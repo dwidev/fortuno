@@ -78,6 +78,23 @@ class _AddPackagePageState extends State<AddPackagePage> {
     // context.read<ProductsBloc>().add(event);
   }
 
+  Future<void> onChangeProduct(Product product) async {
+    final idx = selectedProduct.indexWhere((e) => e.id == product.id);
+    if (idx == -1) {
+      selectedProduct = [...selectedProduct, product];
+    } else {
+      selectedProduct.removeAt(idx);
+    }
+
+    final preview = await previewController.stream.first;
+    final n = preview.copyWith(items: selectedProduct);
+    previewController.add(n);
+
+    setState(() {
+      selectedProduct = selectedProduct;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return InventoryFormWidget(
@@ -188,18 +205,10 @@ class _AddPackagePageState extends State<AddPackagePage> {
                         builder: (context, state) {
                           return SelectedProductWidget(
                             opts: PickProductDialogOpts(
+                              type: PickProductType.multiple,
                               title: "Pilih Produk",
                               selectedData: selectedProduct,
-                              onChange: (product) async {
-                                final preview =
-                                    await previewController.stream.first;
-                                final products = [...selectedProduct, product];
-                                final n = preview.copyWith(items: products);
-                                previewController.add(n);
-                                setState(() {
-                                  selectedProduct = products;
-                                });
-                              },
+                              onChange: onChangeProduct,
                               data: state.products,
                             ),
                           );

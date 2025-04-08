@@ -1,9 +1,9 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:fortuno/features/order/presentations/widgets/delete_product_dialog.dart';
 
 import '../../../../core/core.dart';
 import '../../../products/domain/entities/product.dart';
 import '../../../products/presentation/widgets/selected_product_widget.dart';
+import 'delete_product_dialog.dart';
 
 class ProductCardWidget extends StatefulWidget {
   const ProductCardWidget({
