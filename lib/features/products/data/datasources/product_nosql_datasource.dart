@@ -1,3 +1,4 @@
+import 'package:fortuno/features/products/domain/entities/package.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -156,5 +157,13 @@ class ProductNosqlDatasource extends ProductsDatasource {
     required InventoryType type,
   }) async {
     await client.from(type.table).update({'is_active': value}).eq('ID', id);
+  }
+
+  @override
+  Future<Package> insertPackage({
+    required String companyId,
+    required Package package,
+  }) {
+    throw UnimplementedError();
   }
 }

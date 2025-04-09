@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../core/utils/formatter.dart';
 import 'category.dart';
@@ -31,6 +32,25 @@ class Package extends Equatable {
     required this.items,
     this.imageByte,
   });
+
+  factory Package.create({
+    required String name,
+    required double price,
+    required bool isActive,
+    required CategoryProduct category,
+    required List<Product> items,
+    required Uint8List? imageByte,
+  }) => Package(
+    id: Uuid().v4(),
+    name: name,
+    code: "", // SET AT PRODUCT DATA SOURCE
+    price: price,
+    isActive: isActive,
+    createAt: DateTime.now().toUtc().toString(),
+    items: items,
+    category: category,
+    imageByte: imageByte,
+  );
 
   factory Package.dummy() => Package(
     id: "id",

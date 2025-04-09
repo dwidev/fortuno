@@ -27,6 +27,13 @@ class OnAddCategory extends ProductEvent {
   const OnAddCategory({required this.category, this.image});
 }
 
+class OnAddPackage extends ProductEvent {
+  final Package package;
+  final XFile? packageImage;
+
+  const OnAddPackage({required this.package, this.packageImage});
+}
+
 abstract class OnDelete extends ProductEvent {
   final String id;
 

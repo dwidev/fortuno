@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/subjects.dart';
@@ -52,7 +54,7 @@ class _AddPackagePageState extends State<AddPackagePage> {
     previewController.close();
   }
 
-  void onSaveForm() {
+  Future<void> onSaveForm() async {
     if (formKey.currentState?.validate() == false) return;
 
     if (selectedCategory.isEmpty) {
@@ -60,15 +62,25 @@ class _AddPackagePageState extends State<AddPackagePage> {
       return;
     }
 
-    // final product = Product(
-    //   id: "", // generate at repository
-    //   name: nameController.text,
-    //   code: "", // generate at model
-    //   price: priceController.getDoubleValue(),
-    //   createAt: DateTime.now().toUtc().toString(),
-    //   isActive: isActive,
-    //   category: category,
-    // );
+    if (selectedProduct.isEmpty && selectedCategory.length < 4) {
+      EasyLoading.showToast("Silahkan pilih minimal 4 Produk");
+      return;
+    }
+
+    Uint8List? image;
+
+    if (file != null) {
+      image = await file!.readAsBytes();
+    }
+
+    final package = Package.create(
+      name: nameController.text,
+      price: priceController.getDoubleValue(),
+      isActive: isActive,
+      category: selectedCategory.first,
+      items: selectedProduct,
+      imageByte: image,
+    );
 
     // final event = OnAddProduct(
     //   product: product,

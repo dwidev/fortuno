@@ -150,4 +150,10 @@ class ProductsRepositoryImpl implements ProductsRepository {
   }) async {
     return productsDatasource.activateData(id: id, value: value, type: type);
   }
+
+  @override
+  Future<Package> insertPackage({
+    required String companyId,
+    required Package package,
+  }) async {}
 }
