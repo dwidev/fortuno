@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:fortuno/core/utils/code_gen.dart';
 import 'package:fortuno/features/products/data/model/category_model.dart';
 
 import '../../../../core/models/base_model.dart';
@@ -43,6 +44,8 @@ class PackageModel extends BaseModel<Package> {
   }
 
   Map<String, dynamic> toMap() {
+    final code = "PKG${codeGen(name)}";
+
     return <String, dynamic>{
       'ID': id,
       'package_name': name,
@@ -50,7 +53,6 @@ class PackageModel extends BaseModel<Package> {
       'price': price,
       'is_active': isActive,
       'created_at': createAt,
-      'products': productModel.map((x) => x.toMap()).toList(),
     };
   }
 

@@ -1,9 +1,7 @@
-import 'package:fortuno/features/products/data/model/package_model.dart';
-import 'package:fortuno/features/products/data/model/product_model.dart';
-import 'package:fortuno/features/products/domain/entities/package.dart';
-import 'package:fortuno/features/products/domain/enums/inventory_type.dart';
-
+import '../../domain/enums/inventory_type.dart';
 import '../model/category_model.dart';
+import '../model/package_model.dart';
+import '../model/product_model.dart';
 
 abstract class ProductsDatasource {
   // GET DATA
@@ -23,9 +21,9 @@ abstract class ProductsDatasource {
     required ProductModel product,
     required CategoryModel? category,
   });
-  Future<Package> insertPackage({
+  Future<void> insertPackage({
     required String companyId,
-    required Package package,
+    required PackageModel package,
   });
 
   // DELETE DATA

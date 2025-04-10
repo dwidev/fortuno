@@ -1,3 +1,4 @@
+import 'package:fortuno/features/products/data/model/package_model.dart';
 import 'package:fortuno/features/products/domain/enums/inventory_type.dart';
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
@@ -155,5 +156,45 @@ class ProductsRepositoryImpl implements ProductsRepository {
   Future<Package> insertPackage({
     required String companyId,
     required Package package,
-  }) async {}
+  }) async {
+    final pack = package.copyWith(id: Uuid().v4());
+    final catModel = CategoryModel(
+      id: pack.category?.id ?? "",
+      companyId: companyId,
+      name: pack.category?.name ?? "",
+      code: pack.category?.code ?? "",
+      haveProduct: pack.category?.haveProduct ?? false,
+      price: pack.category?.price ?? 0.0,
+      createAt: pack.category?.createAt ?? "",
+    );
+
+    final packageModel = PackageModel(
+      id: pack.id,
+      name: pack.name,
+      code: pack.code,
+      price: pack.price,
+      isActive: pack.isActive,
+      createAt: pack.createAt,
+      categoryModel: catModel,
+      productModel:
+          package.items.map((e) {
+            return ProductModel(
+              id: e.id,
+              name: e.name,
+              code: e.code,
+              price: e.price,
+              createAt: e.createAt,
+              companyId: companyId,
+              isActive: e.isActive,
+            );
+          }).toList(),
+    );
+
+    await productsDatasource.insertPackage(
+      companyId: companyId,
+      package: packageModel,
+    );
+
+    return pack;
+  }
 }

@@ -82,12 +82,8 @@ class _AddPackagePageState extends State<AddPackagePage> {
       imageByte: image,
     );
 
-    // final event = OnAddProduct(
-    //   product: product,
-    //   category: category,
-    //   productImage: file,
-    // );
-    // context.read<ProductsBloc>().add(event);
+    final event = OnAddPackage(package: package);
+    context.read<ProductsBloc>().add(event);
   }
 
   Future<void> onChangeProduct(Product product) async {
