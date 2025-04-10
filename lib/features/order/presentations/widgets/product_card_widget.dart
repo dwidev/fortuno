@@ -41,7 +41,12 @@ class ProductCardWidget extends StatefulWidget {
   factory ProductCardWidget.preview({
     required Product product,
     required VoidCallback onTap,
-  }) => ProductCardWidget(product: product, onTap: onTap, isPreview: true);
+  }) => ProductCardWidget(
+    product: product,
+    onTap: onTap,
+    isPreview: true,
+    isActive: true,
+  );
 
   factory ProductCardWidget.picker({
     required Product product,
@@ -156,9 +161,9 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                       ),
                       child:
                           isImagePreview
-                              ? widget.product.imageByte != null
+                              ? widget.product.image.byte != null
                                   ? Image.memory(
-                                    widget.product.imageByte!,
+                                    widget.product.image.byte!,
                                     fit: BoxFit.cover,
                                   )
                                   : Offstage()

@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 
 import '../../../../core/core.dart';
-import '../../../../core/widgets/custom_tab.dart';
 import '../../../auth/presentations/bloc/auth_bloc.dart';
 
 part '../widgets/dashboard_app_bar.dart';

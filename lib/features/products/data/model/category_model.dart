@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fortuno/core/utils/code_gen.dart';
+import 'package:fortuno/features/products/domain/entities/image.dart';
 
 import '../../../../core/models/base_model.dart';
 import '../../domain/entities/category.dart';
@@ -86,7 +87,7 @@ class CategoryModel extends BaseModel<CategoryProduct> {
       haveProduct: haveProduct,
       price: price,
       createAt: createAt,
-      imageByte: null,
+      image: ImageData(), // TODO: parse real image
       isActive: isActive,
     );
   }

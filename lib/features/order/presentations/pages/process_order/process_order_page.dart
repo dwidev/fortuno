@@ -2,7 +2,6 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../../../../../core/core.dart';
-import '../../../../../core/widgets/custom_tab.dart';
 import '../../../../../core/widgets/form/text_form_field_widget.dart';
 import '../../../domain/entities/order.dart';
 import '../../../domain/enums/order_status.dart';

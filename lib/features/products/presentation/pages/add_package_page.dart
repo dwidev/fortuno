@@ -1,13 +1,11 @@
-import 'dart:typed_data';
-
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../../../../core/core.dart';
 import '../../../../core/widgets/form/currency_form_field_widget.dart';
 import '../../../../core/widgets/form/text_form_field_widget.dart';
 import '../../domain/entities/category.dart';
+import '../../domain/entities/image.dart';
 import '../../domain/entities/package.dart';
 import '../../domain/entities/product.dart';
 import '../bloc/product_bloc.dart';
@@ -36,7 +34,7 @@ class _AddPackagePageState extends State<AddPackagePage> {
 
   late TextEditingController nameController;
   late TextEditingIDRController priceController;
-  XFile? file;
+  ImageData? imageData;
 
   @override
   void initState() {
@@ -67,19 +65,13 @@ class _AddPackagePageState extends State<AddPackagePage> {
       return;
     }
 
-    Uint8List? image;
-
-    if (file != null) {
-      image = await file!.readAsBytes();
-    }
-
     final package = Package.create(
       name: nameController.text,
       price: priceController.getDoubleValue(),
       isActive: isActive,
       category: selectedCategory.first,
       items: selectedProduct,
-      imageByte: image,
+      image: imageData ?? ImageData(),
     );
 
     final event = OnAddPackage(package: package);
@@ -121,12 +113,11 @@ class _AddPackagePageState extends State<AddPackagePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ImagePickerWidget(
-                        onChange: (ImagePickerResult image) async {
-                          file = image.file;
+                        onChange: (ImageData image) async {
+                          imageData = image;
                           final preview = await previewController.stream.first;
-                          final n = preview.copyWith(
-                            imageByte: image.imageByte,
-                          );
+                          final n = preview.copyWith(image: image);
+
                           previewController.add(n);
                         },
                       ),

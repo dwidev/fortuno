@@ -26,8 +26,6 @@ class PackageCardWidget extends StatelessWidget {
         isPreview: true,
       );
 
-  bool get finishSelected => disable;
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -53,16 +51,14 @@ class PackageCardWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                         child: ColorFiltered(
                           colorFilter: ColorFilter.mode(
-                            finishSelected ? Colors.grey : Colors.transparent,
-                            finishSelected
-                                ? BlendMode.saturation
-                                : BlendMode.dst,
+                            disable ? Colors.grey : Colors.transparent,
+                            disable ? BlendMode.saturation : BlendMode.dst,
                           ),
                           child:
                               isPreview
-                                  ? package.imageByte != null
+                                  ? package.image.byte != null
                                       ? Image.memory(
-                                        package.imageByte!,
+                                        package.image.byte!,
                                         fit: BoxFit.cover,
                                       )
                                       : Offstage()
@@ -131,10 +127,7 @@ class PackageCardWidget extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(kSizeS),
                     decoration: BoxDecoration(
-                      color:
-                          finishSelected
-                              ? disabledButtonColor
-                              : deleteButtonColor,
+                      color: disable ? disabledButtonColor : deleteButtonColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(CupertinoIcons.delete, color: whiteColor),

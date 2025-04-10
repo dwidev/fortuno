@@ -1,11 +1,11 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../../../../core/core.dart';
 import '../../../../core/widgets/form/currency_form_field_widget.dart';
 import '../../../../core/widgets/form/text_form_field_widget.dart';
 import '../../domain/entities/category.dart';
+import '../../domain/entities/image.dart';
 import '../../domain/entities/product.dart';
 import '../bloc/product_bloc.dart';
 import '../widgets/inventory_form_view_page.dart';
@@ -31,7 +31,7 @@ class _AddProductPageState extends State<AddProductPage> {
   List<CategoryProduct> selectedCategory = [];
   late TextEditingController nameController;
   late TextEditingIDRController priceController;
-  XFile? file;
+  ImageData? imageData;
 
   @override
   void initState() {
@@ -71,13 +71,10 @@ class _AddProductPageState extends State<AddProductPage> {
       createAt: DateTime.now().toUtc().toString(),
       isActive: isActive,
       category: category,
+      image: imageData ?? ImageData(),
     );
 
-    final event = OnAddProduct(
-      product: product,
-      category: category,
-      productImage: file,
-    );
+    final event = OnAddProduct(product: product, category: category);
     context.read<ProductsBloc>().add(event);
   }
 
@@ -99,13 +96,11 @@ class _AddProductPageState extends State<AddProductPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ImagePickerWidget(
-                        onChange: (ImagePickerResult image) async {
-                          file = image.file;
+                        onChange: (ImageData image) async {
+                          imageData = image;
                           final preview =
                               await productPreviewController.stream.first;
-                          final n = preview.copyWith(
-                            imageByte: image.imageByte,
-                          );
+                          final n = preview.copyWith(image: image);
                           productPreviewController.add(n);
                         },
                       ),
