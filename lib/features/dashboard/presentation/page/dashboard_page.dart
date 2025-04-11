@@ -1,4 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:fortuno/features/order/presentations/widgets/image_container_widget.dart';
+import 'package:fortuno/features/products/domain/entities/product.dart';
 
 import '../../../../core/core.dart';
 import '../../../auth/presentations/bloc/auth_bloc.dart';
@@ -236,20 +238,13 @@ class DashboardPage extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Container(
+                                              ProductImageContainer(
                                                 width: 50,
                                                 height: 50,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadiusDirectional.circular(
-                                                        kDefaultRadius * 0.5,
-                                                      ),
-                                                  image: DecorationImage(
-                                                    image: NetworkImage(
-                                                      "https://cdn.prod.website-files.com/6346686a30512816becfbf47/671ed63b8d688b6b1d10a0ec_freepik__retouch__32461.png",
+                                                data: Product.preview()
+                                                    .copyWith(
+                                                      name: "Paket berkah",
                                                     ),
-                                                  ),
-                                                ),
                                               ),
                                               SizedBox(width: 10),
                                               Column(

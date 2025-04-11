@@ -87,7 +87,6 @@ class CategoryModel extends BaseModel<CategoryProduct> {
       haveProduct: haveProduct,
       price: price,
       createAt: createAt,
-      image: ImageData(), // TODO: parse real image
       isActive: isActive,
     );
   }

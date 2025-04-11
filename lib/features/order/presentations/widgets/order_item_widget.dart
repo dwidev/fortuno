@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:fortuno/features/order/domain/entities/order_item.dart';
 import 'package:fortuno/features/order/presentations/bloc/cart/cart_bloc.dart';
+import 'package:fortuno/features/order/presentations/widgets/image_container_widget.dart';
 
 import '../../../../core/core.dart';
 
@@ -20,18 +21,11 @@ class CartOrderItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                ProductImageContainer(
                   height: kSizeXXL * 1.1,
                   width: kSizeXXL * 1.1,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        "https://asset.kompas.com/crops/WTuA1Jn_cJEFlr9UgBhA-72n8yI=/3x0:700x465/1200x800/data/photo/2020/12/30/5fec5602f116e.jpg",
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                  backgroundColor: lightGrey7,
+                  data: item.data,
                 ),
                 SizedBox(width: kSizeS),
                 Expanded(

@@ -1,21 +1,25 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/utils/formatter.dart';
 import 'category.dart';
 import 'image.dart';
+import 'inventory.dart';
 
-class Product extends Equatable {
+const _defaultName = "Nama Product";
+
+class Product extends Equatable implements Inventory {
+  @override
   final String id;
+  @override
   final String name;
+  @override
   final String code;
+  @override
   final double price;
   final String createAt;
   final bool isActive;
   final CategoryProduct? category;
+  @override
   final ImageData image;
-
-  String get kDisplayPrice => "${(price / 1000).toStringAsFixed(0)}K";
-  String get priceFormated => moneyFormatter(price);
 
   const Product({
     required this.id,
@@ -39,7 +43,7 @@ class Product extends Equatable {
 
   factory Product.dummy() => Product(
     id: "id",
-    name: "Nama Product",
+    name: _defaultName,
     code: "",
     price: 120000,
     createAt: DateTime.now().toString(),
@@ -48,7 +52,7 @@ class Product extends Equatable {
 
   factory Product.preview() => Product(
     id: "id",
-    name: "Nama Product",
+    name: _defaultName,
     code: "",
     price: 0,
     createAt: DateTime.now().toString(),

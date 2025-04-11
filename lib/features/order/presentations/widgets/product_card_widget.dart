@@ -1,9 +1,11 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../../../core/core.dart';
+import '../../../products/domain/entities/inventory.dart';
 import '../../../products/domain/entities/product.dart';
 import '../../../products/presentation/widgets/selected_product_widget.dart';
 import 'delete_product_dialog.dart';
+import 'image_container_widget.dart';
 
 class ProductCardWidget extends StatefulWidget {
   const ProductCardWidget({
@@ -82,8 +84,6 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
 
   bool get isDisable => widget.isDisable || !active;
 
-  bool get isImagePreview => widget.isPreview;
-
   String get catName => widget.product.category?.name ?? "";
 
   @override
@@ -145,34 +145,11 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
           children: [
             Stack(
               children: [
-                Container(
+                ProductImageContainer(
                   width: double.infinity,
                   height: 130,
-                  decoration: BoxDecoration(
-                    color: isImagePreview ? lightGrey8 : null,
-                    borderRadius: BorderRadius.circular(kSizeMS),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(kSizeMS),
-                    child: ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        isDisable ? Colors.grey : Colors.transparent,
-                        isDisable ? BlendMode.saturation : BlendMode.dst,
-                      ),
-                      child:
-                          isImagePreview
-                              ? widget.product.image.byte != null
-                                  ? Image.memory(
-                                    widget.product.image.byte!,
-                                    fit: BoxFit.cover,
-                                  )
-                                  : Offstage()
-                              : Image.network(
-                                "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
-                                fit: BoxFit.cover,
-                              ),
-                    ),
-                  ),
+                  isDisable: widget.isDisable,
+                  data: widget.product,
                 ),
                 if (widget.isInventory)
                   Positioned(

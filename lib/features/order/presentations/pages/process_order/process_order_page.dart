@@ -156,7 +156,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                             style: context.textTheme.titleLarge,
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           width: context.width / 3,
                           child: TextFormFieldWidget(
                             title: "",
@@ -220,31 +220,17 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          SizedBox(
-                                            width: 50,
-                                            height: 50,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                    kSizeMS,
-                                                  ),
-                                              child: Image.network(
-                                                "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: kSizeMS),
                                           Expanded(
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  order.client.name,
+                                                  order.client.name
+                                                      .toUpperCase(),
                                                   style: context
                                                       .textTheme
-                                                      .bodyMedium
+                                                      .titleMedium
                                                       ?.copyWith(
                                                         fontWeight:
                                                             FontWeight.bold,

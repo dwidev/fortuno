@@ -9,6 +9,7 @@ class ImageData extends Equatable {
   final XFile? file;
 
   bool get exist => link.isNotEmpty || byte != null || file != null;
+  bool get ispreview => link.isEmpty && (byte != null || file != null);
 
   const ImageData({this.link = "", this.byte, this.file});
 

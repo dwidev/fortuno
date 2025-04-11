@@ -1,24 +1,28 @@
 import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../core/utils/formatter.dart';
 import 'category.dart';
 import 'image.dart';
+import 'inventory.dart';
 import 'product.dart';
 
-class Package extends Equatable {
+class Package extends Equatable implements Inventory {
+  @override
   final String id;
+  @override
   final String name;
+  @override
   final String code;
+  @override
   final double price;
   final bool isActive;
   final String createAt;
   final CategoryProduct? category;
   final List<Product> items;
+  @override
   final ImageData image;
 
   String get contents => items.map((e) => e.name).join(", ");
-  String get priceFormated => moneyFormatter(price);
 
   const Package({
     required this.id,

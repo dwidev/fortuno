@@ -1,5 +1,7 @@
 import '../../../../core/core.dart';
+import '../../../products/domain/entities/inventory.dart';
 import '../../../products/domain/entities/package.dart';
+import 'image_container_widget.dart';
 
 class PackageCardWidget extends StatelessWidget {
   const PackageCardWidget({
@@ -40,35 +42,7 @@ class PackageCardWidget extends StatelessWidget {
               children: [
                 Stack(
                   children: [
-                    Container(
-                      width: 75,
-                      height: 75,
-                      decoration: BoxDecoration(
-                        color: darkLightColor,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: ColorFiltered(
-                          colorFilter: ColorFilter.mode(
-                            disable ? Colors.grey : Colors.transparent,
-                            disable ? BlendMode.saturation : BlendMode.dst,
-                          ),
-                          child:
-                              isPreview
-                                  ? package.image.byte != null
-                                      ? Image.memory(
-                                        package.image.byte!,
-                                        fit: BoxFit.cover,
-                                      )
-                                      : Offstage()
-                                  : Image.network(
-                                    "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
-                                    fit: BoxFit.cover,
-                                  ),
-                        ),
-                      ),
-                    ),
+                    ProductImageContainer(width: 75, height: 75, data: package),
                     if (quantity != 0)
                       Container(
                         padding: EdgeInsets.all(5),
