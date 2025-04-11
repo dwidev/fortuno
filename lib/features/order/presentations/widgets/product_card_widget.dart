@@ -5,7 +5,7 @@ import '../../../products/domain/entities/inventory.dart';
 import '../../../products/domain/entities/product.dart';
 import '../../../products/presentation/widgets/selected_product_widget.dart';
 import 'delete_product_dialog.dart';
-import 'image_container_widget.dart';
+import 'product_image_container_widget.dart';
 
 class ProductCardWidget extends StatefulWidget {
   const ProductCardWidget({

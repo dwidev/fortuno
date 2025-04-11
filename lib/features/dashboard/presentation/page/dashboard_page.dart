@@ -1,9 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:fortuno/features/order/presentations/widgets/image_container_widget.dart';
-import 'package:fortuno/features/products/domain/entities/product.dart';
 
 import '../../../../core/core.dart';
 import '../../../auth/presentations/bloc/auth_bloc.dart';
+import '../../../order/presentations/widgets/product_image_container_widget.dart';
+import '../../../products/domain/entities/product.dart';
 
 part '../widgets/dashboard_app_bar.dart';
 part '../widgets/most_product_widget.dart';

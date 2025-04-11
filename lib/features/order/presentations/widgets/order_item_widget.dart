@@ -1,7 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:fortuno/features/order/domain/entities/order_item.dart';
-import 'package:fortuno/features/order/presentations/bloc/cart/cart_bloc.dart';
-import 'package:fortuno/features/order/presentations/widgets/image_container_widget.dart';
+import '../../domain/entities/order_item.dart';
+import '../bloc/cart/cart_bloc.dart';
+import 'product_image_container_widget.dart';
 
 import '../../../../core/core.dart';
 

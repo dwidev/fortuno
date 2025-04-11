@@ -1,7 +1,7 @@
 import '../../../../core/core.dart';
 import '../../../products/domain/entities/inventory.dart';
 import '../../../products/domain/entities/package.dart';
-import 'image_container_widget.dart';
+import 'product_image_container_widget.dart';
 
 class PackageCardWidget extends StatelessWidget {
   const PackageCardWidget({
