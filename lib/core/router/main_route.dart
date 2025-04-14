@@ -48,8 +48,8 @@ final router = GoRouter(
             BlocProvider(create: (context) => getIt<ProductsBloc>()),
           ],
           child: AuthListener(
-            builder: (context, bloc, state) {
-              return MainPage(navigationShell: navigationShell);
+            builder: (context, bloc, _) {
+              return MainPage(navigationShell: navigationShell, state: state);
             },
           ),
         );

@@ -1,13 +1,22 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:fortuno/features/dashboard/presentation/page/dashboard_page.dart';
+import 'package:fortuno/features/order/presentations/pages/create_order/create_order_page.dart';
 import 'package:fortuno/features/order/presentations/pages/process_order/process_order_page.dart';
+import 'package:fortuno/features/products/domain/entities/inventory.dart';
+import 'package:fortuno/features/products/presentation/pages/inventory_page.dart';
 
 import '../core/constants/images_assets.dart';
 import '../core/core.dart';
 
 class MainPage extends StatelessWidget {
+  final GoRouterState state;
   final StatefulNavigationShell navigationShell;
 
-  const MainPage({super.key, required this.navigationShell});
+  const MainPage({
+    super.key,
+    required this.state,
+    required this.navigationShell,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +28,7 @@ class MainPage extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SideMenu(navigationShell: navigationShell),
+            SideMenu(navigationShell: navigationShell, state: state),
             Expanded(child: navigationShell),
           ],
         ),
@@ -29,9 +38,14 @@ class MainPage extends StatelessWidget {
 }
 
 class SideMenu extends StatefulWidget {
+  final GoRouterState state;
   final StatefulNavigationShell navigationShell;
 
-  const SideMenu({super.key, required this.navigationShell});
+  const SideMenu({
+    super.key,
+    required this.state,
+    required this.navigationShell,
+  });
 
   @override
   State<SideMenu> createState() => _SideMenuState();
@@ -39,6 +53,11 @@ class SideMenu extends StatefulWidget {
 
 class _SideMenuState extends State<SideMenu> {
   var activeIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   final icon = [
     [CupertinoIcons.chart_bar_alt_fill, "Dashboard"],
@@ -53,8 +72,21 @@ class _SideMenuState extends State<SideMenu> {
     [CupertinoIcons.gear_alt_fill, "Pengaturan"],
   ];
 
+  int? _calculateIndexFromLocation(String location) {
+    if (location.contains(DashboardPage.path)) return 0;
+    if (location.contains(CreateOrderPage.path)) return 1;
+    if (location.contains(ProcessOrderPage.path)) return 2;
+    if (location.contains(InvetoryPage.path)) return 4;
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final pathIndex = _calculateIndexFromLocation(widget.state.fullPath ?? "");
+    if (pathIndex != null) {
+      activeIndex = pathIndex;
+    }
+
     return Container(
       width: activeIndex == 1 ? null : context.width / 5.7,
       height: context.height,
@@ -302,4 +334,7 @@ class _SideMenuState extends State<SideMenu> {
       ),
     );
   }
+
+  @override
+  void onChange() {}
 }
