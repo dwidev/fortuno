@@ -188,6 +188,7 @@ class ProductsRepositoryImpl implements ProductsRepository {
               isActive: e.isActive,
             );
           }).toList(),
+      type: pack.type.name,
     );
 
     await productsDatasource.insertPackage(

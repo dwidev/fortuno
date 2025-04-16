@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:fortuno/core/utils/code_gen.dart';
 import 'package:fortuno/features/products/data/model/category_model.dart';
+import 'package:fortuno/features/products/domain/enums/package_type.dart';
 
 import '../../../../core/models/base_model.dart';
 import '../../domain/entities/package.dart';
@@ -15,6 +16,7 @@ class PackageModel extends BaseModel<Package> {
   final double price;
   final bool isActive;
   final String createAt;
+  final String type;
   final CategoryModel? categoryModel;
   final List<ProductModel> productModel;
 
@@ -25,6 +27,7 @@ class PackageModel extends BaseModel<Package> {
     required this.price,
     required this.isActive,
     required this.createAt,
+    required this.type,
     required this.categoryModel,
     required this.productModel,
   });
@@ -38,6 +41,7 @@ class PackageModel extends BaseModel<Package> {
       price: price,
       isActive: isActive,
       createAt: createAt,
+      type: packageTypeFromString(type),
       items: productModel.map((e) => e.toEntity()).toList(),
       category: categoryModel?.toEntity(),
     );
@@ -66,6 +70,7 @@ class PackageModel extends BaseModel<Package> {
       price: price,
       isActive: map['is_active'] as bool? ?? false,
       createAt: map['created_at'] as String? ?? "",
+      type: map['type'] as String? ?? "",
       productModel: List.from(
         (map['products']).map(
           (x) => ProductModel.fromMap(x as Map<String, dynamic>),

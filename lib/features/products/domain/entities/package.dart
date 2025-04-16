@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
+import '../enums/package_type.dart';
 import 'category.dart';
 import 'image.dart';
 import 'inventory.dart';
@@ -17,6 +18,7 @@ class Package extends Equatable implements Inventory {
   final double price;
   final bool isActive;
   final String createAt;
+  final PackageType type;
   final CategoryProduct? category;
   final List<Product> items;
   @override
@@ -31,6 +33,7 @@ class Package extends Equatable implements Inventory {
     required this.price,
     required this.isActive,
     required this.createAt,
+    this.type = PackageType.def,
     required this.category,
     required this.items,
     this.image = const ImageData(),

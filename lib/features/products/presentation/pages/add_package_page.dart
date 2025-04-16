@@ -28,6 +28,7 @@ class _AddPackagePageState extends State<AddPackagePage> {
 
   final formKey = GlobalKey<FormState>();
   var isActive = true;
+  var isPackageCustom = false;
 
   List<CategoryProduct> selectedCategory = [];
   List<Product> selectedProduct = [];
@@ -60,7 +61,9 @@ class _AddPackagePageState extends State<AddPackagePage> {
       return;
     }
 
-    if (selectedProduct.isEmpty && selectedCategory.length < 4) {
+    if (isPackageCustom == false &&
+        selectedProduct.isEmpty &&
+        selectedCategory.length < 4) {
       EasyLoading.showToast("Silahkan pilih minimal 4 Produk");
       return;
     }
@@ -193,26 +196,65 @@ class _AddPackagePageState extends State<AddPackagePage> {
                         },
                       ),
                       SizedBox(height: kSizeM),
-                      Text(
-                        "Produk",
-                        style: context.textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Custom package",
+                                  style: context.textTheme.bodySmall?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: kSizeSS),
+                                if (isPackageCustom)
+                                  Text(
+                                    "Paket ini tidak akan mempunyai produk dan produk akan dipilih pada saat buat order",
+                                    style: context.textTheme.bodySmall
+                                        ?.copyWith(
+                                          color: Colors.red,
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                          Switch.adaptive(
+                            value: isPackageCustom,
+                            onChanged: (value) {
+                              setState(() {
+                                isPackageCustom = value;
+                              });
+                            },
+                          ),
+                        ],
                       ),
                       SizedBox(height: kSizeM),
-                      BlocBuilder<ProductsBloc, ProductState>(
-                        builder: (context, state) {
-                          return SelectedProductWidget(
-                            opts: PickProductDialogOpts(
-                              type: PickProductType.multiple,
-                              title: "Pilih Produk",
-                              selectedData: selectedProduct,
-                              onChange: onChangeProduct,
-                              data: state.products,
-                            ),
-                          );
-                        },
-                      ),
+                      if (!isPackageCustom) ...[
+                        Text(
+                          "Produk",
+                          style: context.textTheme.bodySmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: kSizeM),
+                        BlocBuilder<ProductsBloc, ProductState>(
+                          builder: (context, state) {
+                            return SelectedProductWidget(
+                              opts: PickProductDialogOpts(
+                                type: PickProductType.multiple,
+                                title: "Pilih Produk",
+                                selectedData: selectedProduct,
+                                onChange: onChangeProduct,
+                                data: state.products,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ],
                   ),
                 ),
