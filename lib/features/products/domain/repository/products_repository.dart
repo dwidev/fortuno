@@ -22,6 +22,10 @@ abstract class ProductsRepository {
     required Product product,
     required CategoryProduct? category,
   });
+  Future<Package> insertPackage({
+    required String companyId,
+    required Package package,
+  });
 
   // DELETE DATA
   Future<void> deleteCategory({required String id});

@@ -1,24 +1,28 @@
-import 'dart:typed_data';
-
 import 'package:equatable/equatable.dart';
+import 'package:uuid/uuid.dart';
 
-import '../../../../core/utils/formatter.dart';
 import 'category.dart';
+import 'image.dart';
+import 'inventory.dart';
 import 'product.dart';
 
-class Package extends Equatable {
+class Package extends Equatable implements Inventory {
+  @override
   final String id;
+  @override
   final String name;
+  @override
   final String code;
+  @override
   final double price;
   final bool isActive;
   final String createAt;
   final CategoryProduct? category;
   final List<Product> items;
-  final Uint8List? imageByte;
+  @override
+  final ImageData image;
 
   String get contents => items.map((e) => e.name).join(", ");
-  String get priceFormated => moneyFormatter(price);
 
   const Package({
     required this.id,
@@ -29,8 +33,27 @@ class Package extends Equatable {
     required this.createAt,
     required this.category,
     required this.items,
-    this.imageByte,
+    this.image = const ImageData(),
   });
+
+  factory Package.create({
+    required String name,
+    required double price,
+    required bool isActive,
+    required CategoryProduct category,
+    required List<Product> items,
+    required ImageData? image,
+  }) => Package(
+    id: Uuid().v4(),
+    name: name,
+    code: "", // SET AT PRODUCT DATA SOURCE
+    price: price,
+    isActive: isActive,
+    createAt: DateTime.now().toUtc().toString(),
+    items: items,
+    category: category,
+    image: ImageData(),
+  );
 
   factory Package.dummy() => Package(
     id: "id",
@@ -63,7 +86,7 @@ class Package extends Equatable {
     String? createAt,
     CategoryProduct? category,
     List<Product>? items,
-    Uint8List? imageByte,
+    ImageData? image,
   }) {
     return Package(
       id: id ?? this.id,
@@ -74,23 +97,13 @@ class Package extends Equatable {
       createAt: createAt ?? this.createAt,
       category: category ?? this.category,
       items: items ?? this.items,
-      imageByte: imageByte ?? this.imageByte,
+      image: image ?? this.image,
     );
   }
 
   @override
   List<Object?> get props {
-    return [
-      id,
-      name,
-      code,
-      price,
-      isActive,
-      createAt,
-      category,
-      items,
-      imageByte,
-    ];
+    return [id, name, code, price, isActive, createAt, category, items, image];
   }
 
   @override

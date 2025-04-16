@@ -3,7 +3,7 @@ import '../core.dart';
 
 class GradientButton extends StatelessWidget {
   const GradientButton({
-    Key? key,
+    super.key,
     this.width,
     this.height,
     required this.child,
@@ -12,7 +12,7 @@ class GradientButton extends StatelessWidget {
     this.noShadow = false,
     this.isGradient = false,
     this.backgroundColor = primaryColor,
-  }) : super(key: key);
+  });
 
   final double? width;
   final double? height;

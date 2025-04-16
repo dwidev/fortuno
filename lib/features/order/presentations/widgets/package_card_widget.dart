@@ -1,5 +1,7 @@
 import '../../../../core/core.dart';
+import '../../../products/domain/entities/inventory.dart';
 import '../../../products/domain/entities/package.dart';
+import 'product_image_container_widget.dart';
 
 class PackageCardWidget extends StatelessWidget {
   const PackageCardWidget({
@@ -26,8 +28,6 @@ class PackageCardWidget extends StatelessWidget {
         isPreview: true,
       );
 
-  bool get finishSelected => disable;
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -42,37 +42,7 @@ class PackageCardWidget extends StatelessWidget {
               children: [
                 Stack(
                   children: [
-                    Container(
-                      width: 75,
-                      height: 75,
-                      decoration: BoxDecoration(
-                        color: darkLightColor,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: ColorFiltered(
-                          colorFilter: ColorFilter.mode(
-                            finishSelected ? Colors.grey : Colors.transparent,
-                            finishSelected
-                                ? BlendMode.saturation
-                                : BlendMode.dst,
-                          ),
-                          child:
-                              isPreview
-                                  ? package.imageByte != null
-                                      ? Image.memory(
-                                        package.imageByte!,
-                                        fit: BoxFit.cover,
-                                      )
-                                      : Offstage()
-                                  : Image.network(
-                                    "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
-                                    fit: BoxFit.cover,
-                                  ),
-                        ),
-                      ),
-                    ),
+                    ProductImageContainer(width: 75, height: 75, data: package),
                     if (quantity != 0)
                       Container(
                         padding: EdgeInsets.all(5),
@@ -131,10 +101,7 @@ class PackageCardWidget extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(kSizeS),
                     decoration: BoxDecoration(
-                      color:
-                          finishSelected
-                              ? disabledButtonColor
-                              : deleteButtonColor,
+                      color: disable ? disabledButtonColor : deleteButtonColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(CupertinoIcons.delete, color: whiteColor),

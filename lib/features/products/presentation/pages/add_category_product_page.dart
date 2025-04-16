@@ -1,9 +1,9 @@
-import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../../../../core/core.dart';
 import '../../../../core/widgets/form/text_form_field_widget.dart';
 import '../../domain/entities/category.dart';
+import '../../domain/entities/image.dart';
 import '../bloc/product_bloc.dart';
 import '../widgets/inventory_form_view_page.dart';
 import '../widgets/product_preview_widget.dart';
@@ -25,7 +25,8 @@ class _AddCategoryProductPageState extends State<AddCategoryProductPage> {
   var isCategory = true;
   List<CategoryProduct> selectedCategory = [];
   late TextEditingController nameController;
-  XFile? file;
+
+  ImageData? imageSource;
 
   @override
   void initState() {
@@ -52,7 +53,7 @@ class _AddCategoryProductPageState extends State<AddCategoryProductPage> {
       code: "", // generate at model
       price: 0,
       createAt: DateTime.now().toUtc().toString(),
-      imageByte: null,
+      image: imageSource ?? ImageData(),
       isActive: isActive,
       haveProduct: true,
     );
@@ -75,10 +76,10 @@ class _AddCategoryProductPageState extends State<AddCategoryProductPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ImagePickerWidget(
-                  onChange: (ImagePickerResult image) async {
-                    file = image.file;
+                  onChange: (ImageData image) async {
+                    imageSource = image;
                     final preview = await productPreviewController.stream.first;
-                    final n = preview.copyWith(imageByte: image.imageByte);
+                    final n = preview.copyWith(image: image);
                     productPreviewController.add(n);
                   },
                 ),

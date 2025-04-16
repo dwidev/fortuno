@@ -1,25 +1,25 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:typed_data';
-
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 
-import 'package:fortuno/features/products/domain/entities/category.dart';
+import 'category.dart';
+import 'image.dart';
+import 'inventory.dart';
 
-import '../../../../core/utils/formatter.dart';
+const _defaultName = "Nama Product";
 
-class Product extends Equatable {
+class Product extends Equatable implements Inventory {
+  @override
   final String id;
+  @override
   final String name;
+  @override
   final String code;
+  @override
   final double price;
   final String createAt;
-  final Uint8List? imageByte;
   final bool isActive;
   final CategoryProduct? category;
-
-  String get kDisplayPrice => "${(price / 1000).toStringAsFixed(0)}K";
-  String get priceFormated => moneyFormatter(price);
+  @override
+  final ImageData image;
 
   const Product({
     required this.id,
@@ -27,7 +27,7 @@ class Product extends Equatable {
     required this.code,
     required this.price,
     required this.createAt,
-    this.imageByte,
+    this.image = const ImageData(),
     this.isActive = false,
     this.category,
   });
@@ -38,27 +38,30 @@ class Product extends Equatable {
     code: "",
     price: 0.0,
     createAt: DateTime.now().toString(),
+    isActive: true,
   );
 
   factory Product.dummy() => Product(
     id: "id",
-    name: "Nama Product",
+    name: _defaultName,
     code: "",
     price: 120000,
     createAt: DateTime.now().toString(),
+    isActive: true,
   );
 
   factory Product.preview() => Product(
     id: "id",
-    name: "Nama Product",
+    name: _defaultName,
     code: "",
     price: 0,
     createAt: DateTime.now().toString(),
+    isActive: true,
   );
 
   @override
   List<Object?> get props {
-    return [id, name, code, price, createAt, imageByte, isActive, category];
+    return [id, name, code, price, createAt, image, isActive, category];
   }
 
   Product copyWith({
@@ -67,7 +70,7 @@ class Product extends Equatable {
     String? code,
     double? price,
     String? createAt,
-    Uint8List? imageByte,
+    ImageData? image,
     bool? isActive,
     CategoryProduct? category,
   }) {
@@ -77,7 +80,7 @@ class Product extends Equatable {
       code: code ?? this.code,
       price: price ?? this.price,
       createAt: createAt ?? this.createAt,
-      imageByte: imageByte ?? this.imageByte,
+      image: image ?? this.image,
       isActive: isActive ?? this.isActive,
       category: category ?? this.category,
     );

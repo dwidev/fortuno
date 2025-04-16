@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:fortuno/core/core.dart';
+import 'package:fortuno/features/products/domain/entities/inventory.dart';
 
 import 'package:fortuno/features/products/domain/entities/package.dart';
 
@@ -27,17 +28,13 @@ class OrderItem extends Equatable {
   final Package? package;
   final int quantity;
 
-  String get id {
-    if (product != null) {
-      return product?.id ?? "";
-    }
-
-    if (package != null) {
-      return package?.id ?? "";
-    }
-
+  Inventory get data {
+    if (product != null) return product!;
+    if (package != null) return package!;
     throw ArgumentError("product and package are null");
   }
+
+  String get id => data.id;
 
   double get price {
     double? price;

@@ -1,5 +1,7 @@
+import 'package:fortuno/features/products/data/model/package_item_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../domain/enums/inventory_type.dart';
 import '../model/category_model.dart';
@@ -125,6 +127,27 @@ class ProductNosqlDatasource extends ProductsDatasource {
         "created_at": DateTime.now().toString(),
       };
       await client.from('category_product').insert(catProdMap);
+    }
+  }
+
+  @override
+  Future<void> insertPackage({
+    required String companyId,
+    required PackageModel package,
+  }) async {
+    final packageMap = package.toMap();
+    await client.from('package').insert(packageMap);
+
+    for (var product in package.productModel) {
+      final model = PackageItemModel(
+        id: Uuid().v4(),
+        categoryId: package.categoryModel?.id ?? "",
+        productId: product.id,
+        packageId: package.id,
+      );
+      final map = model.toMap();
+
+      await client.from('package_items').insert(map);
     }
   }
 

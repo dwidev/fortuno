@@ -1,9 +1,11 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:fortuno/features/order/presentations/widgets/delete_product_dialog.dart';
 
 import '../../../../core/core.dart';
+import '../../../products/domain/entities/inventory.dart';
 import '../../../products/domain/entities/product.dart';
 import '../../../products/presentation/widgets/selected_product_widget.dart';
+import 'delete_product_dialog.dart';
+import 'product_image_container_widget.dart';
 
 class ProductCardWidget extends StatefulWidget {
   const ProductCardWidget({
@@ -41,7 +43,12 @@ class ProductCardWidget extends StatefulWidget {
   factory ProductCardWidget.preview({
     required Product product,
     required VoidCallback onTap,
-  }) => ProductCardWidget(product: product, onTap: onTap, isPreview: true);
+  }) => ProductCardWidget(
+    product: product,
+    onTap: onTap,
+    isPreview: true,
+    isActive: true,
+  );
 
   factory ProductCardWidget.picker({
     required Product product,
@@ -76,8 +83,6 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
   var active = false;
 
   bool get isDisable => widget.isDisable || !active;
-
-  bool get isImagePreview => widget.isPreview;
 
   String get catName => widget.product.category?.name ?? "";
 
@@ -140,34 +145,11 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
           children: [
             Stack(
               children: [
-                Container(
+                ProductImageContainer(
                   width: double.infinity,
                   height: 130,
-                  decoration: BoxDecoration(
-                    color: isImagePreview ? lightGrey8 : null,
-                    borderRadius: BorderRadius.circular(kSizeMS),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(kSizeMS),
-                    child: ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        isDisable ? Colors.grey : Colors.transparent,
-                        isDisable ? BlendMode.saturation : BlendMode.dst,
-                      ),
-                      child:
-                          isImagePreview
-                              ? widget.product.imageByte != null
-                                  ? Image.memory(
-                                    widget.product.imageByte!,
-                                    fit: BoxFit.cover,
-                                  )
-                                  : Offstage()
-                              : Image.network(
-                                "https://cms.disway.id//uploads/0a89f2c48130e61ec0621d8bdd2d6b74.jpeg",
-                                fit: BoxFit.cover,
-                              ),
-                    ),
-                  ),
+                  isDisable: widget.isDisable,
+                  data: widget.product,
                 ),
                 if (widget.isInventory)
                   Positioned(

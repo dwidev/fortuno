@@ -1,5 +1,4 @@
-import 'dart:typed_data';
-
+import 'image.dart';
 import 'product.dart';
 
 class CategoryProduct extends Product {
@@ -13,7 +12,7 @@ class CategoryProduct extends Product {
     required super.createAt,
     required super.isActive,
     required this.haveProduct,
-    super.imageByte,
+    super.image,
   });
 
   const CategoryProduct.initial({
@@ -45,7 +44,7 @@ class CategoryProduct extends Product {
     double? price,
     String? createAt,
     bool? haveProduct,
-    Uint8List? imageByte,
+    ImageData? image,
     bool? isActive,
     CategoryProduct? category,
   }) {
@@ -56,7 +55,7 @@ class CategoryProduct extends Product {
       price: price ?? this.price,
       createAt: createAt ?? this.createAt,
       haveProduct: haveProduct ?? this.haveProduct,
-      imageByte: imageByte ?? this.imageByte,
+      image: image ?? this.image,
       isActive: isActive ?? this.isActive,
     );
   }

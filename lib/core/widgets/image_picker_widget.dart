@@ -4,17 +4,11 @@ import 'dart:typed_data';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fortuno/core/core.dart';
+import 'package:fortuno/features/products/domain/entities/image.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ImagePickerResult {
-  final Uint8List imageByte;
-  final XFile file;
-
-  ImagePickerResult({required this.imageByte, required this.file});
-}
-
 class ImagePickerWidget extends StatefulWidget {
-  final Future<void> Function(ImagePickerResult image) onChange;
+  final Future<void> Function(ImageData image) onChange;
 
   const ImagePickerWidget({super.key, required this.onChange});
 
@@ -48,7 +42,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
     }
 
     final byte = await file.readAsBytes();
-    final imageResult = ImagePickerResult(imageByte: byte, file: file);
+    final imageResult = ImageData(byte: byte, file: file);
 
     await widget.onChange(imageResult);
 

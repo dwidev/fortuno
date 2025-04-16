@@ -90,6 +90,21 @@ class _PickProductDialogState extends State<_PickProductDialog> {
                       product: product,
                       isPicked: pickedProduct.contains(product),
                       onTap: () {
+                        if (widget.opts.type == PickProductType.multiple) {
+                          final idx = pickedProduct.indexWhere(
+                            (e) => e.id == product.id,
+                          );
+                          if (idx == -1) {
+                            pickedProduct = [...pickedProduct, product];
+                          } else {
+                            pickedProduct.removeAt(idx);
+                          }
+
+                          widget.opts.onChange?.call(product);
+                          setState(() {});
+                          return;
+                        }
+
                         pickedProduct = [product];
                         widget.opts.onChange?.call(product);
                         setState(() {});
@@ -117,17 +132,21 @@ class _PickProductDialogState extends State<_PickProductDialog> {
   }
 }
 
+enum PickProductType { single, multiple }
+
 class PickProductDialogOpts extends Equatable {
   final String title;
   final List<Product> data;
   final List<Product> selectedData;
   final Function(Product product)? onChange;
+  final PickProductType type;
 
   const PickProductDialogOpts({
     required this.title,
     required this.data,
     required this.selectedData,
     this.onChange,
+    this.type = PickProductType.single,
   });
 
   PickProductDialogOpts copyWith({
@@ -135,17 +154,21 @@ class PickProductDialogOpts extends Equatable {
     List<Product>? data,
     List<Product>? selectedData,
     Function(Product product)? onChange,
+    PickProductType? type,
   }) {
     return PickProductDialogOpts(
       title: title ?? this.title,
       data: data ?? this.data,
       selectedData: selectedData ?? this.selectedData,
       onChange: onChange ?? this.onChange,
+      type: type ?? this.type,
     );
   }
 
   @override
-  List<Object?> get props => [title, data, selectedData, onChange];
+  List<Object?> get props {
+    return [title, data, selectedData, onChange, type];
+  }
 
   @override
   bool get stringify => true;

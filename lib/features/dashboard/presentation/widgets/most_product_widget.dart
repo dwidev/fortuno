@@ -55,23 +55,16 @@ class MostProductWidget extends StatelessWidget {
                       borderRadius: BorderRadiusDirectional.circular(
                         kDefaultRadius * 0.5,
                       ),
-                      color: lightGrey8,
+                      color: lightGrey7,
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(
+                        ProductImageContainer(
                           width: 50,
                           height: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadiusDirectional.circular(
-                              kDefaultRadius * 0.5,
-                            ),
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                "https://cdn.prod.website-files.com/6346686a30512816becfbf47/671ed63b8d688b6b1d10a0ec_freepik__retouch__32461.png",
-                              ),
-                            ),
+                          data: Product.preview().copyWith(
+                            name: "Paket berkah",
                           ),
                         ),
                         SizedBox(width: kSizeS),

@@ -1,11 +1,11 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../../../../core/core.dart';
 import '../../../../core/widgets/form/currency_form_field_widget.dart';
 import '../../../../core/widgets/form/text_form_field_widget.dart';
 import '../../domain/entities/category.dart';
+import '../../domain/entities/image.dart';
 import '../../domain/entities/package.dart';
 import '../../domain/entities/product.dart';
 import '../bloc/product_bloc.dart';
@@ -34,7 +34,7 @@ class _AddPackagePageState extends State<AddPackagePage> {
 
   late TextEditingController nameController;
   late TextEditingIDRController priceController;
-  XFile? file;
+  ImageData? imageData;
 
   @override
   void initState() {
@@ -52,7 +52,7 @@ class _AddPackagePageState extends State<AddPackagePage> {
     previewController.close();
   }
 
-  void onSaveForm() {
+  Future<void> onSaveForm() async {
     if (formKey.currentState?.validate() == false) return;
 
     if (selectedCategory.isEmpty) {
@@ -60,22 +60,39 @@ class _AddPackagePageState extends State<AddPackagePage> {
       return;
     }
 
-    // final product = Product(
-    //   id: "", // generate at repository
-    //   name: nameController.text,
-    //   code: "", // generate at model
-    //   price: priceController.getDoubleValue(),
-    //   createAt: DateTime.now().toUtc().toString(),
-    //   isActive: isActive,
-    //   category: category,
-    // );
+    if (selectedProduct.isEmpty && selectedCategory.length < 4) {
+      EasyLoading.showToast("Silahkan pilih minimal 4 Produk");
+      return;
+    }
 
-    // final event = OnAddProduct(
-    //   product: product,
-    //   category: category,
-    //   productImage: file,
-    // );
-    // context.read<ProductsBloc>().add(event);
+    final package = Package.create(
+      name: nameController.text,
+      price: priceController.getDoubleValue(),
+      isActive: isActive,
+      category: selectedCategory.first,
+      items: selectedProduct,
+      image: imageData ?? ImageData(),
+    );
+
+    final event = OnAddPackage(package: package);
+    context.read<ProductsBloc>().add(event);
+  }
+
+  Future<void> onChangeProduct(Product product) async {
+    final idx = selectedProduct.indexWhere((e) => e.id == product.id);
+    if (idx == -1) {
+      selectedProduct = [...selectedProduct, product];
+    } else {
+      selectedProduct.removeAt(idx);
+    }
+
+    final preview = await previewController.stream.first;
+    final n = preview.copyWith(items: selectedProduct);
+    previewController.add(n);
+
+    setState(() {
+      selectedProduct = selectedProduct;
+    });
   }
 
   @override
@@ -96,12 +113,11 @@ class _AddPackagePageState extends State<AddPackagePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ImagePickerWidget(
-                        onChange: (ImagePickerResult image) async {
-                          file = image.file;
+                        onChange: (ImageData image) async {
+                          imageData = image;
                           final preview = await previewController.stream.first;
-                          final n = preview.copyWith(
-                            imageByte: image.imageByte,
-                          );
+                          final n = preview.copyWith(image: image);
+
                           previewController.add(n);
                         },
                       ),
@@ -188,18 +204,10 @@ class _AddPackagePageState extends State<AddPackagePage> {
                         builder: (context, state) {
                           return SelectedProductWidget(
                             opts: PickProductDialogOpts(
+                              type: PickProductType.multiple,
                               title: "Pilih Produk",
                               selectedData: selectedProduct,
-                              onChange: (product) async {
-                                final preview =
-                                    await previewController.stream.first;
-                                final products = [...selectedProduct, product];
-                                final n = preview.copyWith(items: products);
-                                previewController.add(n);
-                                setState(() {
-                                  selectedProduct = products;
-                                });
-                              },
+                              onChange: onChangeProduct,
                               data: state.products,
                             ),
                           );

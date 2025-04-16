@@ -3,10 +3,11 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortuno/features/products/domain/usecases/activate_data.dart';
-import 'package:fortuno/features/products/domain/usecases/delete_product.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
+
+import 'package:fortuno/features/products/domain/usecases/activate_data.dart';
+import 'package:fortuno/features/products/domain/usecases/delete_product.dart';
 
 import '../../../../core/bloc/base_bloc.dart';
 import '../../../../core/failures/failure.dart';
@@ -20,6 +21,7 @@ import '../../domain/usecases/get_category_by_companyid.dart';
 import '../../domain/usecases/get_packages_by_company.dart';
 import '../../domain/usecases/get_products_by_company.dart';
 import '../../domain/usecases/save_insert_category.dart';
+import '../../domain/usecases/save_insert_package.dart';
 import '../../domain/usecases/save_insert_product.dart';
 
 part 'product_event.dart';
@@ -34,6 +36,7 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
   // insert
   final SaveInsertProduct saveInsertProduct;
   final SaveInsertCategory saveInsertCategory;
+  final SaveInsertPackage saveInsertPackage;
 
   // delete
   final DeleteCategory deleteCategory;
@@ -48,6 +51,7 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
     required this.getPackagesByCompany,
     required this.saveInsertProduct,
     required this.saveInsertCategory,
+    required this.saveInsertPackage,
     required this.deleteCategory,
     required this.deleteProduct,
     required this.activateData,
@@ -55,6 +59,7 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
     on<OnInitInvetoryPageEvent>(_onInit);
     on<OnAddProduct>(_onAddProduct);
     on<OnAddCategory>(_onAddCategory);
+    on<OnAddPackage>(_onAddPackage);
     on<OnDeleteCategory>(_onDeleteCategory);
     on<OnDeleteProduct>(_onDeleteProduct);
     on<OnActivateData>(_onActivateData);
@@ -116,6 +121,23 @@ class ProductsBloc extends BaseAppBloc<ProductEvent, ProductState> {
           categories: state.categories,
           products: [...state.products, product],
           packages: state.packages,
+        ),
+      );
+    });
+  }
+
+  Future<void> _onAddPackage(OnAddPackage event, Emitter emit) async {
+    final result = await runUsecase(() {
+      final params = SaveInsertPackageParams(package: event.package);
+      return saveInsertPackage(params);
+    }, emit);
+
+    result.fold((error) => this.error(emit, error), (newPackage) {
+      emit(
+        OnSavedForm(
+          categories: state.categories,
+          products: state.products,
+          packages: [...state.packages, newPackage],
         ),
       );
     });
