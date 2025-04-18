@@ -1,5 +1,6 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fortuno/features/products/domain/enums/package_type.dart';
 
 import '../../../../core/core.dart';
 import '../bloc/cart/cart_bloc.dart';
@@ -11,6 +12,7 @@ class PackageListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<CartBloc>();
     return BlocBuilder<OrderBloc, OrderState>(
       builder: (context, state) {
         if (state is! AtProductPage) {
@@ -28,24 +30,32 @@ class PackageListWidget extends StatelessWidget {
           ),
           itemBuilder: (context, index) {
             final package = packages[index];
-            final quantity = state.productCountCart[package.id] ?? 0;
+            var quantity = state.productCountCart[package.id] ?? 0;
 
             return PackageCardWidget(
               package: package,
               quantity: quantity,
-              onTap: () {
+              onTap: () async {
                 if (state.finishSelected) {
                   EasyLoading.showToast(
                     "Silahkan kembali kemenu Rincian pesanan",
                   );
                   return;
                 }
+                var custome = false;
+                if (package.type == PackageType.custom && quantity == 0) {
+                  custome = true;
+                  quantity = await showChangeTotalDialog(
+                    context: context,
+                    initial: 1,
+                  );
+                }
 
-                context.read<CartBloc>().add(
+                bloc.add(
                   AddProductToCartEvent(
                     categoryProduct: state.categoryProduct,
                     package: package,
-                    quantity: quantity + 1,
+                    quantity: custome ? quantity : quantity + 1,
                   ),
                 );
               },
