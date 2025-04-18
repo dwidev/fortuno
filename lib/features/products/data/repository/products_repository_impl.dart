@@ -170,6 +170,7 @@ class ProductsRepositoryImpl implements ProductsRepository {
 
     final packageModel = PackageModel(
       id: pack.id,
+      companyId: companyId,
       name: pack.name,
       code: pack.code,
       price: pack.price,

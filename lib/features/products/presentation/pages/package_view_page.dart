@@ -23,10 +23,6 @@ class _PackageViewPageState extends State<PackageViewPage> {
           return LoadingProductWidget(crossAxisCount: 5);
         }
 
-        if (state.packages.isEmpty) {
-          return Offstage();
-        }
-
         return MasonryGridView.builder(
           padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
           crossAxisSpacing: kSizeMS,
@@ -46,12 +42,7 @@ class _PackageViewPageState extends State<PackageViewPage> {
 
             final package = state.packages[index - 1];
 
-            return PackageCardWidget(
-              package: package,
-              quantity: 0,
-              disable: false,
-              onTap: () {},
-            );
+            return PackageCardWidget.inventory(package: package);
           },
         );
       },

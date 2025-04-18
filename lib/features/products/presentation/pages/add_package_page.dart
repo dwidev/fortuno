@@ -1,4 +1,5 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fortuno/features/products/domain/enums/package_type.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../../../../core/core.dart';
@@ -75,6 +76,7 @@ class _AddPackagePageState extends State<AddPackagePage> {
       category: selectedCategory.first,
       items: selectedProduct,
       image: imageData ?? ImageData(),
+      type: isPackageCustom.packType,
     );
 
     final event = OnAddPackage(package: package);

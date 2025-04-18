@@ -11,6 +11,7 @@ import 'product_model.dart';
 
 class PackageModel extends BaseModel<Package> {
   final String id;
+  final String companyId;
   final String name;
   final String code;
   final double price;
@@ -22,6 +23,7 @@ class PackageModel extends BaseModel<Package> {
 
   PackageModel({
     required this.id,
+    required this.companyId,
     required this.name,
     required this.code,
     required this.price,
@@ -36,6 +38,7 @@ class PackageModel extends BaseModel<Package> {
   Package toEntity() {
     return Package(
       id: id,
+      companyId: companyId,
       name: name,
       code: code,
       price: price,
@@ -52,11 +55,14 @@ class PackageModel extends BaseModel<Package> {
 
     return <String, dynamic>{
       'ID': id,
+      'company_id': companyId,
+      'category_id': categoryModel?.id,
       'package_name': name,
       'package_code': code,
       'price': price,
       'is_active': isActive,
       'created_at': createAt,
+      'type': type,
     };
   }
 
@@ -65,6 +71,7 @@ class PackageModel extends BaseModel<Package> {
 
     return PackageModel(
       id: map['ID'] as String,
+      companyId: map['company_id'] as String,
       name: map['package_name'] as String,
       code: map['package_code'] as String,
       price: price,

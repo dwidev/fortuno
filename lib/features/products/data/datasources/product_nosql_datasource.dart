@@ -141,7 +141,6 @@ class ProductNosqlDatasource extends ProductsDatasource {
     for (var product in package.productModel) {
       final model = PackageItemModel(
         id: Uuid().v4(),
-        categoryId: package.categoryModel?.id ?? "",
         productId: product.id,
         packageId: package.id,
       );

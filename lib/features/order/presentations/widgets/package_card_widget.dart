@@ -11,6 +11,7 @@ class PackageCardWidget extends StatefulWidget {
     required this.disable,
     required this.onTap,
     this.isPreview = false,
+    this.isInventory = false,
     this.onActivate,
   });
 
@@ -18,6 +19,7 @@ class PackageCardWidget extends StatefulWidget {
   final int quantity;
   final bool disable;
   final bool isPreview;
+  final bool isInventory;
   final VoidCallback onTap;
   final Function(bool value, String id)? onActivate;
 
@@ -28,6 +30,15 @@ class PackageCardWidget extends StatefulWidget {
         disable: false,
         onTap: () {},
         isPreview: true,
+      );
+
+  factory PackageCardWidget.inventory({required Package package}) =>
+      PackageCardWidget(
+        package: package,
+        quantity: 0,
+        disable: false,
+        onTap: () {},
+        isInventory: true,
       );
 
   @override
@@ -101,22 +112,22 @@ class _PackageCardWidgetState extends State<PackageCardWidget> {
                         ),
                       ),
                       SizedBox(height: kSizeS),
-                      if ((widget.package.category?.name ?? "").isNotEmpty)
-                        Row(
-                          children: [
+                      Row(
+                        children: [
+                          if ((widget.package.category?.name ?? "").isNotEmpty)
                             TextBadgeWidget(
                               text: widget.package.category?.name ?? "",
                               color: getValueColor(
                                 widget.package.category?.name ?? "",
                               ),
                             ),
-                            SizedBox(width: kSizeS),
-                            TextBadgeWidget(
-                              text: widget.package.type.name,
-                              color: getValueColor(widget.package.type.name),
-                            ),
-                          ],
-                        ),
+                          SizedBox(width: kSizeS),
+                          TextBadgeWidget(
+                            text: widget.package.type.name,
+                            color: getValueColor(widget.package.type.name),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -139,16 +150,17 @@ class _PackageCardWidgetState extends State<PackageCardWidget> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Switch.adaptive(
-                  value: active,
-                  onChanged: (value) {
-                    setState(() {
-                      active = value;
-                    });
+                if (widget.isInventory)
+                  Switch.adaptive(
+                    value: active,
+                    onChanged: (value) {
+                      setState(() {
+                        active = value;
+                      });
 
-                    widget.onActivate?.call(value, widget.package.id);
-                  },
-                ),
+                      widget.onActivate?.call(value, widget.package.id);
+                    },
+                  ),
                 if (widget.quantity != 0)
                   Container(
                     padding: EdgeInsets.all(kSizeS),
