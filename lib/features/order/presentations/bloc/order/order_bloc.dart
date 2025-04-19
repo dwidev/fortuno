@@ -37,6 +37,22 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
         ),
       );
     });
+    on<OnPreparationCustomPackage>((event, emit) {
+      if (state is AtProductPage) {
+        final state = this.state as AtProductPage;
+        final newState = OnSelectingCustomPackage(
+          selectedPackage: event.seletedPackage,
+          categoryProduct: state.categoryProduct,
+          products: state.products,
+          packages: state.packages,
+          categories: state.categories,
+          productCountCart: state.productCountCart,
+          finishSelected: state.finishSelected,
+        );
+        emit(newState);
+        print("new : ${state.runtimeType}");
+      }
+    });
     on<OnAddQuantity>(_onAddQuantity);
     on<OnFinishSelectedProduct>(_onFinishSelectProduct);
     on<ResetOrder>(

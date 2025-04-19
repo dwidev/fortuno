@@ -12,7 +12,9 @@ class PackageListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final orderBloc = context.read<OrderBloc>();
     final bloc = context.read<CartBloc>();
+
     return BlocBuilder<OrderBloc, OrderState>(
       builder: (context, state) {
         if (state is! AtProductPage) {
@@ -49,6 +51,7 @@ class PackageListWidget extends StatelessWidget {
                     context: context,
                     initial: 1,
                   );
+                  orderBloc.add(OnPreparationCustomPackage(package));
                 }
 
                 bloc.add(

@@ -42,6 +42,13 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
   @override
   Widget build(BuildContext context) {
     return OrderListenerWidget(
+      listener: (context, state) {
+        if (state is OnSelectingCustomPackage) {
+          setState(() {
+            activeMenu = 1;
+          });
+        }
+      },
       builder: (context, orderBloc, state) {
         return Row(
           children: [
@@ -55,11 +62,32 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
 
                   if (state is AtProductPage)
                     Padding(
-                      padding: anchorLeftContent,
-                      child: CustomTab(
-                        currentIndex: activeMenu,
-                        menus: menus,
-                        changeMenu: changeMenu,
+                      padding: [anchorLeftContent, anchorBottomContent].merge,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomTab(
+                            currentIndex: activeMenu,
+                            menus: menus,
+                            changeMenu: (index) {
+                              if (state is OnSelectingCustomPackage) return;
+                              changeMenu(index);
+                            },
+                          ),
+                          if (state is OnSelectingCustomPackage)
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: successButtonColor,
+                              ),
+                              child: Text(
+                                "Simpan",
+                                style: context.textTheme.bodySmall?.copyWith(
+                                  color: whiteColor,
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                     ),
 
@@ -115,6 +143,10 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                                 product: cp,
                                 quantity: quantity,
                                 onTap: () {
+                                  if (state is OnSelectingCustomPackage) {
+                                    return;
+                                  }
+
                                   if (state is AtProductPage) {
                                     context.read<CartBloc>().add(
                                       AddProductToCartEvent(

@@ -39,3 +39,9 @@ class OnFinishSelectedProduct extends OrderEvent {
 class ResetOrder extends OrderEvent {
   const ResetOrder();
 }
+
+class OnPreparationCustomPackage extends OrderEvent {
+  final Package seletedPackage;
+
+  const OnPreparationCustomPackage(this.seletedPackage);
+}

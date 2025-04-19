@@ -85,8 +85,47 @@ final class AtProductPage extends OrderState {
   List<Object?> get props => [
     categoryProduct,
     finishSelected,
-    packages,
+    products,
     packages,
     productCountCart,
   ];
+}
+
+final class OnSelectingCustomPackage extends AtProductPage {
+  final Package selectedPackage;
+
+  const OnSelectingCustomPackage({
+    required this.selectedPackage,
+    required super.categoryProduct,
+    required super.categories,
+    required super.productCountCart,
+    required super.finishSelected,
+    required super.products,
+    required super.packages,
+  });
+
+  @override
+  List<Object?> get props => [selectedPackage, super.props];
+
+  @override
+  OnSelectingCustomPackage copyWith({
+    CategoryProduct? categoryProduct,
+    bool? finishSelected,
+    List<Product>? products,
+    List<Package>? packages,
+    List<CategoryProduct>? categories,
+    LoadingOpts? loading,
+    ValueGetter<Failure?>? error,
+    Map<String, int>? productCountCart,
+  }) {
+    return OnSelectingCustomPackage(
+      selectedPackage: selectedPackage,
+      categoryProduct: categoryProduct ?? this.categoryProduct,
+      categories: categories ?? this.categories,
+      productCountCart: productCountCart ?? this.productCountCart,
+      finishSelected: finishSelected ?? this.finishSelected,
+      products: products ?? this.products,
+      packages: packages ?? this.packages,
+    );
+  }
 }

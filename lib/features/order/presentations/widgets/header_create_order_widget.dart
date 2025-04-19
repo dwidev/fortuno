@@ -15,16 +15,20 @@ class HeaderCreateOrderWidget extends StatelessWidget {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ButtonCircleWidget.gradient(
-                  buttonSize: kSizeL * 1.3,
-                  icon: CupertinoIcons.back,
-                  onPressed: () {
-                    orderBloc.add(OnBackToCategory());
-                  },
-                ),
-                SizedBox(width: kSizeML),
+                if (state is! OnSelectingCustomPackage) ...[
+                  ButtonCircleWidget.gradient(
+                    buttonSize: kSizeL * 1.3,
+                    icon: CupertinoIcons.back,
+                    onPressed: () {
+                      orderBloc.add(OnBackToCategory());
+                    },
+                  ),
+                  SizedBox(width: kSizeML),
+                ],
                 Text(
-                  state.categoryProduct.name,
+                  state is OnSelectingCustomPackage
+                      ? "Silahkan pilih produk untuk paket ${state.selectedPackage.name}"
+                      : state.categoryProduct.name,
                   style: context.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
