@@ -71,13 +71,13 @@ class PackageModel extends BaseModel<Package> {
 
     return PackageModel(
       id: map['ID'] as String,
-      companyId: map['company_id'] as String,
+      companyId: map['company_id'] as String? ?? "",
       name: map['package_name'] as String,
       code: map['package_code'] as String,
       price: price,
       isActive: map['is_active'] as bool? ?? false,
       createAt: map['created_at'] as String? ?? "",
-      type: map['type'] as String? ?? "",
+      type: map['type'] as String,
       productModel: List.from(
         (map['products']).map(
           (x) => ProductModel.fromMap(x as Map<String, dynamic>),

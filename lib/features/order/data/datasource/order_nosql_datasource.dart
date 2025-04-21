@@ -1,8 +1,8 @@
-import 'package:fortuno/features/order/domain/enums/order_status.dart';
-import 'package:fortuno/features/order/domain/enums/payment_option.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/core.dart';
+import '../../domain/enums/order_status.dart';
+import '../../domain/enums/payment_option.dart';
 import '../model/order_model.dart';
 import 'order_datasource.dart';
 
@@ -39,6 +39,20 @@ class OrderNosqlDatasource extends OrderDatasource {
 
     final params = {'client': mapClient, 'orders': mapOrder, 'items': mapItems};
     await client.rpc('insert_order', params: params);
+  }
+
+  @override
+  Future<void> inserOrderPackageItemsCustome({
+    required String orderId,
+    required String productId,
+    required String packageId,
+  }) async {
+    final map = {
+      'product_id': productId,
+      'package_id': packageId,
+      'order_id': orderId,
+    };
+    await client.from('order_package_items').insert(map);
   }
 
   @override
