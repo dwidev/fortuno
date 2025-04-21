@@ -33,3 +33,15 @@ final class RemoveProductFromCart extends AddProductToCartEvent {
 final class ResetCart extends CartEvent {
   const ResetCart();
 }
+
+final class AddProductToCustomePackageEvent extends CartEvent {
+  final CategoryProduct? categoryProduct;
+  final Package selectedPackage;
+  final Product product;
+
+  const AddProductToCustomePackageEvent({
+    required this.product,
+    this.categoryProduct,
+    required this.selectedPackage,
+  });
+}

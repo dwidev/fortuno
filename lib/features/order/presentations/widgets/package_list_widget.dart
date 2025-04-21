@@ -44,13 +44,17 @@ class PackageListWidget extends StatelessWidget {
                   );
                   return;
                 }
+
                 var custome = false;
                 if (package.type == PackageType.custom && quantity == 0) {
                   custome = true;
-                  quantity = await showChangeTotalDialog(
+                  final q = await showChangeTotalDialog(
                     context: context,
-                    initial: 1,
+                    initial: 0,
                   );
+
+                  if (q == null || q == 0) return;
+                  quantity = q;
                   orderBloc.add(OnPreparationCustomPackage(package));
                 }
 

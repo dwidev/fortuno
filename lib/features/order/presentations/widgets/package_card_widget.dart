@@ -1,3 +1,5 @@
+import 'package:fortuno/features/products/domain/enums/package_type.dart';
+
 import '../../../../core/core.dart';
 import '../../../products/domain/entities/inventory.dart';
 import '../../../products/domain/entities/package.dart';
@@ -112,7 +114,8 @@ class _PackageCardWidgetState extends State<PackageCardWidget> {
                         ),
                       ),
                       SizedBox(height: kSizeS),
-                      Row(
+                      Wrap(
+                        runSpacing: kSizeSS,
                         children: [
                           if ((widget.package.category?.name ?? "").isNotEmpty)
                             TextBadgeWidget(
@@ -122,10 +125,12 @@ class _PackageCardWidgetState extends State<PackageCardWidget> {
                               ),
                             ),
                           SizedBox(width: kSizeS),
-                          TextBadgeWidget(
-                            text: widget.package.type.name,
-                            color: getValueColor(widget.package.type.name),
-                          ),
+                          if (widget.isInventory ||
+                              widget.package.type == PackageType.custom)
+                            TextBadgeWidget(
+                              text: widget.package.type.name,
+                              color: getValueColor(widget.package.type.name),
+                            ),
                         ],
                       ),
                     ],

@@ -130,6 +130,7 @@ class Package extends Equatable implements Inventory {
       category,
       items,
       image,
+      contents,
     ];
   }
 

@@ -41,6 +41,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
 
   @override
   Widget build(BuildContext context) {
+    final cartBloc = context.watch<CartBloc>();
     return OrderListenerWidget(
       listener: (context, state) {
         if (state is OnSelectingCustomPackage) {
@@ -66,17 +67,26 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CustomTab(
-                            currentIndex: activeMenu,
-                            menus: menus,
-                            changeMenu: (index) {
-                              if (state is OnSelectingCustomPackage) return;
-                              changeMenu(index);
-                            },
-                          ),
+                          if (state is! OnSelectingCustomPackage) ...[
+                            CustomTab(
+                              currentIndex: activeMenu,
+                              menus: menus,
+                              changeMenu: (index) {
+                                if (state is OnSelectingCustomPackage) return;
+                                changeMenu(index);
+                              },
+                            ),
+                          ] else ...[
+                            Spacer(),
+                          ],
                           if (state is OnSelectingCustomPackage)
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                orderBloc.add(OnSaveCustomePackage());
+                                setState(() {
+                                  activeMenu = 0;
+                                });
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: successButtonColor,
                               ),
@@ -138,17 +148,38 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                                 quantity = state.productCountCart[cp.id] ?? 0;
                               }
 
+                              final isPicked =
+                                  (state is OnSelectingCustomPackage) &&
+                                  cartBloc.state.isCustomePackages(
+                                    itemId: state.selectedPackage.id,
+                                    productId: cp.id,
+                                  );
+
                               return ProductCardWidget(
                                 isDisable: state.finishSelected,
-                                product: cp,
+                                isPicker: state is OnSelectingCustomPackage,
+                                isPicked: isPicked,
+                                product: cp.copyWith(
+                                  price:
+                                      state is OnSelectingCustomPackage
+                                          ? 0
+                                          : null,
+                                ),
                                 quantity: quantity,
                                 onTap: () {
                                   if (state is OnSelectingCustomPackage) {
+                                    cartBloc.add(
+                                      AddProductToCustomePackageEvent(
+                                        product: cp,
+                                        categoryProduct: state.categoryProduct,
+                                        selectedPackage: state.selectedPackage,
+                                      ),
+                                    );
                                     return;
                                   }
 
                                   if (state is AtProductPage) {
-                                    context.read<CartBloc>().add(
+                                    cartBloc.add(
                                       AddProductToCartEvent(
                                         categoryProduct: state.categoryProduct,
                                         product: cp,

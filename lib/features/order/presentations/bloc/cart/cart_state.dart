@@ -5,8 +5,17 @@ class CartState extends BaseState {
 
   const CartState({this.items = const []});
 
+  bool isCustomePackages({required String itemId, required String productId}) {
+    if (items.isEmpty) return false;
+    final item = items.where((e) => e.id == itemId).firstOrNull;
+    if (item == null) return false;
+    if (item.product != null) return false;
+    return item.package?.items.where((e) => e.id == productId).firstOrNull !=
+        null;
+  }
+
   @override
-  List<Object> get props => [items];
+  List<Object?> get props => [items];
 
   @override
   CartState copyWith({
@@ -37,4 +46,7 @@ final class AddedToCart extends CartState {
       items: items ?? this.items,
     );
   }
+
+  @override
+  List<Object?> get props => [newItem, super.props];
 }
