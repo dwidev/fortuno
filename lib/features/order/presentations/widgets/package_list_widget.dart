@@ -37,6 +37,10 @@ class PackageListWidget extends StatelessWidget {
             return PackageCardWidget(
               package: package,
               quantity: quantity,
+              onDelete: (id) {
+                final cartBloc = context.read<CartBloc>();
+                cartBloc.add(RemoveProductFromCart(package: package));
+              },
               onTap: () async {
                 if (state.finishSelected) {
                   EasyLoading.showToast(

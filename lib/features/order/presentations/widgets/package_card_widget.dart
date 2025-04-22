@@ -1,3 +1,4 @@
+import 'package:fortuno/features/order/presentations/widgets/delete_product_dialog.dart';
 import 'package:fortuno/features/products/domain/enums/package_type.dart';
 
 import '../../../../core/core.dart';
@@ -15,6 +16,7 @@ class PackageCardWidget extends StatefulWidget {
     this.isPreview = false,
     this.isInventory = false,
     this.onActivate,
+    this.onDelete,
   });
 
   final Package package;
@@ -24,6 +26,7 @@ class PackageCardWidget extends StatefulWidget {
   final bool isInventory;
   final VoidCallback onTap;
   final Function(bool value, String id)? onActivate;
+  final Function(String id)? onDelete;
 
   factory PackageCardWidget.preview({required Package package}) =>
       PackageCardWidget(
@@ -64,6 +67,15 @@ class _PackageCardWidgetState extends State<PackageCardWidget> {
     }
 
     super.didUpdateWidget(oldWidget);
+  }
+
+  void onDelete() {
+    showDeleteProductDialog(
+      context: context,
+      onDelete: () {
+        widget.onDelete?.call(widget.package.id);
+      },
+    );
   }
 
   @override
@@ -167,16 +179,19 @@ class _PackageCardWidgetState extends State<PackageCardWidget> {
                     },
                   ),
                 if (widget.quantity != 0)
-                  Container(
-                    padding: EdgeInsets.all(kSizeS),
-                    decoration: BoxDecoration(
-                      color:
-                          widget.disable
-                              ? disabledButtonColor
-                              : deleteButtonColor,
-                      borderRadius: BorderRadius.circular(10),
+                  GestureDetector(
+                    onTap: onDelete,
+                    child: Container(
+                      padding: EdgeInsets.all(kSizeS),
+                      decoration: BoxDecoration(
+                        color:
+                            widget.disable
+                                ? disabledButtonColor
+                                : deleteButtonColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(CupertinoIcons.delete, color: whiteColor),
                     ),
-                    child: Icon(CupertinoIcons.delete, color: whiteColor),
                   ),
               ],
             ),
