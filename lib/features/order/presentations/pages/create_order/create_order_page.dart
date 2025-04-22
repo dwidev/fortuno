@@ -165,7 +165,11 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                                           ? 0
                                           : null,
                                 ),
-                                quantity: quantity,
+                                quantity:
+                                    state is OnSelectingCustomPackage
+                                        ? 0
+                                        : quantity,
+                                onDelete: (id) {},
                                 onTap: () {
                                   if (state is OnSelectingCustomPackage) {
                                     cartBloc.add(

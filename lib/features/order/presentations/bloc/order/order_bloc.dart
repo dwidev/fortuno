@@ -151,10 +151,10 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
 
     final curPackages = List<Package>.from(state.packages);
     final idx = curPackages.indexWhere((e) => e.id == event.item.package?.id);
-    final curPackage = curPackages[idx];
+    final curPackage = idx != -1 ? curPackages[idx] : null;
 
     // UPDATED CONTENS CUSTOME PACKAGE
-    if (event.item.contents != curPackage.contents) {
+    if (curPackage != null && event.item.contents != curPackage.contents) {
       final newPackage = curPackage.copyWith(items: event.item.package?.items);
       curPackages[idx] = newPackage;
     }
