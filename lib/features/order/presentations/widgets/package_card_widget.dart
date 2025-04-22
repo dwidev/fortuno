@@ -1,5 +1,5 @@
-import 'package:fortuno/features/order/presentations/widgets/delete_product_dialog.dart';
-import 'package:fortuno/features/products/domain/enums/package_type.dart';
+import 'delete_product_dialog.dart';
+import '../../../products/domain/enums/package_type.dart';
 
 import '../../../../core/core.dart';
 import '../../../products/domain/entities/inventory.dart';
@@ -17,6 +17,7 @@ class PackageCardWidget extends StatefulWidget {
     this.isInventory = false,
     this.onActivate,
     this.onDelete,
+    this.onChangeContents,
   });
 
   final Package package;
@@ -27,6 +28,7 @@ class PackageCardWidget extends StatefulWidget {
   final VoidCallback onTap;
   final Function(bool value, String id)? onActivate;
   final Function(String id)? onDelete;
+  final Function(String id)? onChangeContents;
 
   factory PackageCardWidget.preview({required Package package}) =>
       PackageCardWidget(
@@ -158,6 +160,7 @@ class _PackageCardWidgetState extends State<PackageCardWidget> {
               ),
               SizedBox(height: kSizeS),
             ],
+            SizedBox(height: kSizeS),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -178,21 +181,48 @@ class _PackageCardWidgetState extends State<PackageCardWidget> {
                       widget.onActivate?.call(value, widget.package.id);
                     },
                   ),
-                if (widget.quantity != 0)
-                  GestureDetector(
-                    onTap: onDelete,
-                    child: Container(
-                      padding: EdgeInsets.all(kSizeS),
-                      decoration: BoxDecoration(
-                        color:
-                            widget.disable
-                                ? disabledButtonColor
-                                : deleteButtonColor,
-                        borderRadius: BorderRadius.circular(10),
+                Row(
+                  children: [
+                    if (widget.package.type == PackageType.custom &&
+                        widget.package.contents.isNotEmpty)
+                      GestureDetector(
+                        onTap:
+                            () => widget.onChangeContents?.call(
+                              widget.package.id,
+                            ),
+                        child: Container(
+                          padding: EdgeInsets.all(kSizeS),
+                          decoration: BoxDecoration(
+                            color:
+                                widget.disable
+                                    ? disabledButtonColor
+                                    : infoButtonColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            CupertinoIcons.square_list,
+                            color: whiteColor,
+                          ),
+                        ),
                       ),
-                      child: Icon(CupertinoIcons.delete, color: whiteColor),
-                    ),
-                  ),
+                    SizedBox(width: kSizeSS),
+                    if (widget.quantity != 0)
+                      GestureDetector(
+                        onTap: onDelete,
+                        child: Container(
+                          padding: EdgeInsets.all(kSizeS),
+                          decoration: BoxDecoration(
+                            color:
+                                widget.disable
+                                    ? disabledButtonColor
+                                    : deleteButtonColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(CupertinoIcons.delete, color: whiteColor),
+                        ),
+                      ),
+                  ],
+                ),
               ],
             ),
           ],

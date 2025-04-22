@@ -4,18 +4,21 @@ import '../core.dart';
 
 Future<T?> showChangeTotalDialog<T>({
   required BuildContext context,
+  String? title,
   required int initial,
 }) async {
   return showDialog(
     context: context,
     builder: (context) {
-      return Dialog(child: _TotalDialogPage(inital: initial));
+      return Dialog(child: _TotalDialogPage(inital: initial, title: title));
     },
   );
 }
 
 class _TotalDialogPage extends StatefulWidget {
-  const _TotalDialogPage({required this.inital});
+  const _TotalDialogPage({required this.inital, this.title});
+
+  final String? title;
 
   final int inital;
 
@@ -61,7 +64,7 @@ class _TotalDialogPageState extends State<_TotalDialogPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Ubah total",
+                  widget.title ?? "Ubah total",
                   style: context.textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),

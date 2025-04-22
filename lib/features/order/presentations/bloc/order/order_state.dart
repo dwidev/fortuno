@@ -3,18 +3,26 @@ part of 'order_bloc.dart';
 class OrderState extends BaseState {
   final List<CategoryProduct> categories;
   final Map<String, int> productCountCart;
+  final Map<String, List<Product>> contentsCPackage;
   final bool finishSelected;
 
   const OrderState({
     this.categories = const [],
     this.productCountCart = const {},
+    this.contentsCPackage = const {},
     this.finishSelected = false,
     super.error,
     super.loading,
   });
 
   @override
-  List<Object?> get props => [categories, finishSelected, ...super.props];
+  List<Object?> get props => [
+    categories,
+    productCountCart,
+    contentsCPackage,
+    finishSelected,
+    ...super.props,
+  ];
 
   @override
   OrderState copyWith({
@@ -22,6 +30,7 @@ class OrderState extends BaseState {
     LoadingOpts? loading,
     ValueGetter<Failure?>? error,
     Map<String, int>? productCountCart,
+    Map<String, List<Product>>? contentsCPackage,
     bool? finishSelected,
   }) {
     return OrderState(
@@ -29,6 +38,7 @@ class OrderState extends BaseState {
       loading: loading ?? this.loading,
       error: error != null ? error.call() : this.error,
       productCountCart: productCountCart ?? this.productCountCart,
+      contentsCPackage: contentsCPackage ?? this.contentsCPackage,
       finishSelected: finishSelected ?? this.finishSelected,
     );
   }
@@ -42,6 +52,7 @@ final class OrderInitSuccess extends OrderState {
   const OrderInitSuccess({
     required super.categories,
     required super.productCountCart,
+    required super.contentsCPackage,
     required super.finishSelected,
   });
 }
@@ -55,6 +66,7 @@ final class AtProductPage extends OrderState {
     required this.categoryProduct,
     required super.categories,
     required super.productCountCart,
+    required super.contentsCPackage,
     required super.finishSelected,
     this.products = const [],
     this.packages = const [],
@@ -70,10 +82,12 @@ final class AtProductPage extends OrderState {
     LoadingOpts? loading,
     ValueGetter<Failure?>? error,
     Map<String, int>? productCountCart,
+    Map<String, List<Product>>? contentsCPackage,
   }) {
     return AtProductPage(
       categoryProduct: categoryProduct ?? this.categoryProduct,
       productCountCart: productCountCart ?? this.productCountCart,
+      contentsCPackage: contentsCPackage ?? this.contentsCPackage,
       products: products ?? this.products,
       packages: packages ?? this.packages,
       categories: categories ?? this.categories,
@@ -88,6 +102,7 @@ final class AtProductPage extends OrderState {
     products,
     packages,
     productCountCart,
+    contentsCPackage,
   ];
 }
 
@@ -99,6 +114,7 @@ final class OnSelectingCustomPackage extends AtProductPage {
     required super.categoryProduct,
     required super.categories,
     required super.productCountCart,
+    required super.contentsCPackage,
     required super.finishSelected,
     required super.products,
     required super.packages,
@@ -117,12 +133,14 @@ final class OnSelectingCustomPackage extends AtProductPage {
     LoadingOpts? loading,
     ValueGetter<Failure?>? error,
     Map<String, int>? productCountCart,
+    Map<String, List<Product>>? contentsCPackage,
   }) {
     return OnSelectingCustomPackage(
       selectedPackage: selectedPackage,
       categoryProduct: categoryProduct ?? this.categoryProduct,
       categories: categories ?? this.categories,
       productCountCart: productCountCart ?? this.productCountCart,
+      contentsCPackage: contentsCPackage ?? this.contentsCPackage,
       finishSelected: finishSelected ?? this.finishSelected,
       products: products ?? this.products,
       packages: packages ?? this.packages,

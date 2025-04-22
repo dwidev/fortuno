@@ -59,7 +59,14 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   /// HEADER APP
-                  HeaderCreateOrderWidget(),
+                  HeaderCreateOrderWidget(
+                    onSaveCustomePackage: () {
+                      orderBloc.add(OnSaveCustomePackage());
+                      setState(() {
+                        activeMenu = 0;
+                      });
+                    },
+                  ),
 
                   if (state is AtProductPage)
                     Padding(
@@ -76,27 +83,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                                 changeMenu(index);
                               },
                             ),
-                          ] else ...[
-                            Spacer(),
                           ],
-                          if (state is OnSelectingCustomPackage)
-                            ElevatedButton(
-                              onPressed: () {
-                                orderBloc.add(OnSaveCustomePackage());
-                                setState(() {
-                                  activeMenu = 0;
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: successButtonColor,
-                              ),
-                              child: Text(
-                                "Simpan",
-                                style: context.textTheme.bodySmall?.copyWith(
-                                  color: whiteColor,
-                                ),
-                              ),
-                            ),
                         ],
                       ),
                     ),

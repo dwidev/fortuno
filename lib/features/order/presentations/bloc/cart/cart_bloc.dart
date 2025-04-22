@@ -2,6 +2,7 @@ import '../../../../../core/core.dart';
 import '../../../../products/domain/entities/category.dart';
 import '../../../../products/domain/entities/package.dart';
 import '../../../../products/domain/entities/product.dart';
+import '../../../../products/domain/enums/package_type.dart';
 import '../../../domain/entities/order_item.dart';
 import '../../../domain/usecases/cache_order_from_cart.dart';
 
@@ -83,7 +84,9 @@ class CartBloc extends BaseAppBloc<CartEvent, CartState> {
     final removedItem = OrderItem(
       category: event.categoryProduct,
       product: event.product,
-      package: event.package,
+      package: event.package?.copyWith(
+        items: event.package?.type == PackageType.custom ? [] : null,
+      ),
       quantity: 0,
     );
 

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortuno/features/products/domain/enums/package_type.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/bloc/base_bloc.dart';
@@ -34,6 +35,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
         OrderInitSuccess(
           categories: state.categories,
           productCountCart: state.productCountCart,
+          contentsCPackage: state.contentsCPackage,
           finishSelected: state.finishSelected,
         ),
       );
@@ -48,6 +50,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
           packages: state.packages,
           categories: state.categories,
           productCountCart: state.productCountCart,
+          contentsCPackage: state.contentsCPackage,
           finishSelected: state.finishSelected,
         );
         emit(newState);
@@ -66,6 +69,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
             categoryProduct: state.categoryProduct,
             categories: state.categories,
             productCountCart: state.productCountCart,
+            contentsCPackage: state.contentsCPackage,
             finishSelected: state.finishSelected,
             packages: state.packages,
             products: state.products,
@@ -91,6 +95,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
           OrderInitSuccess(
             categories: right,
             productCountCart: state.productCountCart,
+            contentsCPackage: state.contentsCPackage,
             finishSelected: state.finishSelected,
           ),
         );
@@ -112,6 +117,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
       categoryProduct: event.categoryProduct,
       categories: state.categories,
       productCountCart: state.productCountCart,
+      contentsCPackage: state.contentsCPackage,
       finishSelected: state.finishSelected,
     );
 
@@ -120,7 +126,17 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
     });
 
     resPac.fold((err) => failure ??= err, (data) {
-      newState = newState.copyWith(packages: data);
+      final updatedPackage =
+          data.map((e) {
+            if (e.type == PackageType.def) return e;
+
+            final customItems = state.contentsCPackage[e.id];
+            if (customItems == null) return e;
+
+            return e.copyWith(items: customItems);
+          }).toList();
+
+      newState = newState.copyWith(packages: updatedPackage);
     });
 
     if (failure != null) {
@@ -150,17 +166,29 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
     }
 
     final curPackages = List<Package>.from(state.packages);
+    final currentContents = Map<String, List<Product>>.from(
+      state.contentsCPackage,
+    );
     final idx = curPackages.indexWhere((e) => e.id == event.item.package?.id);
     final curPackage = idx != -1 ? curPackages[idx] : null;
 
     // UPDATED CONTENS CUSTOME PACKAGE
-    if (curPackage != null && event.item.contents != curPackage.contents) {
+    if (state is OnSelectingCustomPackage &&
+        curPackage != null &&
+        event.item.contents != curPackage.contents) {
       final newPackage = curPackage.copyWith(items: event.item.package?.items);
       curPackages[idx] = newPackage;
+
+      if (newPackage.items.isEmpty) {
+        currentContents.remove(newPackage.id);
+      } else {
+        currentContents[newPackage.id] = newPackage.items;
+      }
     }
 
     final newState = state.copyWith(
       productCountCart: currentQuantity,
+      contentsCPackage: currentContents,
       packages: curPackages,
     );
     emit(newState);

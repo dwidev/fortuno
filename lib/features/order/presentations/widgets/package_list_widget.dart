@@ -41,6 +41,9 @@ class PackageListWidget extends StatelessWidget {
                 final cartBloc = context.read<CartBloc>();
                 cartBloc.add(RemoveProductFromCart(package: package));
               },
+              onChangeContents: (id) {
+                orderBloc.add(OnPreparationCustomPackage(package));
+              },
               onTap: () async {
                 if (state.finishSelected) {
                   EasyLoading.showToast(
@@ -54,6 +57,7 @@ class PackageListWidget extends StatelessWidget {
                   custome = true;
                   final q = await showChangeTotalDialog(
                     context: context,
+                    title: "Masukan jumlah pesan",
                     initial: 0,
                   );
 
