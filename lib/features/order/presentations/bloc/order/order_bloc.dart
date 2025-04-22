@@ -175,9 +175,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
     final curPackage = idx != -1 ? curPackages[idx] : null;
 
     // UPDATED CONTENS CUSTOME PACKAGE
-    if (state is OnSelectingCustomPackage &&
-        curPackage != null &&
-        event.item.contents != curPackage.contents) {
+    if (curPackage != null && event.item.contents != curPackage.contents) {
       final newPackage = curPackage.copyWith(items: event.item.package?.items);
       curPackages[idx] = newPackage;
 
@@ -187,13 +185,18 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
         currentContents[newPackage.id] = newPackage.items;
       }
 
-      newState = (newState as OnSelectingCustomPackage).copyWith(
-        contentsCPackage: currentContents,
-        packages: curPackages,
-        selectedPackage: newPackage,
-      );
-      emit(newState);
-      return;
+      if (state is OnSelectingCustomPackage) {
+        newState = state.copyWith(
+          selectedPackage: newPackage,
+          contentsCPackage: currentContents,
+          packages: curPackages,
+        );
+      } else {
+        newState = newState.copyWith(
+          contentsCPackage: currentContents,
+          packages: curPackages,
+        );
+      }
     }
 
     emit(newState);

@@ -86,6 +86,7 @@ class _TotalDialogPageState extends State<_TotalDialogPage> {
                     SizedBox(height: kSizeM),
                     TextFormFieldWidget(
                       controller: controller,
+                      keyboardType: TextInputType.number,
                       title: "Total",
                       validator: (value) {
                         if (value.isEmpty) {
