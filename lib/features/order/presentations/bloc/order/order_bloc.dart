@@ -151,6 +151,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
     if (this.state is! AtProductPage) return;
 
     final state = (this.state as AtProductPage);
+    var newState = state;
 
     // UPDATED QUANTITY
     final currentQuantity = Map<String, int>.from(state.productCountCart);
@@ -163,6 +164,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
       } else {
         currentQuantity[event.item.id] = newQuantity;
       }
+      newState = newState.copyWith(productCountCart: currentQuantity);
     }
 
     final curPackages = List<Package>.from(state.packages);
@@ -184,13 +186,16 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
       } else {
         currentContents[newPackage.id] = newPackage.items;
       }
+
+      newState = (newState as OnSelectingCustomPackage).copyWith(
+        contentsCPackage: currentContents,
+        packages: curPackages,
+        selectedPackage: newPackage,
+      );
+      emit(newState);
+      return;
     }
 
-    final newState = state.copyWith(
-      productCountCart: currentQuantity,
-      contentsCPackage: currentContents,
-      packages: curPackages,
-    );
     emit(newState);
   }
 

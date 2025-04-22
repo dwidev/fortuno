@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../../../../../core/core.dart';
@@ -61,6 +62,17 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                   /// HEADER APP
                   HeaderCreateOrderWidget(
                     onSaveCustomePackage: () {
+                      if (state is! OnSelectingCustomPackage) return;
+
+                      if (state.selectedPackage.items.isEmpty) {
+                        EasyLoading.showToast(
+                          "Silahkan pilih produk",
+                          dismissOnTap: true,
+                          duration: 1.seconds,
+                        );
+                        return;
+                      }
+
                       orderBloc.add(OnSaveCustomePackage());
                       setState(() {
                         activeMenu = 0;

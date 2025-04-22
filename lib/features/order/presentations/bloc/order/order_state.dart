@@ -134,9 +134,10 @@ final class OnSelectingCustomPackage extends AtProductPage {
     ValueGetter<Failure?>? error,
     Map<String, int>? productCountCart,
     Map<String, List<Product>>? contentsCPackage,
+    Package? selectedPackage,
   }) {
     return OnSelectingCustomPackage(
-      selectedPackage: selectedPackage,
+      selectedPackage: selectedPackage ?? this.selectedPackage,
       categoryProduct: categoryProduct ?? this.categoryProduct,
       categories: categories ?? this.categories,
       productCountCart: productCountCart ?? this.productCountCart,
