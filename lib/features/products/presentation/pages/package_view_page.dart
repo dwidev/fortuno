@@ -1,4 +1,6 @@
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fortuno/features/products/domain/enums/inventory_type.dart';
+import 'package:fortuno/features/products/domain/usecases/activate_data.dart';
 
 import '../../../../core/core.dart';
 import '../../../order/presentations/widgets/loading_product_widget.dart';
@@ -42,7 +44,18 @@ class _PackageViewPageState extends State<PackageViewPage> {
 
             final package = state.packages[index - 1];
 
-            return PackageCardWidget.inventory(package: package);
+            return PackageCardWidget.inventory(
+              package: package,
+              onActivate: (value, id) {
+                final params = ActivateDataParams(
+                  id: id,
+                  value: value,
+                  type: InventoryType.package,
+                );
+                context.read<ProductsBloc>().add(OnActivateData(params));
+              },
+              onDelete: (id) {},
+            );
           },
         );
       },
