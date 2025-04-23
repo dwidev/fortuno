@@ -30,6 +30,8 @@ class _TotalDialogPageState extends State<_TotalDialogPage> {
   late TextEditingController controller;
   late GlobalKey<FormState> key;
 
+  final listValue = [10, 20, 30, 40, 50];
+
   int get resultValue => int.tryParse(controller.text) ?? widget.inital;
 
   @override
@@ -78,6 +80,27 @@ class _TotalDialogPageState extends State<_TotalDialogPage> {
               ],
             ),
             Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children:
+                  listValue
+                      .map(
+                        (e) => ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                controller.text == e.toString()
+                                    ? primaryColor
+                                    : lightGrey6,
+                          ),
+                          onPressed: () {
+                            controller.text = e.toString();
+                            setState(() {});
+                          },
+                          child: Text(e.toString()),
+                        ),
+                      )
+                      .toList(),
+            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -88,6 +111,9 @@ class _TotalDialogPageState extends State<_TotalDialogPage> {
                       controller: controller,
                       keyboardType: TextInputType.number,
                       title: "Total",
+                      onChanged: (value) {
+                        setState(() {});
+                      },
                       validator: (value) {
                         if (value.isEmpty) {
                           return "Nilai tidak boleh kosong";
