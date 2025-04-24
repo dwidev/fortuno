@@ -3,7 +3,7 @@ import 'package:dotted_line/dotted_line.dart';
 import '../../../../core/core.dart';
 import '../../domain/entities/order.dart';
 
-class ProcessOrderCardWidget extends StatelessWidget {
+class ProcessOrderCardWidget extends StatefulWidget {
   const ProcessOrderCardWidget({
     super.key,
     required this.onTap,
@@ -18,12 +18,41 @@ class ProcessOrderCardWidget extends StatelessWidget {
   final Order order;
 
   @override
+  State<ProcessOrderCardWidget> createState() => _ProcessOrderCardWidgetState();
+}
+
+class _ProcessOrderCardWidgetState extends State<ProcessOrderCardWidget> {
+  var isHilight = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final now = DateTime.now();
+    final diff = now.difference(widget.order.updatedAt).inSeconds;
+
+    if (diff < 5) {
+      isHilight = true;
+
+      Future.delayed(Duration(seconds: 5 - diff), () {
+        if (mounted) {
+          setState(() {
+            isHilight = false;
+          });
+        }
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTap(order),
+      onTap: () => widget.onTap(widget.order),
       child: CustomCard(
+        duration: 2.seconds,
+        backgroundColor: isHilight ? azureMist : whiteColor,
         margin: anchorBottomContent,
-        border: isClick ? Border.all(color: primaryColor, width: 1) : null,
+        border:
+            widget.isClick ? Border.all(color: primaryColor, width: 1) : null,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -35,13 +64,13 @@ class ProcessOrderCardWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        order.client.name.toUpperCase(),
+                        widget.order.client.name.toUpperCase(),
                         style: context.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        "Order #${order.id.replaceAll("-", "").substring(1, 10).toUpperCase()}",
+                        "Order #${widget.order.id.replaceAll("-", "").substring(1, 10).toUpperCase()}",
                         style: context.textTheme.bodySmall?.copyWith(
                           color: greyColor,
                         ),
@@ -51,13 +80,13 @@ class ProcessOrderCardWidget extends StatelessWidget {
                 ),
                 SizedBox(width: kSizeM),
                 TextBadgeWidget(
-                  text: order.orderStatus.name,
-                  color: order.orderStatus.color,
+                  text: widget.order.orderStatus.name,
+                  color: widget.order.orderStatus.color,
                 ),
               ],
             ),
             SizedBox(height: kSizeM),
-            Text(order.createdAtDisplay),
+            Text(widget.order.createdAtDisplay),
             SizedBox(height: kSizeS),
             DottedLine(dashColor: lightGrey4),
             SizedBox(height: kSizeS),
@@ -99,8 +128,8 @@ class ProcessOrderCardWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                ...List.generate(order.items.length, (index) {
-                  final item = order.items[index];
+                ...List.generate(widget.order.items.length, (index) {
+                  final item = widget.order.items[index];
                   return TableRow(
                     children: [
                       Container(
@@ -145,7 +174,7 @@ class ProcessOrderCardWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  order.shippingCostString,
+                  widget.order.shippingCostString,
                   style: context.textTheme.labelSmall?.copyWith(
                     color: greyColor,
                   ),
@@ -165,7 +194,7 @@ class ProcessOrderCardWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  order.totalPriceString,
+                  widget.order.totalPriceString,
                   style: context.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -176,15 +205,15 @@ class ProcessOrderCardWidget extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  flex: order.orderStatus.isprocess ? 2 : 4,
+                  flex: widget.order.orderStatus.isprocess ? 2 : 4,
                   child: GradientButton(
-                    onPressed: () => onClickInvoice(order),
+                    onPressed: () => widget.onClickInvoice(widget.order),
                     isGradient: true,
                     child: Text("Invoice"),
                   ),
                 ),
                 SizedBox(width: kSizeSS),
-                if (order.orderStatus.iswaiting) ...[
+                if (widget.order.orderStatus.iswaiting) ...[
                   Expanded(
                     child: GradientButton(
                       onPressed: () {},

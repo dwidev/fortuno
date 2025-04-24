@@ -1,6 +1,6 @@
 import '../core.dart';
 
-class CustomCard extends Container {
+class CustomCard extends AnimatedContainer {
   CustomCard({
     super.key,
     super.alignment,
@@ -18,7 +18,12 @@ class CustomCard extends Container {
     super.child,
     this.border,
     this.backgroundColor,
-  });
+    Duration? duration,
+    Curve? curve,
+  }) : super(
+         duration: duration ?? 1.milliseconds,
+         curve: curve ?? Curves.fastEaseInToSlowEaseOut,
+       );
 
   final BoxBorder? border;
   final Color? backgroundColor;

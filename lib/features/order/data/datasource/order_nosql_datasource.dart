@@ -79,6 +79,7 @@ class OrderNosqlDatasource extends OrderDatasource {
     final params = <String, dynamic>{
       'order_status': newStatus.name,
       'payment_option': option.name,
+      'updated_at': DateTime.now().toUtc().toIso8601String(),
     };
 
     await client.from('orders').update(params).eq('ID', orderID);

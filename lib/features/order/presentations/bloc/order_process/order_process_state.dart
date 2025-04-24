@@ -33,3 +33,7 @@ class OrderProcessState extends BaseState {
 final class OrderProcessInitial extends OrderProcessState {
   const OrderProcessInitial({required super.order});
 }
+
+final class SuccessUpdateOrder extends OrderProcessState {
+  const SuccessUpdateOrder({required super.order, required super.orders});
+}
