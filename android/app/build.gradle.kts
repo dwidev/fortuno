@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
@@ -8,6 +11,13 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+
+
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("release.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
 android {
     namespace = "com.fortuno.pos"
     compileSdk = flutter.compileSdkVersion
@@ -41,9 +51,13 @@ android {
             keyPassword = "android"
         }
         
-        // TODO(dev) : change to keystore for the play store
         create("prod") {
-            storeFile = file("keystore/uat.jks")
+            if (keystorePropertiesFile.exists()) {
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+            }
         }
     }
 
