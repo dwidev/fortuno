@@ -2,13 +2,11 @@ import 'dart:convert';
 
 class PackageItemModel {
   final String id;
-  final String categoryId;
   final String productId;
   final String packageId;
 
   PackageItemModel({
     required this.id,
-    required this.categoryId,
     required this.productId,
     required this.packageId,
   });
@@ -16,7 +14,6 @@ class PackageItemModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'ID': id,
-      'category_id': categoryId,
       'product_id': productId,
       'package_id': packageId,
     };
@@ -25,7 +22,6 @@ class PackageItemModel {
   factory PackageItemModel.fromMap(Map<String, dynamic> map) {
     return PackageItemModel(
       id: map['ID'] as String,
-      categoryId: map['category_id'] as String,
       productId: map['product_id'] as String,
       packageId: map['package_id'] as String,
     );

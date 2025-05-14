@@ -24,7 +24,7 @@ class OrderProcessBloc
   }) : super(OrderProcessInitial(order: Order.init())) {
     on<OnGetOrders>(_onGetOrders);
     on<GoToOrderDetails>((event, emit) {
-      emit(state.copyWith(order: event.order));
+      emit(OrderProcessState(order: event.order, orders: state.orders));
     });
     on<OnUpdateStatusOrder>(_onUpdateStatus);
     on<ShowInvoiceOrder>(_onShowInvoice);
@@ -67,7 +67,7 @@ class OrderProcessBloc
       final newOrders = state.orders.toList();
       newOrders.removeWhere((e) => e.id == event.orderID);
 
-      emit(state.copyWith(order: newOrder, orders: newOrders));
+      emit(SuccessUpdateOrder(order: newOrder, orders: newOrders));
     });
   }
 

@@ -24,6 +24,9 @@ class Order extends Equatable {
   final Invoice invoice;
   final List<OrderItem> items;
 
+  bool get isNew =>
+      updatedAt.isAfter(DateTime.now().subtract(Duration(seconds: 5)));
+
   String get totalPriceString => moneyFormatter(totalPrice);
 
   String get subTotalString => items.totalPriceString;

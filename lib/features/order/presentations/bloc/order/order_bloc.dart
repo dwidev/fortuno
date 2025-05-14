@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortuno/features/products/domain/enums/package_type.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/bloc/base_bloc.dart';
@@ -11,6 +12,7 @@ import '../../../../products/domain/entities/product.dart';
 import '../../../../products/domain/usecases/get_category_by_companyid.dart';
 import '../../../../products/domain/usecases/get_package_by_categoryid.dart';
 import '../../../../products/domain/usecases/get_products_by_categoryid.dart';
+import '../../../domain/entities/order_item.dart';
 
 part 'order_event.dart';
 part 'order_state.dart';
@@ -33,15 +35,48 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
         OrderInitSuccess(
           categories: state.categories,
           productCountCart: state.productCountCart,
+          contentsCPackage: state.contentsCPackage,
           finishSelected: state.finishSelected,
         ),
       );
     });
-    on<OnAddQuantity>(_onAddQuantity);
+    on<OnPreparationCustomPackage>((event, emit) {
+      if (state is AtProductPage) {
+        final state = this.state as AtProductPage;
+        final newState = OnSelectingCustomPackage(
+          selectedPackage: event.seletedPackage,
+          categoryProduct: state.categoryProduct,
+          products: state.products,
+          packages: state.packages,
+          categories: state.categories,
+          productCountCart: state.productCountCart,
+          contentsCPackage: state.contentsCPackage,
+          finishSelected: state.finishSelected,
+        );
+        emit(newState);
+      }
+    });
+    on<OnUpdateOrderItems>(_onUpdateOrderItems);
     on<OnFinishSelectedProduct>(_onFinishSelectProduct);
     on<ResetOrder>(
       (event, emit) => emit(OrderInitial(categories: state.categories)),
     );
+    on<OnSaveCustomePackage>((event, emit) {
+      if (state is OnSelectingCustomPackage) {
+        final state = this.state as OnSelectingCustomPackage;
+        emit(
+          AtProductPage(
+            categoryProduct: state.categoryProduct,
+            categories: state.categories,
+            productCountCart: state.productCountCart,
+            contentsCPackage: state.contentsCPackage,
+            finishSelected: state.finishSelected,
+            packages: state.packages,
+            products: state.products,
+          ),
+        );
+      }
+    });
   }
 
   Future<void> _onInit(OnInitOrderPageEvent event, Emitter emit) async {
@@ -60,6 +95,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
           OrderInitSuccess(
             categories: right,
             productCountCart: state.productCountCart,
+            contentsCPackage: state.contentsCPackage,
             finishSelected: state.finishSelected,
           ),
         );
@@ -81,6 +117,7 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
       categoryProduct: event.categoryProduct,
       categories: state.categories,
       productCountCart: state.productCountCart,
+      contentsCPackage: state.contentsCPackage,
       finishSelected: state.finishSelected,
     );
 
@@ -89,7 +126,17 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
     });
 
     resPac.fold((err) => failure ??= err, (data) {
-      newState = newState.copyWith(packages: data);
+      final updatedPackage =
+          data.map((e) {
+            if (e.type == PackageType.def) return e;
+
+            final customItems = state.contentsCPackage[e.id];
+            if (customItems == null) return e;
+
+            return e.copyWith(items: customItems);
+          }).toList();
+
+      newState = newState.copyWith(packages: updatedPackage);
     });
 
     if (failure != null) {
@@ -100,19 +147,59 @@ class OrderBloc extends BaseAppBloc<OrderEvent, OrderState> {
     emit(newState);
   }
 
-  void _onAddQuantity(OnAddQuantity event, Emitter emit) {
-    if (state is! AtProductPage) return;
+  void _onUpdateOrderItems(OnUpdateOrderItems event, Emitter emit) {
+    if (this.state is! AtProductPage) return;
 
-    final s = (state as AtProductPage);
-    final newMap = Map<String, int>.from(s.productCountCart);
+    final state = (this.state as AtProductPage);
+    var newState = state;
 
-    if (event.quantity == 0) {
-      newMap.remove(event.id);
-    } else {
-      newMap[event.id] = event.quantity;
+    // UPDATED QUANTITY
+    final currentQuantity = Map<String, int>.from(state.productCountCart);
+    final updatedQuantity = currentQuantity[event.item.id];
+    final newQuantity = event.item.quantity;
+
+    if (updatedQuantity == null || updatedQuantity != newQuantity) {
+      if (newQuantity == 0) {
+        currentQuantity.remove(event.item.id);
+      } else {
+        currentQuantity[event.item.id] = newQuantity;
+      }
+      newState = newState.copyWith(productCountCart: currentQuantity);
     }
 
-    emit(s.copyWith(productCountCart: newMap));
+    final curPackages = List<Package>.from(state.packages);
+    final currentContents = Map<String, List<Product>>.from(
+      state.contentsCPackage,
+    );
+    final idx = curPackages.indexWhere((e) => e.id == event.item.package?.id);
+    final curPackage = idx != -1 ? curPackages[idx] : null;
+
+    // UPDATED CONTENS CUSTOME PACKAGE
+    if (curPackage != null && event.item.contents != curPackage.contents) {
+      final newPackage = curPackage.copyWith(items: event.item.package?.items);
+      curPackages[idx] = newPackage;
+
+      if (newPackage.items.isEmpty) {
+        currentContents.remove(newPackage.id);
+      } else {
+        currentContents[newPackage.id] = newPackage.items;
+      }
+
+      if (state is OnSelectingCustomPackage) {
+        newState = state.copyWith(
+          selectedPackage: newPackage,
+          contentsCPackage: currentContents,
+          packages: curPackages,
+        );
+      } else {
+        newState = newState.copyWith(
+          contentsCPackage: currentContents,
+          packages: curPackages,
+        );
+      }
+    }
+
+    emit(newState);
   }
 
   void _onFinishSelectProduct(OnFinishSelectedProduct event, Emitter emit) {

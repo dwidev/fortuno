@@ -193,14 +193,14 @@ class _SideMenuState extends State<SideMenu> {
                                 ),
                               ),
                             ],
-                            if (index == 2 &&
-                                index != activeIndex &&
-                                activeIndex != 1)
-                              Badge.count(
-                                count: 2,
-                                smallSize: 5,
-                                largeSize: 10,
-                              ),
+                            // if (index == 2 &&
+                            //     index != activeIndex &&
+                            //     activeIndex != 1)
+                            //   Badge.count(
+                            //     count: 2,
+                            //     smallSize: 5,
+                            //     largeSize: 10,
+                            //   ),
                           ],
                         ),
                       ),

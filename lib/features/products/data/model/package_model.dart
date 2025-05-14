@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:fortuno/core/utils/code_gen.dart';
 import 'package:fortuno/features/products/data/model/category_model.dart';
+import 'package:fortuno/features/products/domain/enums/package_type.dart';
 
 import '../../../../core/models/base_model.dart';
 import '../../domain/entities/package.dart';
@@ -10,21 +11,25 @@ import 'product_model.dart';
 
 class PackageModel extends BaseModel<Package> {
   final String id;
+  final String companyId;
   final String name;
   final String code;
   final double price;
   final bool isActive;
   final String createAt;
+  final String type;
   final CategoryModel? categoryModel;
   final List<ProductModel> productModel;
 
   PackageModel({
     required this.id,
+    required this.companyId,
     required this.name,
     required this.code,
     required this.price,
     required this.isActive,
     required this.createAt,
+    required this.type,
     required this.categoryModel,
     required this.productModel,
   });
@@ -33,11 +38,13 @@ class PackageModel extends BaseModel<Package> {
   Package toEntity() {
     return Package(
       id: id,
+      companyId: companyId,
       name: name,
       code: code,
       price: price,
       isActive: isActive,
       createAt: createAt,
+      type: packageTypeFromString(type),
       items: productModel.map((e) => e.toEntity()).toList(),
       category: categoryModel?.toEntity(),
     );
@@ -48,11 +55,14 @@ class PackageModel extends BaseModel<Package> {
 
     return <String, dynamic>{
       'ID': id,
+      'company_id': companyId,
+      'category_id': categoryModel?.id,
       'package_name': name,
       'package_code': code,
       'price': price,
       'is_active': isActive,
       'created_at': createAt,
+      'type': type,
     };
   }
 
@@ -61,11 +71,13 @@ class PackageModel extends BaseModel<Package> {
 
     return PackageModel(
       id: map['ID'] as String,
+      companyId: map['company_id'] as String? ?? "",
       name: map['package_name'] as String,
       code: map['package_code'] as String,
       price: price,
       isActive: map['is_active'] as bool? ?? false,
       createAt: map['created_at'] as String? ?? "",
+      type: map['type'] as String,
       productModel: List.from(
         (map['products']).map(
           (x) => ProductModel.fromMap(x as Map<String, dynamic>),

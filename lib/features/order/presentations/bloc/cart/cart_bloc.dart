@@ -2,6 +2,7 @@ import '../../../../../core/core.dart';
 import '../../../../products/domain/entities/category.dart';
 import '../../../../products/domain/entities/package.dart';
 import '../../../../products/domain/entities/product.dart';
+import '../../../../products/domain/enums/package_type.dart';
 import '../../../domain/entities/order_item.dart';
 import '../../../domain/usecases/cache_order_from_cart.dart';
 
@@ -15,6 +16,7 @@ class CartBloc extends BaseAppBloc<CartEvent, CartState> {
     on<AddProductToCartEvent>(_onAddItem);
     on<RemoveProductFromCart>(_onRemoveItem);
     on<ResetCart>((event, emit) => emit(CartInitial()));
+    on<AddProductToCustomePackageEvent>(_onAddProductToCustomePackage);
   }
 
   Future<void> _onAddItem(AddProductToCartEvent event, Emitter emit) async {
@@ -82,7 +84,9 @@ class CartBloc extends BaseAppBloc<CartEvent, CartState> {
     final removedItem = OrderItem(
       category: event.categoryProduct,
       product: event.product,
-      package: event.package,
+      package: event.package?.copyWith(
+        items: event.package?.type == PackageType.custom ? [] : null,
+      ),
       quantity: 0,
     );
 
@@ -96,6 +100,43 @@ class CartBloc extends BaseAppBloc<CartEvent, CartState> {
     final newState = (state as AddedToCart).copyWith(
       items: items,
       newItem: removedItem,
+    );
+
+    final cache = CacheOrderFromCartParams(
+      categoryId: event.categoryProduct?.id ?? "",
+      orders: items,
+    );
+    cacheOrderFromCart(cache);
+
+    emit(newState);
+  }
+
+  void _onAddProductToCustomePackage(
+    AddProductToCustomePackageEvent event,
+    Emitter emit,
+  ) {
+    final items = List<OrderItem>.from(state.items);
+    final orderItem =
+        items.where((e) => e.id == event.selectedPackage.id).first;
+
+    final currentProducts = orderItem.package?.items ?? [];
+    final products = List<Product>.from(currentProducts);
+
+    final indexUpdated = products.indexWhere((e) => e.id == event.product.id);
+    if (indexUpdated != -1) {
+      products.removeWhere((e) => e.id == event.product.id);
+    } else {
+      products.add(event.product);
+    }
+
+    final updatedPackage = orderItem.package?.copyWith(items: products);
+    final index = items.indexWhere((e) => e.id == event.selectedPackage.id);
+    final newOrders = items[index].copyWith(package: updatedPackage);
+    items[index] = newOrders;
+
+    final newState = (state as AddedToCart).copyWith(
+      items: items,
+      newItem: newOrders,
     );
 
     final cache = CacheOrderFromCartParams(

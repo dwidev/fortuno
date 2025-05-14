@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../../../../../core/core.dart';
@@ -41,7 +42,15 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
 
   @override
   Widget build(BuildContext context) {
+    final cartBloc = context.watch<CartBloc>();
     return OrderListenerWidget(
+      listener: (context, state) {
+        if (state is OnSelectingCustomPackage) {
+          setState(() {
+            activeMenu = 1;
+          });
+        }
+      },
       builder: (context, orderBloc, state) {
         return Row(
           children: [
@@ -51,15 +60,43 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   /// HEADER APP
-                  HeaderCreateOrderWidget(),
+                  HeaderCreateOrderWidget(
+                    onSaveCustomePackage: () {
+                      if (state is! OnSelectingCustomPackage) return;
+
+                      if (state.selectedPackage.items.isEmpty) {
+                        EasyLoading.showToast(
+                          "Silahkan pilih produk",
+                          dismissOnTap: true,
+                          duration: 1.seconds,
+                        );
+                        return;
+                      }
+
+                      orderBloc.add(OnSaveCustomePackage());
+                      setState(() {
+                        activeMenu = 0;
+                      });
+                    },
+                  ),
 
                   if (state is AtProductPage)
                     Padding(
-                      padding: anchorLeftContent,
-                      child: CustomTab(
-                        currentIndex: activeMenu,
-                        menus: menus,
-                        changeMenu: changeMenu,
+                      padding: [anchorLeftContent, anchorBottomContent].merge,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (state is! OnSelectingCustomPackage) ...[
+                            CustomTab(
+                              currentIndex: activeMenu,
+                              menus: menus,
+                              changeMenu: (index) {
+                                if (state is OnSelectingCustomPackage) return;
+                                changeMenu(index);
+                              },
+                            ),
+                          ],
+                        ],
                       ),
                     ),
 
@@ -110,13 +147,46 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                                 quantity = state.productCountCart[cp.id] ?? 0;
                               }
 
+                              final isPicked =
+                                  (state is OnSelectingCustomPackage) &&
+                                  cartBloc.state.isCustomePackages(
+                                    itemId: state.selectedPackage.id,
+                                    productId: cp.id,
+                                  );
+
                               return ProductCardWidget(
                                 isDisable: state.finishSelected,
-                                product: cp,
-                                quantity: quantity,
+                                isPicker: state is OnSelectingCustomPackage,
+                                isPicked: isPicked,
+                                product: cp.copyWith(
+                                  price:
+                                      state is OnSelectingCustomPackage
+                                          ? 0
+                                          : null,
+                                ),
+                                quantity:
+                                    state is OnSelectingCustomPackage
+                                        ? 0
+                                        : quantity,
+                                onDelete: (id) {
+                                  cartBloc.add(
+                                    RemoveProductFromCart(product: cp),
+                                  );
+                                },
                                 onTap: () {
+                                  if (state is OnSelectingCustomPackage) {
+                                    cartBloc.add(
+                                      AddProductToCustomePackageEvent(
+                                        product: cp,
+                                        categoryProduct: state.categoryProduct,
+                                        selectedPackage: state.selectedPackage,
+                                      ),
+                                    );
+                                    return;
+                                  }
+
                                   if (state is AtProductPage) {
-                                    context.read<CartBloc>().add(
+                                    cartBloc.add(
                                       AddProductToCartEvent(
                                         categoryProduct: state.categoryProduct,
                                         product: cp,

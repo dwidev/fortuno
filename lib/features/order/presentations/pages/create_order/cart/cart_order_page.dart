@@ -107,16 +107,14 @@ class _CartOrderPageState extends State<CartOrderPage>
         return previous != current;
       },
       listener: (context, state) {
+        final orderBloc = context.read<OrderBloc>();
+
         if (state is AddedToCart && state.newItem != null) {
-          final id = state.newItem!.id;
-          final quantity = state.newItem!.quantity;
-          context.read<OrderBloc>().add(OnAddQuantity(id, quantity));
+          orderBloc.add(OnUpdateOrderItems(state.newItem!));
         }
 
         if (state is CartInitial) {
-          log("RESET ORDER");
           tabController.animateTo(0);
-          final orderBloc = context.read<OrderBloc>();
           orderBloc.add(ResetOrder());
         }
       },

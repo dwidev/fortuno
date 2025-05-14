@@ -1,5 +1,6 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fortuno/features/products/domain/enums/package_type.dart';
 
 import '../../../../core/core.dart';
 import '../bloc/cart/cart_bloc.dart';
@@ -11,6 +12,9 @@ class PackageListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final orderBloc = context.read<OrderBloc>();
+    final bloc = context.read<CartBloc>();
+
     return BlocBuilder<OrderBloc, OrderState>(
       builder: (context, state) {
         if (state is! AtProductPage) {
@@ -28,12 +32,19 @@ class PackageListWidget extends StatelessWidget {
           ),
           itemBuilder: (context, index) {
             final package = packages[index];
-            final quantity = state.productCountCart[package.id] ?? 0;
+            var quantity = state.productCountCart[package.id] ?? 0;
 
             return PackageCardWidget(
               package: package,
               quantity: quantity,
-              onTap: () {
+              onDelete: (id) {
+                final cartBloc = context.read<CartBloc>();
+                cartBloc.add(RemoveProductFromCart(package: package));
+              },
+              onChangeContents: (id) {
+                orderBloc.add(OnPreparationCustomPackage(package));
+              },
+              onTap: () async {
                 if (state.finishSelected) {
                   EasyLoading.showToast(
                     "Silahkan kembali kemenu Rincian pesanan",
@@ -41,11 +52,25 @@ class PackageListWidget extends StatelessWidget {
                   return;
                 }
 
-                context.read<CartBloc>().add(
+                var custome = false;
+                if (package.type == PackageType.custom && quantity == 0) {
+                  custome = true;
+                  final q = await showChangeTotalDialog(
+                    context: context,
+                    title: "Masukan jumlah pesan",
+                    initial: 0,
+                  );
+
+                  if (q == null || q == 0) return;
+                  quantity = q;
+                  orderBloc.add(OnPreparationCustomPackage(package));
+                }
+
+                bloc.add(
                   AddProductToCartEvent(
                     categoryProduct: state.categoryProduct,
                     package: package,
-                    quantity: quantity + 1,
+                    quantity: custome ? quantity : quantity + 1,
                   ),
                 );
               },

@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -15,11 +16,9 @@ Future<void> mainApp(EnvApp env) async {
 
   await intializeFirebasApp(env);
 
-  Supabase.initialize(
-    url: 'https://qzyzhzmmmzngcytqikhq.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF6eXpoem1tbXpuZ2N5dHFpa2hxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEyOTc5NTIsImV4cCI6MjA1Njg3Mzk1Mn0.zRzXEJpTRH-1xDh3-zTDX8tlB9jNw2GId9O9ZvpIvXY',
-  );
+  final url = dotenv.get('SUPABASE_URL');
+  final key = dotenv.get('SUPABASE_KEY');
+  Supabase.initialize(url: url, anonKey: key);
 
   // easy loading config style
   EasyLoading.instance

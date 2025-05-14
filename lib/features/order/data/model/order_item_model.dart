@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:fortuno/core/models/base_model.dart';
@@ -13,6 +14,7 @@ class OrderItemModel extends BaseModel<OrderItem> {
   final String? packageID;
   final int quantity;
   final double totalPrice;
+  final int isCustom;
 
   // only bulk get data
   final CategoryModel? categoryModel;
@@ -26,6 +28,7 @@ class OrderItemModel extends BaseModel<OrderItem> {
     required this.packageID,
     required this.quantity,
     required this.totalPrice,
+    required this.isCustom,
     this.categoryModel,
     this.productModel,
     this.packageModel,
@@ -39,6 +42,7 @@ class OrderItemModel extends BaseModel<OrderItem> {
       'package_id': packageID,
       'quantity': quantity,
       'total_price': totalPrice,
+      'is_custom': isCustom,
     };
   }
 
@@ -61,6 +65,7 @@ class OrderItemModel extends BaseModel<OrderItem> {
       orderID: "",
       productID: productModel?.id,
       packageID: packageModel?.id,
+      isCustom: 0,
     );
   }
 

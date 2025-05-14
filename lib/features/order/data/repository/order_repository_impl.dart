@@ -1,3 +1,4 @@
+import 'package:fortuno/features/products/domain/enums/package_type.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/core.dart';
@@ -70,22 +71,41 @@ class OrderRepositoryImpl implements OrderRepository {
       createdAt: now.toIso8601String(),
       updatedAt: now.toIso8601String(),
       items:
-          order.items
-              .map(
-                (e) => OrderItemModel(
-                  id: e.id,
-                  orderID: orderId,
-                  productID: e.product?.id,
-                  packageID: e.package?.id,
-                  quantity: e.quantity,
-                  totalPrice: e.totalPrice,
-                ),
-              )
-              .toList(),
+          order.items.map((e) {
+            var isCustom = false;
+            if (e.package != null) {
+              isCustom = e.package!.type == PackageType.custom;
+            }
+
+            return OrderItemModel(
+              id: e.id,
+              orderID: orderId,
+              productID: e.product?.id,
+              packageID: e.package?.id,
+              quantity: e.quantity,
+              totalPrice: e.totalPrice,
+              isCustom: isCustom ? 1 : 0,
+            );
+          }).toList(),
       clientOrderModel: client,
     );
 
-    return orderDatasource.createOrder(orderModel: model);
+    // create order
+    await orderDatasource.createOrder(orderModel: model);
+
+    // create order package item if item with package custom type
+    for (var item in order.items) {
+      final package = item.package;
+      if (package == null || package.type != PackageType.custom) continue;
+
+      for (var prod in item.package?.items ?? []) {
+        await orderDatasource.inserOrderPackageItemsCustome(
+          orderId: orderId,
+          productId: prod.id,
+          packageId: package.id,
+        );
+      }
+    }
   }
 
   @override

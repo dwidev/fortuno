@@ -24,13 +24,6 @@ class OnBackToCategory extends OrderEvent {
   const OnBackToCategory();
 }
 
-class OnAddQuantity extends OrderEvent {
-  final String id;
-  final int quantity;
-
-  const OnAddQuantity(this.id, this.quantity);
-}
-
 class OnFinishSelectedProduct extends OrderEvent {
   final bool isFinish;
   const OnFinishSelectedProduct({required this.isFinish});
@@ -38,4 +31,19 @@ class OnFinishSelectedProduct extends OrderEvent {
 
 class ResetOrder extends OrderEvent {
   const ResetOrder();
+}
+
+class OnPreparationCustomPackage extends OrderEvent {
+  final Package seletedPackage;
+
+  const OnPreparationCustomPackage(this.seletedPackage);
+}
+
+class OnSaveCustomePackage extends OrderEvent {
+  const OnSaveCustomePackage();
+}
+
+class OnUpdateOrderItems extends OrderEvent {
+  final OrderItem item;
+  const OnUpdateOrderItems(this.item);
 }

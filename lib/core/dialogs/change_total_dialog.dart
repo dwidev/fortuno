@@ -4,18 +4,21 @@ import '../core.dart';
 
 Future<T?> showChangeTotalDialog<T>({
   required BuildContext context,
+  String? title,
   required int initial,
 }) async {
   return showDialog(
     context: context,
     builder: (context) {
-      return Dialog(child: _TotalDialogPage(inital: initial));
+      return Dialog(child: _TotalDialogPage(inital: initial, title: title));
     },
   );
 }
 
 class _TotalDialogPage extends StatefulWidget {
-  const _TotalDialogPage({required this.inital});
+  const _TotalDialogPage({required this.inital, this.title});
+
+  final String? title;
 
   final int inital;
 
@@ -26,6 +29,8 @@ class _TotalDialogPage extends StatefulWidget {
 class _TotalDialogPageState extends State<_TotalDialogPage> {
   late TextEditingController controller;
   late GlobalKey<FormState> key;
+
+  final listValue = [10, 20, 30, 40, 50];
 
   int get resultValue => int.tryParse(controller.text) ?? widget.inital;
 
@@ -61,7 +66,7 @@ class _TotalDialogPageState extends State<_TotalDialogPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Ubah total",
+                  widget.title ?? "Ubah total",
                   style: context.textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -75,6 +80,27 @@ class _TotalDialogPageState extends State<_TotalDialogPage> {
               ],
             ),
             Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children:
+                  listValue
+                      .map(
+                        (e) => ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                controller.text == e.toString()
+                                    ? primaryColor
+                                    : lightGrey6,
+                          ),
+                          onPressed: () {
+                            controller.text = e.toString();
+                            setState(() {});
+                          },
+                          child: Text(e.toString()),
+                        ),
+                      )
+                      .toList(),
+            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -83,7 +109,11 @@ class _TotalDialogPageState extends State<_TotalDialogPage> {
                     SizedBox(height: kSizeM),
                     TextFormFieldWidget(
                       controller: controller,
+                      keyboardType: TextInputType.number,
                       title: "Total",
+                      onChanged: (value) {
+                        setState(() {});
+                      },
                       validator: (value) {
                         if (value.isEmpty) {
                           return "Nilai tidak boleh kosong";

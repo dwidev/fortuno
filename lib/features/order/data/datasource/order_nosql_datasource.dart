@@ -1,8 +1,8 @@
-import 'package:fortuno/features/order/domain/enums/order_status.dart';
-import 'package:fortuno/features/order/domain/enums/payment_option.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/core.dart';
+import '../../domain/enums/order_status.dart';
+import '../../domain/enums/payment_option.dart';
 import '../model/order_model.dart';
 import 'order_datasource.dart';
 
@@ -42,6 +42,20 @@ class OrderNosqlDatasource extends OrderDatasource {
   }
 
   @override
+  Future<void> inserOrderPackageItemsCustome({
+    required String orderId,
+    required String productId,
+    required String packageId,
+  }) async {
+    final map = {
+      'product_id': productId,
+      'package_id': packageId,
+      'order_id': orderId,
+    };
+    await client.from('order_package_items').insert(map);
+  }
+
+  @override
   Future<List<OrderModel>> getOrdersByCompanyID({
     required String companyID,
     required OrderStatus status,
@@ -65,6 +79,7 @@ class OrderNosqlDatasource extends OrderDatasource {
     final params = <String, dynamic>{
       'order_status': newStatus.name,
       'payment_option': option.name,
+      'updated_at': DateTime.now().toUtc().toIso8601String(),
     };
 
     await client.from('orders').update(params).eq('ID', orderID);

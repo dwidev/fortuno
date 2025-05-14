@@ -1,4 +1,6 @@
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fortuno/features/products/domain/enums/inventory_type.dart';
+import 'package:fortuno/features/products/domain/usecases/activate_data.dart';
 
 import '../../../../core/core.dart';
 import '../../../order/presentations/widgets/loading_product_widget.dart';
@@ -23,10 +25,6 @@ class _PackageViewPageState extends State<PackageViewPage> {
           return LoadingProductWidget(crossAxisCount: 5);
         }
 
-        if (state.packages.isEmpty) {
-          return Offstage();
-        }
-
         return MasonryGridView.builder(
           padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
           crossAxisSpacing: kSizeMS,
@@ -46,11 +44,17 @@ class _PackageViewPageState extends State<PackageViewPage> {
 
             final package = state.packages[index - 1];
 
-            return PackageCardWidget(
+            return PackageCardWidget.inventory(
               package: package,
-              quantity: 0,
-              disable: false,
-              onTap: () {},
+              onActivate: (value, id) {
+                final params = ActivateDataParams(
+                  id: id,
+                  value: value,
+                  type: InventoryType.package,
+                );
+                context.read<ProductsBloc>().add(OnActivateData(params));
+              },
+              onDelete: (id) {},
             );
           },
         );

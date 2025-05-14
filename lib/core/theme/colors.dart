@@ -12,6 +12,12 @@ final darkColor = Color(0xff1A1A2E); // Biru kehitaman modern
 const darkLightColor = Color(0xffF8F9FA); // Putih bersih
 const shadowColor = Color(0xffD6D6D6); // Abu-abu sangat soft
 
+const lightBlueHighlight = Color(0xFF81D4FA); // Light Blue (Material Design)
+const babyBlueHighlight = Color(0xFFADD8E6); // Baby Blue, sangat lembut
+const skyBlueHighlight = Color(0xFF87CEFA); // Light Sky Blue, segar & cerah
+const powderBlue = Color(0xFFB0E0E6); // Powder Blue, kalem & soft
+const azureMist = Color(0xFFF0FFFF); // Azure Mist, hampir putih
+
 // Warna tambahan
 const deleteButtonColor = Color(
   0xffE63946,

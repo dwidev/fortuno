@@ -101,6 +101,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
   void closeDetail() => onClickDetail(null, -1, false);
 
   void onChangeTab(int index) {
+    closeDetail();
     setState(() {
       activeMenu = index;
     });
@@ -131,6 +132,11 @@ class _ProcessOrderPageState extends State<ProcessOrderPage>
   Widget build(BuildContext context) {
     return BaseListenerWidget<OrderProcessBloc, OrderProcessState>(
       listener: (context, state) {
+        if (state is SuccessUpdateOrder) {
+          if (state.order.orderStatus.isprocess) onChangeTab(1);
+          if (state.order.orderStatus.isdone) onChangeTab(2);
+        }
+
         if (isDetail && tabController.indexIsChanging && state.loading.active) {
           Future.delayed(
             detailShowDuration,
