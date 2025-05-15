@@ -141,3 +141,43 @@ class Order extends Equatable {
   @override
   bool get stringify => true;
 }
+
+extension OrderX on Order {
+  String get _descItem {
+    String value = "";
+
+    for (var item in items) {
+      value += item.title;
+      if (item.contents.isNotEmpty) {
+        value += "\n${item.contents}\n\n";
+      } else {
+        value += "\n";
+      }
+    }
+
+    return value;
+  }
+
+  String get _descPrice {
+    String value = "";
+
+    for (var item in items) {
+      value += item.title;
+      value +=
+          ' ${item.priceString} * ${item.quantity} : ${item.totalPriceString}\n';
+    }
+
+    return value;
+  }
+
+  String get descSummary {
+    return '''Pesanan di antar *${client.sendDateDisplay}*
+Nama : ${client.name}
+Lokasi : ${client.addressDisplay} ${client.detailAddress.isNotEmpty ? client.detailAddress : ''}
+Pukul : ${client.sendClockDisplay}
+
+$_descItem
+$_descPrice
+Total biaya : *$totalPriceString*''';
+  }
+}

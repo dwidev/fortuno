@@ -28,13 +28,19 @@ DateTime parseToDate(String date, {String? pattern}) {
 }
 
 DateTime parseToTime(String time) {
-  final parsed = DateFormat(DateFormat.HOUR24_MINUTE).parse(time);
+  final parsed = DateFormat(DateFormat.HOUR24_MINUTE, 'id_ID').parse(time);
   return parsed;
 }
 
 String formatToDateTime(DateTime dateTime, {bool toLocal = true}) {
   final dt = toLocal ? dateTime.toLocal() : dateTime;
-  final formated = DateFormat('EEE, dd MMM yyyy HH:mm').format(dt);
+  final formated = DateFormat('EEEE, dd MMM yyyy HH:mm', 'id_ID').format(dt);
+  return "$formated WIB";
+}
+
+String formatToTime(DateTime dateTime, {bool toLocal = true}) {
+  final dt = toLocal ? dateTime.toLocal() : dateTime;
+  final formated = DateFormat('HH:mm', 'id_ID').format(dt);
   return "$formated WIB";
 }
 
