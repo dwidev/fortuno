@@ -14,6 +14,7 @@ class ClientOrder extends Equatable {
   final String detailAddress;
 
   String get sendDateDisplay => formatToDateTime(sendDate);
+  String get sendClockDisplay => formatToTime(sendDate);
 
   const ClientOrder({
     required this.id,

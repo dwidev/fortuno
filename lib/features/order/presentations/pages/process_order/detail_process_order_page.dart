@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fortuno/features/order/domain/enums/order_status.dart';
 
 import '../../../../../core/core.dart';
@@ -42,6 +44,11 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
         );
       },
     );
+  }
+
+  Future<void> onCopy(Order order) async {
+    await Clipboard.setData(ClipboardData(text: order.descSummary));
+    EasyLoading.showToast("berhasil disalin");
   }
 
   @override
@@ -104,17 +111,58 @@ class _DetailProcessOrderPageState extends State<DetailProcessOrderPage> {
                                           client: client,
                                         ),
                                         SizedBox(height: kSizeXL),
-                                        Row(
-                                          children: [
-                                            ImagePreviewWidget(
-                                              title: "Bukti Dp",
+                                        // Row(
+                                        //   children: [
+                                        //     ImagePreviewWidget(
+                                        //       title: "Bukti Dp",
+                                        //     ),
+                                        //     SizedBox(width: kSizeM),Aku noted pesanan kk ya :
+                                        Container(
+                                          padding: EdgeInsets.all(kSizeM),
+                                          decoration: BoxDecoration(
+                                            color: primaryColor.withAlpha(50),
+                                            borderRadius: BorderRadius.circular(
+                                              10,
                                             ),
-                                            SizedBox(width: kSizeM),
-                                            ImagePreviewWidget(
-                                              title: "Bukti Pelunasan",
-                                            ),
-                                          ],
+                                          ),
+                                          width: double.infinity,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "Order Detail",
+                                                    style:
+                                                        context
+                                                            .textTheme
+                                                            .labelLarge,
+                                                  ),
+                                                  IconButton(
+                                                    onPressed:
+                                                        () => onCopy(order),
+                                                    icon: Icon(
+                                                      CupertinoIcons
+                                                          .doc_on_clipboard,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: kSizeS),
+                                              Text(order.descSummary),
+                                            ],
+                                          ),
                                         ),
+                                        //     ImagePreviewWidget(
+                                        //       title: "Bukti Pelunasan",
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                        SizedBox(height: kSizeXL * 2),
                                       ],
                                     ),
                                   ),
